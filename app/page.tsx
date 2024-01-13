@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 export default function Home() {
   const [username, setUsername] = useState("");
   const router = useRouter();
-
+  //Function handlers
   const handleUsernameChange = (e: {
     target: { value: React.SetStateAction<string> };
   }) => {
@@ -44,6 +44,7 @@ export default function Home() {
           </p>
         </div>
         <div className="flex w-full max-w-sm items-center space-x-8">
+          {/* Handle username input */}
           <Input
             type="text"
             placeholder="Enter your GitHub username"
