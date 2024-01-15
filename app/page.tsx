@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,7 +14,8 @@ export default function Home() {
     setUsername(e.target.value);
   };
 
-  const handleGenerateClick = () => {
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
     router.push(`/resume/${username}`);
   };
 
@@ -44,17 +45,18 @@ export default function Home() {
           </p>
         </div>
         <div className="flex w-full max-w-sm items-center space-x-8">
-          {/* Handle username input */}
-          <Input
-            type="text"
-            placeholder="Enter your GitHub username"
-            className="h-12"
-            value={username}
-            onChange={handleUsernameChange}
-          />
-          <Button type="button" className="h-12" onClick={handleGenerateClick}>
-            Generate
-          </Button>
+          <form className="flex w-full space-x-3" onSubmit={handleSubmit}>
+            <Input
+              type="text"
+              placeholder="Enter your GitHub username"
+              className="h-12 flex-grow"
+              value={username}
+              onChange={handleUsernameChange}
+            />
+            <Button type="submit" className="h-12">
+              Generate
+            </Button>
+          </form>
         </div>
       </div>
     </main>
