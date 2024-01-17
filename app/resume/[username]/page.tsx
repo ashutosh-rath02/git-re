@@ -2,30 +2,17 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
-import styled from "styled-components";
-
-const PageLayout = styled.div`
-  display: flex;
-  width: 100%;
-`;
-
-const Sidebar = styled.div`
-  width: 250px;
-  border-right: 1px solid #ddd;
-`;
-
-const Content = styled.div`
-  flex-grow: 1;
-  padding: 20px;
-`;
+import { fetchPopularRepos } from "../resumeUtils";
+import { ChevronRightIcon } from "@radix-ui/react-icons";
+import { Input } from "@/components/ui/input";
 
 interface GitHubProfile {
-  name?: string;
-  bio?: string;
-  blog?: string;
-  login?: string;
-  avatar_url?: string;
-  repos_url?: string;
+  name: string;
+  bio: string;
+  blog: string;
+  login: string;
+  avatar_url: string;
+  repos_url: string;
 }
 
 interface GitHubRepo {
@@ -44,6 +31,18 @@ const Resume = () => {
   const [showBio, setShowBio] = useState(true);
   const [showBlog, setShowBlog] = useState(true);
   const [showRepos, setShowRepos] = useState(true);
+  const [showRepoOptions, setShowRepoOptions] = useState(false);
+  const [repoCount, setRepoCount] = useState(5);
+  const [showRepoInput, setShowRepoInput] = useState(false);
+
+  const toggleRepoOptions = () => {
+    if (!showRepoOptions) {
+      setShowRepoInput(false);
+      setTimeout(() => setShowRepoInput(true), 10);
+      setShowRepoInput(false);
+    }
+    setShowRepoOptions(!showRepoOptions);
+  };
 
   useEffect(() => {
     const fetchProfileAndRepos = async () => {
@@ -54,8 +53,7 @@ const Resume = () => {
         const profileData = await profileRes.json();
         setProfile(profileData);
 
-        const reposRes = await fetch(profileData.repos_url);
-        const reposData = await reposRes.json();
+        const reposData = await fetchPopularRepos(username);
         setRepos(reposData);
       } catch (error) {
         console.error("Error fetching GitHub data:", error);
@@ -71,43 +69,80 @@ const Resume = () => {
     return <div>Loading...</div>;
   }
 
+  const handleRepoCountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(e.target.value, 10);
+    if (!isNaN(value)) {
+      setRepoCount(value);
+    }
+  };
+
   return (
     <div className="flex w-full">
-      <div className="w-64 border-r border-gray-300 p-4">
-        <p className="mb-4">Customize Display:</p>
-        <div className="flex flex-col">
-          <label>
+      <div className="w-64 border-r border-gray-300 p-4 space-y-4">
+        <p className="text-lg font-semibold">Customize Display:</p>
+        <div className="flex flex-col space-y-2">
+          {/* Checkboxes for Name, Bio, Blog */}
+          <label className="flex items-center space-x-2">
             <input
               type="checkbox"
               checked={showName}
               onChange={() => setShowName(!showName)}
             />
-            Show Name
+            <span>Show Name</span>
           </label>
-          <label>
+          <label className="flex items-center space-x-2">
             <input
               type="checkbox"
               checked={showBio}
               onChange={() => setShowBio(!showBio)}
             />
-            Show Bio
+            <span>Show Bio</span>
           </label>
-          <label>
+          <label className="flex items-center space-x-2">
             <input
               type="checkbox"
               checked={showBlog}
               onChange={() => setShowBlog(!showBlog)}
             />
-            Show Blog
+            <span>Show Blog</span>
           </label>
-          <label>
+
+          {/* Repositories with Dropdown */}
+          <div className="flex items-center space-x-2">
             <input
               type="checkbox"
               checked={showRepos}
               onChange={() => setShowRepos(!showRepos)}
             />
-            Show Repositories
-          </label>
+            <span className="" onClick={toggleRepoOptions}>
+              Show Repositories
+            </span>
+            <ChevronRightIcon
+              style={{
+                cursor: "pointer",
+                transform: showRepoOptions ? "rotate(90deg)" : "none",
+                transition: "transform 0.2s ease-in-out",
+              }}
+              height={18}
+              width={18}
+              onClick={toggleRepoOptions}
+            />
+          </div>
+          {showRepoOptions && (
+            <div
+              className="pl-6"
+              style={{
+                opacity: showRepoInput ? 1 : 0,
+                transition: "opacity 0.2s ease-in-out 0.2s",
+              }}
+            >
+              <Input
+                value={repoCount}
+                onChange={handleRepoCountChange}
+                className="border border-gray-400 rounded p-1 w-24"
+              />
+            </div>
+          )}
         </div>
       </div>
       <div className="flex-grow p-4">
@@ -123,7 +158,7 @@ const Resume = () => {
               />
               {showName && (
                 <h1 className="text-3xl font-bold text-center">
-                  {profile.name || profile.login}
+                  {profile.name ? profile.name : profile && profile.login}
                 </h1>
               )}
               {showBio && <p className="text-center">{profile.bio}</p>}
@@ -138,12 +173,11 @@ const Resume = () => {
                 </a>
               )}
             </div>
-
             {showRepos && (
               <>
                 <h2 className="text-2xl mt-5 mb-2 text-center">Repositories</h2>
                 <ul className="list-disc pl-5">
-                  {repos.map((repo) => (
+                  {repos.slice(0, repoCount).map((repo) => (
                     <li key={repo.id} className="mt-2">
                       <a
                         href={repo.html_url}
