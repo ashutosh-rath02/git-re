@@ -5,6 +5,7 @@ const nextConfig = {
       "localhost",
       "res.cloudinary.com",
       "avatars.githubusercontent.com",
+      "github-readme-stats.vercel.app",
     ],
   },
 };

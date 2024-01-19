@@ -2,9 +2,11 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
-import { fetchPopularRepos } from "../resumeUtils";
 import { ChevronRightIcon } from "@radix-ui/react-icons";
 import { Input } from "@/components/ui/input";
+import LanguageChart from "@/components/LanguageChart";
+import OtherBox from "@/components/Box2";
+import { fetchPopularRepos, fetchLanguageData } from "@/app/resume/resumeUtils";
 
 interface GitHubProfile {
   name: string;
@@ -27,6 +29,7 @@ const Resume = () => {
   const { username } = useParams<{ username: string }>();
   const [profile, setProfile] = useState<GitHubProfile | null>(null);
   const [repos, setRepos] = useState<GitHubRepo[]>([]);
+  const [languageData, setLanguageData] = useState({});
   const [showName, setShowName] = useState(true);
   const [showBio, setShowBio] = useState(true);
   const [showBlog, setShowBlog] = useState(true);
@@ -35,29 +38,18 @@ const Resume = () => {
   const [repoCount, setRepoCount] = useState(5);
   const [showRepoInput, setShowRepoInput] = useState(false);
 
-  const toggleRepoOptions = () => {
-    if (!showRepoOptions) {
-      setShowRepoInput(false);
-      setTimeout(() => setShowRepoInput(true), 10);
-      setShowRepoInput(false);
-    }
-    setShowRepoOptions(!showRepoOptions);
-  };
-
   useEffect(() => {
     const fetchProfileAndRepos = async () => {
-      try {
-        const profileRes = await fetch(
-          `https://api.github.com/users/${username}`
-        );
-        const profileData = await profileRes.json();
-        setProfile(profileData);
+      const profileData = await fetch(
+        `https://api.github.com/users/${username}`
+      ).then((res) => res.json());
+      setProfile(profileData);
 
-        const reposData = await fetchPopularRepos(username);
-        setRepos(reposData);
-      } catch (error) {
-        console.error("Error fetching GitHub data:", error);
-      }
+      const reposData = await fetchPopularRepos(username);
+      setRepos(reposData);
+
+      const languages = await fetchLanguageData(username);
+      setLanguageData(languages);
     };
 
     if (username) {
@@ -65,23 +57,28 @@ const Resume = () => {
     }
   }, [username]);
 
+  const handleRepoCountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setRepoCount(Number(e.target.value));
+  };
+
+  const toggleRepoOptions = () => {
+    setShowRepoOptions(!showRepoOptions);
+    if (!showRepoOptions) {
+      setTimeout(() => setShowRepoInput(true), 200);
+    } else {
+      setShowRepoInput(false);
+    }
+  };
+
   if (!profile) {
     return <div>Loading...</div>;
   }
-
-  const handleRepoCountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(e.target.value, 10);
-    if (!isNaN(value)) {
-      setRepoCount(value);
-    }
-  };
 
   return (
     <div className="flex w-full">
       <div className="w-64 border-r border-gray-300 p-4 space-y-4">
         <p className="text-lg font-semibold">Customize Display:</p>
         <div className="flex flex-col space-y-2">
-          {/* Checkboxes for Name, Bio, Blog */}
           <label className="flex items-center space-x-2">
             <input
               type="checkbox"
@@ -106,15 +103,13 @@ const Resume = () => {
             />
             <span>Show Blog</span>
           </label>
-
-          {/* Repositories with Dropdown */}
           <div className="flex items-center space-x-2">
             <input
               type="checkbox"
               checked={showRepos}
               onChange={() => setShowRepos(!showRepos)}
             />
-            <span className="" onClick={toggleRepoOptions}>
+            <span className="cursor-pointer" onClick={toggleRepoOptions}>
               Show Repositories
             </span>
             <ChevronRightIcon
@@ -130,14 +125,13 @@ const Resume = () => {
           </div>
           {showRepoOptions && (
             <div
-              className="pl-6"
               style={{
                 opacity: showRepoInput ? 1 : 0,
                 transition: "opacity 0.2s ease-in-out 0.2s",
               }}
             >
               <Input
-                value={repoCount}
+                value={repoCount.toString()}
                 onChange={handleRepoCountChange}
                 className="border border-gray-400 rounded p-1 w-24"
               />
@@ -158,7 +152,7 @@ const Resume = () => {
               />
               {showName && (
                 <h1 className="text-3xl font-bold text-center">
-                  {profile.name ? profile.name : profile && profile.login}
+                  {profile.name || profile.login}
                 </h1>
               )}
               {showBio && <p className="text-center">{profile.bio}</p>}
@@ -194,6 +188,10 @@ const Resume = () => {
                 </ul>
               </>
             )}
+            <div className="flex justify-around mt-6">
+              <LanguageChart languageData={languageData} />
+              <OtherBox />
+            </div>
           </div>
         </div>
       </div>
