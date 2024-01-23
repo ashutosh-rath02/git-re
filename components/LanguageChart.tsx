@@ -18,7 +18,6 @@ const LanguageChart = ({ languageData }: { languageData: any }) => {
           "#4BC0C0",
           "#9966FF",
           "#C9CBCF",
-          // Add more colors as needed
         ],
         hoverBackgroundColor: [
           "#FF6384",
@@ -27,7 +26,6 @@ const LanguageChart = ({ languageData }: { languageData: any }) => {
           "#4BC0C0",
           "#9966FF",
           "#C9CBCF",
-          // Add more hover colors as needed
         ],
       },
     ],
