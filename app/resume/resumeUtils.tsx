@@ -33,7 +33,10 @@ export const fetchLanguageData = async (username: string) => {
         }
       }
 
-      return languageData;
+      return Object.entries(languageData)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 5)
+        .reduce((obj, [key, value]) => ({ ...obj, [key]: value }), {});
     }
   }
 

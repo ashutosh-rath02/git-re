@@ -188,9 +188,16 @@ const Resume = () => {
                 </ul>
               </>
             )}
-            <div className="flex justify-around mt-6">
-              <LanguageChart languageData={languageData} />
-              <OtherBox />
+            <div className="flex w-full mt-6 gap-2">
+              <div className="flex-1 w-1/2">
+                <LanguageChart
+                  languageData={languageData}
+                  username={username}
+                />
+              </div>
+              <div className="flex-1">
+                <OtherBox />
+              </div>
             </div>
           </div>
         </div>
