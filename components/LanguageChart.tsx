@@ -77,9 +77,14 @@ const LanguageChart = ({
   };
 
   return (
-    <div className="box border p-4 rounded-lg shadow-md flex flex-col items-center justify-center">
+    <div
+      className="box border p-4 rounded-lg shadow-md flex flex-col items-center justify-center"
+      style={{ height: "400px" }}
+    >
       <h2 className="text-lg font-bold mb-4">Top 5 Languages</h2>
-      <Doughnut data={chartData} options={options} />
+      <div style={{ width: "300px", height: "300px" }}>
+        <Doughnut data={chartData} options={options} />
+      </div>
     </div>
   );
 };
