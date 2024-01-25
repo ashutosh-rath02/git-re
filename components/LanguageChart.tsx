@@ -5,10 +5,10 @@ import {
   Tooltip,
   Legend,
   ChartEvent,
-  TooltipItem,
+  ScriptableContext,
 } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
-import ChartDataLabels from "chartjs-plugin-datalabels";
+import ChartDataLabels, { Context } from "chartjs-plugin-datalabels";
 
 ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
 
@@ -53,15 +53,15 @@ const LanguageChart = ({
   const options = {
     plugins: {
       datalabels: {
-        color: "#fff",
-        anchor: "end" as const,
-        align: "start" as const,
+        color: "#fff" as any,
+        anchor: "end" as any,
+        align: "start" as any,
         offset: 30,
         font: {
-          weight: "semi-bold",
+          weight: "bold" as any,
         },
-        formatter: (_: any, context: TooltipItem<"doughnut">) => {
-          return labels[context.dataIndex];
+        formatter: (_: any, context: Context) => {
+          return context.chart.data.labels![context.dataIndex] as string;
         },
       },
       legend: {
