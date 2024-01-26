@@ -142,22 +142,6 @@ const Sidebar: React.FC<SidebarProps> = ({
           />
           <span>Show Other Info</span>
         </label>
-        <label className="flex items-center space-x-2">
-          <span>Start Year:</span>
-          <input
-            type="number"
-            value={startYear}
-            onChange={(e) => handleStartYearChange(e.target.value)}
-          />
-        </label>
-        <label className="flex items-center space-x-2">
-          <span>End Year:</span>
-          <input
-            type="number"
-            value={endYear}
-            onChange={(e) => handleEndYearChange(e.target.value)}
-          />
-        </label>
       </div>
     </div>
   );
