@@ -9,7 +9,8 @@ import {
   fetchPopularRepos,
   fetchLanguageData,
   fetchUserStats,
-} from "@/app/resume/resumeUtils";
+} from "@/utils/resumeUtils";
+import LanguageBarChart from "@/components/LanguageChart";
 
 interface GitHubProfile {
   name: string;
@@ -27,6 +28,13 @@ interface GitHubRepo {
   description: string;
   html_url: string;
   language: string;
+}
+
+interface Language {
+  name: string;
+  popularity: number;
+  url: string;
+  percent: number;
 }
 
 const Resume = () => {
@@ -146,10 +154,7 @@ const Resume = () => {
             <div className="flex w-full mt-6 gap-2">
               {showLanguageChart && (
                 <div className="flex-1 w-1/2">
-                  <LanguageChart
-                    languageData={languageData}
-                    username={username}
-                  />
+                  <LanguageBarChart languages={languageData as Language[]} />
                 </div>
               )}
               {showOtherBox && (

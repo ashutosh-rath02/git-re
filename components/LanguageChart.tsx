@@ -1,92 +1,46 @@
 import React from "react";
-import {
-  Chart as ChartJS,
-  ArcElement,
-  Tooltip,
-  Legend,
-  ChartEvent,
-  ScriptableContext,
-} from "chart.js";
-import { Doughnut } from "react-chartjs-2";
-import ChartDataLabels, { Context } from "chartjs-plugin-datalabels";
+import { Language } from "../types";
 
-ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
+interface LanguageBarChartProps {
+  languages: Language[] | undefined;
+}
 
-const LanguageChart = ({
-  languageData,
-  username,
-}: {
-  languageData: Record<string, number>;
-  username: string;
-}) => {
-  const sortedLanguages = Object.entries(languageData)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 5);
-
-  const labels = sortedLanguages.map((lang) => lang[0]);
-  const data = sortedLanguages.map((lang) => lang[1]);
-
-  const chartData = {
-    labels: labels,
-    datasets: [
-      {
-        label: "Programming Languages",
-        data: data,
-        backgroundColor: [
-          "#FF6384",
-          "#36A2EB",
-          "#FFCE56",
-          "#4BC0C0",
-          "#9966FF",
-        ],
-        hoverBackgroundColor: [
-          "#FF6384",
-          "#36A2EB",
-          "#FFCE56",
-          "#4BC0C0",
-          "#9966FF",
-        ],
-      },
-    ],
-  };
-
-  const options = {
-    plugins: {
-      datalabels: {
-        color: "#fff" as any,
-        anchor: "end" as any,
-        align: "start" as any,
-        offset: 30,
-        font: {
-          weight: "bold" as any,
-        },
-        formatter: (_: any, context: Context) => {
-          return context.chart.data.labels![context.dataIndex] as string;
-        },
-      },
-      legend: {
-        display: false,
-      },
-    },
-    onClick: (event: ChartEvent, elements: Array<{ index: number }>) => {
-      if (elements.length === 0) return;
-      const index = elements[0].index;
-      const language = labels[index];
-      window.location.href = `https://github.com/${username}?tab=repositories&language=${language}`;
-    },
-  };
+const LanguageBarChart: React.FC<LanguageBarChartProps> = ({ languages }) => {
+  const hasLanguages = Array.isArray(languages) && languages.length > 0;
 
   return (
-    <div
-      className="box border p-4 rounded-lg shadow-md flex flex-col items-center justify-center"
-      style={{ height: "400px" }}
-    >
-      <h2 className="text-lg font-bold mb-4">Top 5 Languages</h2>
-      <div style={{ width: "300px", height: "300px" }}>
-        <Doughnut data={chartData} options={options} />
+    <div className="box border p-4 rounded-lg shadow-md bg-dark-500 text-white">
+      <h2 className="text-lg font-bold mb-2">Most Used Languages</h2>
+      <div className="space-y-2">
+        {hasLanguages ? (
+          languages.map((language) => (
+            <div key={language.name} className="flex items-center space-x-2">
+              <a
+                href={language.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full flex items-center justify-between"
+                style={{ textDecoration: "none" }}
+              >
+                <span className="flex-1 truncate">{language.name}</span>
+                <div className="bg-gray-700 flex-1 rounded h-4 overflow-hidden">
+                  <div
+                    className="bg-gradient-to-r from-blue-400 to-blue-600 h-full"
+                    style={{ width: `${language.percent}%` }}
+                  ></div>
+                </div>
+                <span className="w-20 text-right">
+                  {language.percent.toFixed(2)}%
+                </span>
+              </a>
+            </div>
+          ))
+        ) : (
+          <p>No language data available.</p>
+        )}
       </div>
     </div>
   );
 };
 
-export default LanguageChart;
+export default LanguageBarChart;

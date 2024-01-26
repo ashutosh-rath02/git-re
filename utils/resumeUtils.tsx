@@ -1,5 +1,68 @@
 // ResumeUtils.tsx
 import axios from "axios";
+const configData = {
+  maxItems: 5,
+  maxLanguages: 5,
+};
+
+interface Repo {
+  name: string;
+  id: number;
+  date: string;
+  language?: string;
+  description?: string;
+  homepage?: string;
+  username: string;
+  watchers: number;
+  forks: number;
+  watchersLabel: string;
+  forksLabel: string;
+}
+interface Language {
+  name: string;
+  popularity: number;
+  percent: number;
+  url: string;
+}
+
+const sortByPopularity = (a: Language, b: Language) => {
+  return b.popularity - a.popularity;
+};
+
+const sortLanguages = (
+  languages: { [key: string]: number },
+  limit: number,
+  username: string
+): Language[] => {
+  let languageTotal = 0;
+  let sortedLanguages: Language[] = [];
+
+  for (const lang in languages) {
+    if (languages.hasOwnProperty(lang)) {
+      languageTotal += languages[lang];
+      sortedLanguages.push({
+        name: lang,
+        popularity: languages[lang],
+        percent: 0, // Temporary zero, will be calculated later
+        url: `https://github.com/search?q=user%3A${username}&l=${encodeURIComponent(
+          lang
+        )}`,
+      });
+    }
+  }
+
+  sortedLanguages.sort(sortByPopularity);
+  if (limit > 0) {
+    sortedLanguages = sortedLanguages.slice(0, limit);
+  }
+
+  // Calculate percentages
+  for (const language of sortedLanguages) {
+    language.percent = (language.popularity / languageTotal) * 100;
+  }
+
+  return sortedLanguages;
+};
 
 export const fetchPopularRepos = async (username: string) => {
   const response = await fetch(
@@ -16,28 +79,29 @@ export const fetchPopularRepos = async (username: string) => {
   return popularRepos.slice(0, 10);
 };
 
-export const fetchLanguageData = async (username: string) => {
-  const repoResponse = await fetch(
+export const fetchLanguageData = async (
+  username: string
+): Promise<Language[]> => {
+  const response = await axios.get(
     `https://api.github.com/users/${username}/repos`
   );
-  const repos = await repoResponse.json();
+  const repos = response.data;
 
   let languageData: { [key: string]: number } = {};
 
-  for (let repo of repos) {
-    const langResponse = await fetch(repo.languages_url);
-    const langData = await langResponse.json();
+  for (const repo of repos) {
+    const langResponse = await axios.get(repo.languages_url);
+    const langData = langResponse.data;
 
-    for (let [language, value] of Object.entries(langData)) {
-      languageData[language] = (languageData[language] || 0) + Number(value);
+    for (const [language, value] of Object.entries(langData)) {
+      languageData[language] =
+        (languageData[language] || 0) + (value as number);
     }
   }
 
-  return Object.entries(languageData)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 5)
-    .reduce((obj, [key, value]) => ({ ...obj, [key]: value }), {});
+  return sortLanguages(languageData, configData.maxLanguages, username);
 };
+
 export const fetchUserStats = async (username: string) => {
   try {
     const userRes = await axios.get(`https://api.github.com/users/${username}`);
