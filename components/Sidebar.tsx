@@ -1,7 +1,8 @@
 // Sidebar.tsx
-import React from "react";
+import React, { useState } from "react";
 import { ChevronRightIcon } from "@radix-ui/react-icons";
 import { Input } from "@/components/ui/input";
+import { Select } from "./ui/select";
 
 interface SidebarProps {
   showName: boolean;
@@ -20,6 +21,8 @@ interface SidebarProps {
   setShowLanguageChart: (value: boolean) => void;
   showOtherBox: boolean;
   setShowOtherBox: (value: boolean) => void;
+  setStartYear: (value: number) => void;
+  setEndYear: (value: number) => void;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({
@@ -39,10 +42,33 @@ const Sidebar: React.FC<SidebarProps> = ({
   setShowLanguageChart,
   showOtherBox,
   setShowOtherBox,
+  setStartYear,
+  setEndYear,
 }) => {
+  const [startYear, setStartYearLocal] = useState<number>(
+    new Date().getFullYear()
+  );
+  const [endYear, setEndYearLocal] = useState<number>(new Date().getFullYear());
   const toggleRepoOptions = () => {
     setShowRepoOptions(!showRepoOptions);
   };
+  const handleStartYearChange = (value: string) => {
+    const year = Number(value);
+    setStartYearLocal(year);
+    setStartYear(year);
+  };
+
+  const handleEndYearChange = (value: string) => {
+    const year = Number(value);
+    setEndYearLocal(year);
+    setEndYear(year);
+  };
+
+  const currentYear = new Date().getFullYear();
+  const yearOptions = Array.from({ length: currentYear - 1990 + 1 }, (_, i) => {
+    const year = currentYear - i;
+    return { value: year.toString(), label: year.toString() };
+  });
 
   return (
     <div className="w-64 border-r border-gray-300 p-4 space-y-4">
@@ -115,6 +141,22 @@ const Sidebar: React.FC<SidebarProps> = ({
             onChange={() => setShowOtherBox(!showOtherBox)}
           />
           <span>Show Other Info</span>
+        </label>
+        <label className="flex items-center space-x-2">
+          <span>Start Year:</span>
+          <input
+            type="number"
+            value={startYear}
+            onChange={(e) => handleStartYearChange(e.target.value)}
+          />
+        </label>
+        <label className="flex items-center space-x-2">
+          <span>End Year:</span>
+          <input
+            type="number"
+            value={endYear}
+            onChange={(e) => handleEndYearChange(e.target.value)}
+          />
         </label>
       </div>
     </div>

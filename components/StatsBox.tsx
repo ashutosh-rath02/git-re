@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { differenceInCalendarDays } from "date-fns";
 
 interface GitHubData {
   followers: number;
   publicRepos: number;
   starsReceived: number;
   forks: number;
-  contributionStreak: number;
+  totalCommits: number;
   organizations: number;
   totalIssues: number;
   totalPRsMerged: number;
+  // yearsOnGitHub: number;
+  userJoinedDate: Date;
 }
 
 const StatsBox = ({ username }: { username: string }) => {
@@ -19,26 +20,51 @@ const StatsBox = ({ username }: { username: string }) => {
     publicRepos: 0,
     starsReceived: 0,
     forks: 0,
-    contributionStreak: 0,
+    totalCommits: 0,
     organizations: 0,
     totalIssues: 0,
     totalPRsMerged: 0,
+    // yearsOnGitHub: 0,
+    userJoinedDate: new Date(),
   });
 
   useEffect(() => {
     const fetchUserData = async () => {
+      // Fetching basic user data
       const userRes = await axios.get(
         `https://api.github.com/users/${username}`
-      );
-      const reposRes = await axios.get(
-        `https://api.github.com/users/${username}/repos?per_page=100`
       );
       const orgsRes = await axios.get(
         `https://api.github.com/users/${username}/orgs`
       );
+
+      // Fetching stars and forks
+      const reposRes = await axios.get(
+        `https://api.github.com/users/${username}/repos?per_page=100`
+      );
+      const starsReceived = reposRes.data.reduce(
+        (acc: any, repo: { stargazers_count: any }) =>
+          acc + repo.stargazers_count,
+        0
+      );
+      const forks = reposRes.data.reduce(
+        (acc: any, repo: { forks_count: any }) => acc + repo.forks_count,
+        0
+      );
+
+      // Fetching total commits (approximation using PushEvents)
       const eventsRes = await axios.get(
         `https://api.github.com/users/${username}/events/public`
       );
+      const totalCommits = eventsRes.data
+        .filter((event: { type: string }) => event.type === "PushEvent")
+        .reduce(
+          (acc: any, event: { payload: { commits: string | any[] } }) =>
+            acc + event.payload.commits.length,
+          0
+        );
+
+      // Fetching total issues created and PRs merged
       const issuesRes = await axios.get(
         `https://api.github.com/search/issues?q=author:${username}+type:issue`
       );
@@ -46,54 +72,18 @@ const StatsBox = ({ username }: { username: string }) => {
         `https://api.github.com/search/issues?q=author:${username}+type:pr+is:merged`
       );
 
-      const starsReceived = reposRes.data.reduce(
-        (acc: number, repo: { stargazers_count: number }) =>
-          acc + repo.stargazers_count,
-        0
-      );
-      const forks = reposRes.data.reduce(
-        (acc: number, repo: { forks_count: number }) => acc + repo.forks_count,
-        0
-      );
-
-      // Calculate contribution streak - this is a simple example and may not be fully accurate
-      const today = new Date();
-      const contributions = eventsRes.data.filter(
-        (event: { type: string }) => event.type === "PushEvent"
-      );
-      let streak = contributions.reduce(
-        (
-          acc: number,
-          contribution: { created_at: string },
-          index: number,
-          array: { created_at: string }[]
-        ) => {
-          const currentStreak = differenceInCalendarDays(
-            today,
-            new Date(contribution.created_at)
-          );
-          if (index === 0) return currentStreak;
-
-          const previousStreak = differenceInCalendarDays(
-            today,
-            new Date(array[index - 1].created_at)
-          );
-          return currentStreak === 1 && previousStreak === currentStreak + 1
-            ? acc + 1
-            : acc;
-        },
-        0
-      );
-
+      // Setting the data
       setUserData({
         followers: userRes.data.followers,
         publicRepos: userRes.data.public_repos,
         starsReceived,
         forks,
-        contributionStreak: streak,
+        totalCommits,
         organizations: orgsRes.data.length,
         totalIssues: issuesRes.data.total_count,
         totalPRsMerged: prsRes.data.total_count,
+        // yearsOnGitHub: userData.yearsOnGitHub,
+        userJoinedDate: new Date(userRes.data.created_at),
       });
     };
 
@@ -104,43 +94,33 @@ const StatsBox = ({ username }: { username: string }) => {
     <div className="box border p-4 rounded-lg shadow-md">
       <h3 className="text-lg font-semibold mb-4 text-center">GitHub Stats</h3>
       <p>
-        <span className="text-blue-600">
-          <strong>Stars Received:</strong>
-        </span>{" "}
-        <span className="text-white">{userData.starsReceived}</span>
+        <strong>Years on GitHub:</strong>{" "}
+        {new Date().getFullYear() - userData.userJoinedDate.getFullYear()}
       </p>
       <p>
-        <span className="text-blue-600">
-          <strong>Forks:</strong>
-        </span>{" "}
-        <span className="text-white">{userData.forks}</span>
+        <strong>Followers:</strong> {userData.followers}
       </p>
       <p>
-        <span className="text-blue-600">
-          <strong>Contribution Streak (days):</strong>
-        </span>{" "}
-        <span className="text-white">{userData.contributionStreak}</span>
+        <strong>Public Repositories:</strong> {userData.publicRepos}
       </p>
       <p>
-        <span className="text-blue-600">
-          <strong>Organizations:</strong>
-        </span>{" "}
-        <span className="text-white">{userData.organizations}</span>
+        <strong>Stars Received:</strong> {userData.starsReceived}
       </p>
       <p>
-        <span className="text-blue-600">
-          <strong>Total Issues Created:</strong>
-        </span>{" "}
-        <span className="text-white">{userData.totalIssues}</span>
+        <strong>Forks:</strong> {userData.forks}
+      </p>
+      {/* <p>
+        <strong>Total Commits:</strong> {userData.totalCommits}
+      </p> */}
+      <p>
+        <strong>Organizations:</strong> {userData.organizations}
+      </p>
+      {/* <p>
+        <strong>Total Issues Created:</strong> {userData.totalIssues}
       </p>
       <p>
-        <span className="text-blue-600">
-          <strong>Total PRs Merged:</strong>
-        </span>{" "}
-        <span className="text-white">{userData.totalPRsMerged}</span>
-      </p>
-      {/* Other stats would be displayed here once their respective data is fetched */}
-      {/* Other stats would be displayed here once their respective data is fetched */}
+        <strong>Total PRs Merged:</strong> {userData.totalPRsMerged}
+      </p> */}
     </div>
   );
 };

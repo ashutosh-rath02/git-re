@@ -2,9 +2,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
-import LanguageChart from "@/components/LanguageChart";
 import StatsBox from "@/components/StatsBox";
-import Sidebar from "@/components/Sidebar"; // Ensure the path is correct
+import Sidebar from "@/components/Sidebar";
 import {
   fetchPopularRepos,
   fetchLanguageData,
@@ -51,6 +50,8 @@ const Resume = () => {
   const [repoCount, setRepoCount] = useState(5);
   const [showLanguageChart, setShowLanguageChart] = useState(true);
   const [showOtherBox, setShowOtherBox] = useState(true);
+  const [startYear, setStartYear] = useState<number>(new Date().getFullYear());
+  const [endYear, setEndYear] = useState<number>(new Date().getFullYear());
 
   useEffect(() => {
     const fetchData = async () => {
@@ -60,7 +61,7 @@ const Resume = () => {
       setProfile(profileData);
 
       const reposData = await fetchPopularRepos(username);
-      setRepos(reposData);
+      setRepos(reposData as unknown as GitHubRepo[]);
 
       const languages = await fetchLanguageData(username);
       setLanguageData(languages);
@@ -72,7 +73,7 @@ const Resume = () => {
     if (username) {
       fetchData();
     }
-  }, [username]);
+  }, [username, startYear, endYear]);
 
   const handleRepoCountChange = (value: number) => {
     setRepoCount(value);
@@ -101,6 +102,8 @@ const Resume = () => {
         setShowLanguageChart={setShowLanguageChart}
         showOtherBox={showOtherBox}
         setShowOtherBox={setShowOtherBox}
+        setStartYear={setStartYear}
+        setEndYear={setEndYear}
       />
       <div className="flex-grow p-4">
         <div className="container mx-auto flex justify-center">
