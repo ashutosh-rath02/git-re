@@ -56,7 +56,7 @@ const sortLanguages = (
 export const fetchPopularRepos = async (username: string): Promise<Repo[]> => {
   try {
     const response = await axios.get(
-      `https://api.github.com/users/${username}/repos`
+      `https://api.github.com/users/${username}/repos?per_page=100`
     );
     const repos = response.data;
 
@@ -65,28 +65,29 @@ export const fetchPopularRepos = async (username: string): Promise<Repo[]> => {
       .map((repo: any) => ({
         name: repo.name,
         id: repo.id,
-        date: `${new Date(repo.created_at).getFullYear()} - ${new Date(
-          repo.pushed_at
-        ).getFullYear()}`,
+        date: `${new Date(repo.created_at).getFullYear()}`,
         html_url: repo.html_url,
         language: repo.language,
         description: repo.description,
         homepage: repo.homepage,
         username,
-        watchers: repo.watchers_count,
+        watchers: repo.stargazers_count,
         forks: repo.forks_count,
-        popularity: repo.watchers_count + repo.forks_count,
-        watchersLabel: repo.watchers_count === 1 ? "star" : "stars",
-        forksLabel: repo.forks_count === 1 ? "fork" : "forks",
+        popularity: repo.stargazers_count + repo.forks_count,
+        watchersLabel: repo.stargazers_count === 1 ? "star" : "stars ",
+        forksLabel: repo.forks_count === 1 ? "fork " : "forks ",
+        isOwner: repo.owner.login === username,
       }))
-      .sort(sortByPopularity)
+      .sort(
+        (a: { popularity: number }, b: { popularity: number }) =>
+          b.popularity - a.popularity
+      )
       .slice(0, configData.maxItems);
   } catch (error) {
     console.error("Error fetching popular repos:", error);
     return [];
   }
 };
-
 export const fetchLanguageData = async (
   username: string
 ): Promise<Language[]> => {
@@ -123,7 +124,6 @@ export const fetchUserStats = async (username: string) => {
     const currentYear = new Date().getFullYear();
     const yearsOnGitHub = currentYear - userJoinedDate.getFullYear();
 
-    // Total Commits (approximation using PushEvents)
     const pushEvents = eventsRes.data.filter(
       (event: { type: string }) => event.type === "PushEvent"
     );

@@ -28,6 +28,14 @@ interface GitHubRepo {
   description: string;
   html_url: string;
   language: string;
+  homepage?: string;
+  watchers: number;
+  forks: number;
+  popularity: number;
+  watchersLabel: string;
+  forksLabel: string;
+  isOwner: boolean;
+  date: number;
 }
 
 interface Language {
@@ -135,26 +143,82 @@ const Resume = () => {
               )}
             </div>
             {showRepos && (
-              <div>
-                <h2 className="text-2xl mt-5 mb-2 text-center">Repositories</h2>
+              <div className="mt-5">
                 <ul className="list-disc pl-5">
-                  {repos.slice(0, repoCount).map((repo) => (
-                    <li key={repo.id} className="mt-2">
-                      <a
-                        href={repo.html_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-500 hover:underline"
-                      >
-                        {repo.name}
-                      </a>
-                      <p>{repo.description}</p>
-                      <p className="text-sm">Language: {repo.language}</p>
-                    </li>
-                  ))}
+                  {showRepos && (
+                    <div className="mt-5">
+                      <h2 className="text-2xl mb-4 text-left text-white">
+                        Popular Repositories
+                      </h2>
+                      <ul className="list-none">
+                        {repos.slice(0, repoCount).map((repo) => (
+                          <li key={repo.id} className="mt-4">
+                            <div className="flex flex-col space-y-2">
+                              <div className="flex items-center justify-between">
+                                <a
+                                  href={repo.html_url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-lg font-semibold text-blue-500 hover:underline"
+                                >
+                                  {repo.name}
+                                </a>
+                                <span className="text-sm text-secondary">
+                                  ({repo.date})
+                                </span>
+                              </div>
+                              {repo.homepage && (
+                                <>
+                                  <a
+                                    href={repo.homepage}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-primary hover:underline"
+                                  >
+                                    {repo.homepage}
+                                  </a>
+                                </>
+                              )}
+                              <p className="text-white">
+                                <span className="font-semibold">
+                                  {repo.language}
+                                </span>
+                                -
+                                {repo.isOwner
+                                  ? "Creator & Owner"
+                                  : "Contributor"}
+                              </p>
+                              <p className="text-white">
+                                This repository has&nbsp;
+                                <span className="font-semibold">
+                                  {repo.watchers}
+                                </span>
+                                {repo.watchersLabel} and
+                                <span className="font-semibold">
+                                  {repo.forks}
+                                </span>
+                                {repo.forksLabel}. If you would like more
+                                information about this repository and my
+                                contributed code, please visit the
+                                <a
+                                  href={repo.html_url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-blue-500 hover:underline ml-1"
+                                >
+                                  repository on GitHub.
+                                </a>
+                              </p>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                 </ul>
               </div>
             )}
+
             <div className="flex w-full mt-6 gap-2">
               {showLanguageChart && (
                 <div className="flex-1 w-1/2">
