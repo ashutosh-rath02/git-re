@@ -6,6 +6,7 @@ const nextConfig = {
       "res.cloudinary.com",
       "avatars.githubusercontent.com",
       "github-readme-stats.vercel.app",
+      "ghchart.rshah.org",
     ],
   },
 };

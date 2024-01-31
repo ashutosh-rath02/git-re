@@ -10,6 +10,7 @@ import {
   fetchUserStats,
 } from "@/utils/resumeUtils";
 import LanguageBarChart from "@/components/LanguageChart";
+import ContributionGraph from "@/components/ContributionGraph";
 
 interface GitHubProfile {
   name: string;
@@ -105,7 +106,7 @@ const Resume = () => {
         setStartYear={setStartYear}
         setEndYear={setEndYear}
       />
-      <div className="flex-grow p-4">
+      <div className="flex-grow p-4 ">
         <div className="container mx-auto flex justify-center">
           <div className="h-full w-full bg-gray-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-10 border border-gray-100 shadow-md p-6 max-w-4xl">
             <div className="flex flex-col items-center">
@@ -166,6 +167,7 @@ const Resume = () => {
                 </div>
               )}
             </div>
+            <ContributionGraph username={username} />
           </div>
         </div>
       </div>

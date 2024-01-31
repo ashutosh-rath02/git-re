@@ -7,6 +7,10 @@ This project is a web application that generates a professional resume from a Gi
 - Fetches user data from GitHub's API
 - Generates a professional resume based on GitHub contributions and projects
 
+## Mentions
+
+The contribution graph in the user profile is generated using [ghchart](https://ghchart.rshah.org/) by [Rushi Shah](https://github.com/2016rshah). This service creates an image of a user's GitHub contribution graph which can be embedded in a webpage.
+
 ## Setup and Installation
 
 1. Clone the repository to your local machine.
@@ -33,3 +37,7 @@ Contributions are welcome! Please open an issue or submit a pull request if you 
 ## License
 
 This project is licensed under the Apache 2.0 License & all rights reserved to author [ashutosh-rath02](https://github.com/ashutosh-rath02)
+
+```
+
+```
