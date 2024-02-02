@@ -37,6 +37,7 @@ interface RepoContribution {
 }
 
 export interface Contribution {
+  repoUrl: any;
   repository: string;
   url: string;
   commitCount: number;
@@ -99,7 +100,10 @@ export const fetchContributions = async (
     const url = `https://api.github.com/search/issues?q=author:${username}+type:pr+is:merged&per_page=100`;
     const response = await axios.get(url);
 
-    const contributionMap = new Map<string, { url: string; count: number }>();
+    const contributionMap = new Map<
+      string,
+      { commitsUrl: string; repoUrl: string; count: number }
+    >();
     response.data.items.forEach((item: any) => {
       const repoName = item.repository_url.split("/").pop();
       const repoOwner =
@@ -107,19 +111,21 @@ export const fetchContributions = async (
           item.repository_url.split("/").length - 2
         ];
       const commitsUrl = `https://github.com/${repoOwner}/${repoName}/commits?author=${username}`;
+      const repoUrl = `https://github.com/${repoOwner}/${repoName}`;
 
       if (contributionMap.has(repoName)) {
         contributionMap.get(repoName)!.count++;
       } else {
-        contributionMap.set(repoName, { url: commitsUrl, count: 1 });
+        contributionMap.set(repoName, { commitsUrl, repoUrl, count: 1 });
       }
     });
 
     const contributions = Array.from(
       contributionMap,
-      ([repository, { url, count }]) => ({
+      ([repository, { commitsUrl, repoUrl, count }]) => ({
         repository,
-        url,
+        url: commitsUrl,
+        repoUrl,
         commitCount: count,
       })
     );

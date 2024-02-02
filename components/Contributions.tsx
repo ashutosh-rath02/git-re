@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { fetchContributions } from "@/utils/resumeUtils";
-
-interface Contribution {
-  repository: string;
-  url: string;
-  commitCount: number;
-}
+import { Contribution } from "@/utils/resumeUtils";
 
 interface ContributionsProps {
   username: string;
@@ -23,6 +18,7 @@ const Contributions: React.FC<ContributionsProps> = ({ username }) => {
           contributionsData.slice(0, count).map((contribution) => ({
             repository: contribution.repository,
             url: contribution.url,
+            repoUrl: contribution.repoUrl,
             commitCount: contribution.commitCount,
           }))
         );
@@ -41,19 +37,16 @@ const Contributions: React.FC<ContributionsProps> = ({ username }) => {
         {contributions.map((contribution, index) => (
           <li key={index} className="mt-4">
             <a
-              href={contribution.url}
+              href={contribution.repoUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-lg font-semibold text-blue-500 hover:underline"
+              className="text-lg font-semibold text-blue-500 hover:underline cursor-pointer underline"
             >
               {contribution.repository}
             </a>
-            <p className="text-white">
-              has contributed to{" "}
-              <span className="text-blue-500 hover:underline">
-                {contribution.repository}
-              </span>{" "}
-              with{" "}
+            <p className="text-gray-400">
+              has contributed to <strong>{contribution.repository}</strong>{" "}
+              with&nbsp;
               <a
                 href={contribution.url}
                 target="_blank"

@@ -36,10 +36,6 @@ const Organizations: React.FC<OrganizationsProps> = ({ username }) => {
               {org.name}
             </a>
             <p className="text-white">
-              {org.joinedYear}
-              <br />
-            </p>
-            <p className="text-white">
               If you would like more information about this organization, please
               visit the
               <a
