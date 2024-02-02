@@ -28,6 +28,20 @@ interface Language {
   url: string;
 }
 
+interface RepoContribution {
+  repository: any;
+  commitCount: any;
+  name: string;
+  contributions: number;
+  url: string;
+}
+
+export interface Contribution {
+  repository: string;
+  url: string;
+  commitCount: number;
+}
+
 const sortByPopularity = (a: Repo, b: Repo) => {
   return b.popularity - a.popularity;
 };
@@ -53,6 +67,41 @@ const sortLanguages = (
     .slice(0, configData.maxLanguages);
 };
 
+export const fetchContributions = async (
+  username: string
+): Promise<Contribution[]> => {
+  try {
+    const url = `https://api.github.com/search/issues?q=author:${username}+type:pr+is:merged&per_page=100`;
+    const response = await axios.get(url);
+
+    const contributionMap = new Map<string, { url: string; count: number }>();
+    response.data.items.forEach((item: any) => {
+      const repoName = item.repository_url.split("/").pop();
+      const repoUrl = item.html_url.split("/pull")[0];
+      if (contributionMap.has(repoName)) {
+        contributionMap.get(repoName)!.count++;
+      } else {
+        contributionMap.set(repoName, { url: repoUrl, count: 1 });
+      }
+    });
+
+    const contributions = Array.from(
+      contributionMap,
+      ([repository, { url, count }]) => ({
+        repository,
+        url,
+        commitCount: count,
+      })
+    );
+
+    contributions.sort((a, b) => b.commitCount - a.commitCount);
+    return contributions;
+  } catch (error) {
+    console.error("Error fetching contributions:", error);
+    return [];
+  }
+};
+
 export const fetchPopularRepos = async (username: string): Promise<Repo[]> => {
   try {
     const response = await axios.get(
@@ -74,8 +123,8 @@ export const fetchPopularRepos = async (username: string): Promise<Repo[]> => {
         watchers: repo.stargazers_count,
         forks: repo.forks_count,
         popularity: repo.stargazers_count + repo.forks_count,
-        watchersLabel: repo.stargazers_count === 1 ? "star" : "stars ",
-        forksLabel: repo.forks_count === 1 ? "fork " : "forks ",
+        watchersLabel: repo.stargazers_count === 1 ? " star " : " stars ",
+        forksLabel: repo.forks_count === 1 ? " fork " : " forks ",
         isOwner: repo.owner.login === username,
       }))
       .sort(

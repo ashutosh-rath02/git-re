@@ -23,6 +23,8 @@ interface SidebarProps {
   setShowOtherBox: (value: boolean) => void;
   setStartYear: (value: number) => void;
   setEndYear: (value: number) => void;
+  showContributions: boolean;
+  setShowContributions: (value: boolean) => void;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({
@@ -44,6 +46,8 @@ const Sidebar: React.FC<SidebarProps> = ({
   setShowOtherBox,
   setStartYear,
   setEndYear,
+  showContributions,
+  setShowContributions,
 }) => {
   const [startYear, setStartYearLocal] = useState<number>(
     new Date().getFullYear()
@@ -141,6 +145,14 @@ const Sidebar: React.FC<SidebarProps> = ({
             onChange={() => setShowOtherBox(!showOtherBox)}
           />
           <span>Show Other Info</span>
+        </label>
+        <label className="flex items-center space-x-2">
+          <input
+            type="checkbox"
+            checked={showContributions}
+            onChange={() => setShowContributions(!showContributions)}
+          />
+          <span>Show Contributions</span>
         </label>
       </div>
     </div>

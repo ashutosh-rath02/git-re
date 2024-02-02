@@ -11,6 +11,7 @@ import {
 } from "@/utils/resumeUtils";
 import LanguageBarChart from "@/components/LanguageChart";
 import ContributionGraph from "@/components/ContributionGraph";
+import Contributions from "@/components/Contributions";
 
 interface GitHubProfile {
   name: string;
@@ -56,11 +57,12 @@ const Resume = () => {
   const [showBlog, setShowBlog] = useState(true);
   const [showRepos, setShowRepos] = useState(true);
   const [showRepoOptions, setShowRepoOptions] = useState(false);
-  const [repoCount, setRepoCount] = useState(5);
+  const [repoCount, setRepoCount] = useState(4);
   const [showLanguageChart, setShowLanguageChart] = useState(true);
   const [showOtherBox, setShowOtherBox] = useState(true);
   const [startYear, setStartYear] = useState<number>(new Date().getFullYear());
   const [endYear, setEndYear] = useState<number>(new Date().getFullYear());
+  const [showContributions, setShowContributions] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -113,6 +115,8 @@ const Resume = () => {
         setShowOtherBox={setShowOtherBox}
         setStartYear={setStartYear}
         setEndYear={setEndYear}
+        showContributions={showContributions}
+        setShowContributions={setShowContributions}
       />
       <div className="flex-grow p-4 ">
         <div className="container mx-auto flex justify-center">
@@ -142,82 +146,6 @@ const Resume = () => {
                 </a>
               )}
             </div>
-            {showRepos && (
-              <div className="mt-5">
-                <ul className="list-disc pl-5">
-                  {showRepos && (
-                    <div className="mt-5">
-                      <h2 className="text-2xl mb-4 text-left text-white">
-                        Popular Repositories
-                      </h2>
-                      <ul className="list-none">
-                        {repos.slice(0, repoCount).map((repo) => (
-                          <li key={repo.id} className="mt-4">
-                            <div className="flex flex-col space-y-2">
-                              <div className="flex items-center justify-between">
-                                <a
-                                  href={repo.html_url}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="text-lg font-semibold text-blue-500 hover:underline"
-                                >
-                                  {repo.name}
-                                </a>
-                                <span className="text-sm text-secondary">
-                                  ({repo.date})
-                                </span>
-                              </div>
-                              {repo.homepage && (
-                                <>
-                                  <a
-                                    href={repo.homepage}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="text-primary hover:underline"
-                                  >
-                                    {repo.homepage}
-                                  </a>
-                                </>
-                              )}
-                              <p className="text-white">
-                                <span className="font-semibold">
-                                  {repo.language}
-                                </span>
-                                -
-                                {repo.isOwner
-                                  ? "Creator & Owner"
-                                  : "Contributor"}
-                              </p>
-                              <p className="text-white">
-                                This repository has&nbsp;
-                                <span className="font-semibold">
-                                  {repo.watchers}
-                                </span>
-                                {repo.watchersLabel} and
-                                <span className="font-semibold">
-                                  {repo.forks}
-                                </span>
-                                {repo.forksLabel}. If you would like more
-                                information about this repository and my
-                                contributed code, please visit the
-                                <a
-                                  href={repo.html_url}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="text-blue-500 hover:underline ml-1"
-                                >
-                                  repository on GitHub.
-                                </a>
-                              </p>
-                            </div>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                </ul>
-              </div>
-            )}
 
             <div className="flex w-full mt-6 gap-2">
               {showLanguageChart && (
@@ -231,7 +159,71 @@ const Resume = () => {
                 </div>
               )}
             </div>
+            {showRepos && (
+              <div className="mt-5 px-2">
+                <h2 className="text-2xl mb-4 text-left text-white">
+                  Popular Repositories
+                </h2>
+                <ul className="list-disc px-4">
+                  {repos.slice(0, repoCount).map((repo) => (
+                    <li key={repo.id} className="mt-4">
+                      <div className="flex flex-col space-y-2">
+                        <div className="flex items-center justify-between">
+                          <a
+                            href={repo.html_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-lg font-semibold text-blue-500 underline"
+                          >
+                            {repo.name}
+                          </a>
+                          <span className="text-sm text-white ">
+                            ({repo.date})
+                          </span>
+                        </div>
+                        {repo.homepage && (
+                          <>
+                            <a
+                              href={repo.homepage}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-primary hover:underline pb-1"
+                            >
+                              {repo.homepage}
+                            </a>
+                          </>
+                        )}
+                        <p className="text-gray-200">
+                          <span className="font-semibold">{repo.language}</span>
+                          &nbsp;-&nbsp;
+                          {repo.isOwner ? "Owner" : "Contributor"}
+                        </p>
+                        <p className="text-gray-400 text-sm">
+                          This repository has&nbsp;
+                          <span className="font-semibold">{repo.watchers}</span>
+                          {repo.watchersLabel} and&nbsp;
+                          <span className="font-semibold">{repo.forks}</span>
+                          {repo.forksLabel}. If you would like more information
+                          about this repository and my contributed code, please
+                          visit the
+                          <a
+                            href={repo.html_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-500 hover:underline ml-1"
+                          >
+                            repository&nbsp;
+                          </a>
+                          on GitHub.
+                        </p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
             <ContributionGraph username={username} />
+            <Contributions username={username} />
           </div>
         </div>
       </div>
