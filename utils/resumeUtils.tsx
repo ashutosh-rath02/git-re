@@ -42,6 +42,12 @@ export interface Contribution {
   commitCount: number;
 }
 
+export interface Organization {
+  name: string;
+  url: string;
+  joinedYear: number;
+}
+
 const sortByPopularity = (a: Repo, b: Repo) => {
   return b.popularity - a.popularity;
 };
@@ -67,6 +73,25 @@ const sortLanguages = (
     .slice(0, configData.maxLanguages);
 };
 
+export const fetchOrganizations = async (
+  username: string
+): Promise<Organization[]> => {
+  try {
+    const response = await axios.get(
+      `https://api.github.com/users/${username}/orgs`
+    );
+    const organizations = response.data.map((org: any) => ({
+      name: org.login,
+      url: org.html_url,
+      joinedYear: new Date(org.created_at).getFullYear(),
+    }));
+    return organizations;
+  } catch (error) {
+    console.error("Error fetching organizations:", error);
+    return [];
+  }
+};
+
 export const fetchContributions = async (
   username: string
 ): Promise<Contribution[]> => {
@@ -77,11 +102,16 @@ export const fetchContributions = async (
     const contributionMap = new Map<string, { url: string; count: number }>();
     response.data.items.forEach((item: any) => {
       const repoName = item.repository_url.split("/").pop();
-      const repoUrl = item.html_url.split("/pull")[0];
+      const repoOwner =
+        item.repository_url.split("/")[
+          item.repository_url.split("/").length - 2
+        ];
+      const commitsUrl = `https://github.com/${repoOwner}/${repoName}/commits?author=${username}`;
+
       if (contributionMap.has(repoName)) {
         contributionMap.get(repoName)!.count++;
       } else {
-        contributionMap.set(repoName, { url: repoUrl, count: 1 });
+        contributionMap.set(repoName, { url: commitsUrl, count: 1 });
       }
     });
 

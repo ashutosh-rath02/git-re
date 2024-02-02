@@ -1,4 +1,3 @@
-// Contributions.tsx
 import React, { useEffect, useState } from "react";
 import { fetchContributions } from "@/utils/resumeUtils";
 
@@ -38,7 +37,7 @@ const Contributions: React.FC<ContributionsProps> = ({ username }) => {
   return (
     <div className="mt-5">
       <h2 className="text-2xl mb-4 text-left text-white">Contributions</h2>
-      <ul className="list-none">
+      <ul className="list-disc px-4">
         {contributions.map((contribution, index) => (
           <li key={index} className="mt-4">
             <a
@@ -55,8 +54,14 @@ const Contributions: React.FC<ContributionsProps> = ({ username }) => {
                 {contribution.repository}
               </span>{" "}
               with{" "}
-              <span className="font-semibold">{contribution.commitCount}</span>{" "}
-              commit(s)
+              <a
+                href={contribution.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-semibold text-blue-500 hover:underline"
+              >
+                {contribution.commitCount} commit(s)
+              </a>
             </p>
           </li>
         ))}

@@ -12,6 +12,7 @@ import {
 import LanguageBarChart from "@/components/LanguageChart";
 import ContributionGraph from "@/components/ContributionGraph";
 import Contributions from "@/components/Contributions";
+import Organizations from "@/components/Organizations";
 
 interface GitHubProfile {
   name: string;
@@ -224,6 +225,7 @@ const Resume = () => {
             )}
             <ContributionGraph username={username} />
             <Contributions username={username} />
+            <Organizations username={username} />
           </div>
         </div>
       </div>
