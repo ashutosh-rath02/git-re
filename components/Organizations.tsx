@@ -23,7 +23,9 @@ const Organizations: React.FC<OrganizationsProps> = ({ username }) => {
 
   return (
     <div className="mt-5">
-      <h2 className="text-2xl mb-4 text-left text-white">Organizations</h2>
+      <h2 className="text-2xl font-bold underline mb-4 text-left text-white">
+        Organizations
+      </h2>
       <ul className="list-disc px-4">
         {organizations.map((org, index) => (
           <li key={index} className="mt-4">
@@ -35,7 +37,7 @@ const Organizations: React.FC<OrganizationsProps> = ({ username }) => {
             >
               {org.name}
             </a>
-            <p className="text-white">
+            <p className="text-gray-400 text-sm">
               If you would like more information about this organization, please
               visit the
               <a
@@ -44,8 +46,9 @@ const Organizations: React.FC<OrganizationsProps> = ({ username }) => {
                 rel="noopener noreferrer"
                 className="text-blue-500 hover:underline ml-1"
               >
-                organization page on GitHub.
+                organization page
               </a>
+              &nbsp;on GitHub.
             </p>
           </li>
         ))}

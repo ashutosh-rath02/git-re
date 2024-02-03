@@ -23,8 +23,14 @@ interface SidebarProps {
   setShowOtherBox: (value: boolean) => void;
   setStartYear: (value: number) => void;
   setEndYear: (value: number) => void;
+  showContributionGraph: boolean;
+  setShowContributionGraph: (value: boolean) => void;
   showContributions: boolean;
   setShowContributions: (value: boolean) => void;
+  showOrganizations: boolean;
+  setShowOrganizations: (value: boolean) => void;
+  contributionCount: number;
+  setContributionCount: (value: number) => void;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({
@@ -48,10 +54,17 @@ const Sidebar: React.FC<SidebarProps> = ({
   setEndYear,
   showContributions,
   setShowContributions,
+  showContributionGraph,
+  setShowContributionGraph,
+  showOrganizations,
+  setShowOrganizations,
+  contributionCount,
+  setContributionCount,
 }) => {
   const [startYear, setStartYearLocal] = useState<number>(
     new Date().getFullYear()
   );
+  const [showContributionOptions, setShowContributionOptions] = useState(false);
   const [endYear, setEndYearLocal] = useState<number>(new Date().getFullYear());
   const toggleRepoOptions = () => {
     setShowRepoOptions(!showRepoOptions);
@@ -73,7 +86,9 @@ const Sidebar: React.FC<SidebarProps> = ({
     const year = currentYear - i;
     return { value: year.toString(), label: year.toString() };
   });
-
+  const toggleContributionOptions = () => {
+    setShowContributionOptions(!showContributionOptions);
+  };
   return (
     <div className="w-64 border-r border-gray-300 p-4 space-y-4">
       <p className="text-lg font-semibold">Customize Display:</p>
@@ -149,10 +164,46 @@ const Sidebar: React.FC<SidebarProps> = ({
         <label className="flex items-center space-x-2">
           <input
             type="checkbox"
+            checked={showContributionGraph}
+            onChange={() => setShowContributionGraph(!showContributionGraph)}
+          />
+          <span>Show Contribution Graph</span>
+        </label>
+        <div className="flex items-center space-x-2">
+          <input
+            type="checkbox"
             checked={showContributions}
             onChange={() => setShowContributions(!showContributions)}
           />
-          <span>Show Contributions</span>
+          <span className="cursor-pointer" onClick={toggleContributionOptions}>
+            Show Contributions
+          </span>
+          <ChevronRightIcon
+            style={{
+              cursor: "pointer",
+              transform: showContributionOptions ? "rotate(90deg)" : "none",
+              transition: "transform 0.2s ease-in-out",
+            }}
+            height={18}
+            width={18}
+            onClick={toggleContributionOptions}
+          />
+        </div>
+        {showContributionOptions && (
+          <Input
+            type="number"
+            value={contributionCount.toString()}
+            onChange={(e) => setContributionCount(Number(e.target.value))}
+            className="border border-gray-400 rounded p-1 w-24"
+          />
+        )}
+        <label className="flex items-center space-x-2">
+          <input
+            type="checkbox"
+            checked={showOrganizations}
+            onChange={() => setShowOrganizations(!showOrganizations)}
+          />
+          <span>Show Organizations</span>
         </label>
       </div>
     </div>

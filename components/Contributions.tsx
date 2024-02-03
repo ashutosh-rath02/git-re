@@ -1,21 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { fetchContributions } from "@/utils/resumeUtils";
-import { Contribution } from "@/utils/resumeUtils";
+import { Contribution as ContributionType } from "@/utils/resumeUtils";
 
 interface ContributionsProps {
   username: string;
+  contributionCount: number;
 }
 
-const Contributions: React.FC<ContributionsProps> = ({ username }) => {
-  const [contributions, setContributions] = useState<Contribution[]>([]);
-  const count = 5;
+const Contributions: React.FC<ContributionsProps> = ({
+  username,
+  contributionCount,
+}) => {
+  const [contributions, setContributions] = useState<ContributionType[]>([]);
 
   useEffect(() => {
     const fetchAndSetContributions = async () => {
       try {
         const contributionsData = await fetchContributions(username);
         setContributions(
-          contributionsData.slice(0, count).map((contribution) => ({
+          contributionsData.slice(0, contributionCount).map((contribution) => ({
+            organizationName: contribution.organizationName,
             repository: contribution.repository,
             url: contribution.url,
             repoUrl: contribution.repoUrl,
@@ -28,11 +32,13 @@ const Contributions: React.FC<ContributionsProps> = ({ username }) => {
     };
 
     fetchAndSetContributions();
-  }, [username, count]);
+  }, [username, contributionCount]);
 
   return (
     <div className="mt-5">
-      <h2 className="text-2xl mb-4 text-left text-white">Contributions</h2>
+      <h2 className="text-2xl font-bold underline mb-4 text-left text-white">
+        Contributions
+      </h2>
       <ul className="list-disc px-4">
         {contributions.map((contribution, index) => (
           <li key={index} className="mt-4">
@@ -42,9 +48,9 @@ const Contributions: React.FC<ContributionsProps> = ({ username }) => {
               rel="noopener noreferrer"
               className="text-lg font-semibold text-blue-500 hover:underline cursor-pointer underline"
             >
-              {contribution.repository}
+              {contribution.organizationName}/{contribution.repository}{" "}
             </a>
-            <p className="text-gray-400">
+            <p className="text-gray-400 text-sm">
               has contributed to <strong>{contribution.repository}</strong>{" "}
               with&nbsp;
               <a

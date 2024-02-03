@@ -13,6 +13,7 @@ import LanguageBarChart from "@/components/LanguageChart";
 import ContributionGraph from "@/components/ContributionGraph";
 import Contributions from "@/components/Contributions";
 import Organizations from "@/components/Organizations";
+import { Separator } from "@/components/ui/separator";
 
 interface GitHubProfile {
   name: string;
@@ -58,12 +59,15 @@ const Resume = () => {
   const [showBlog, setShowBlog] = useState(true);
   const [showRepos, setShowRepos] = useState(true);
   const [showRepoOptions, setShowRepoOptions] = useState(false);
-  const [repoCount, setRepoCount] = useState(4);
+  const [repoCount, setRepoCount] = useState(3);
   const [showLanguageChart, setShowLanguageChart] = useState(true);
   const [showOtherBox, setShowOtherBox] = useState(true);
   const [startYear, setStartYear] = useState<number>(new Date().getFullYear());
   const [endYear, setEndYear] = useState<number>(new Date().getFullYear());
+  const [showContributionGraph, setShowContributionGraph] = useState(true);
   const [showContributions, setShowContributions] = useState(true);
+  const [showOrganizations, setShowOrganizations] = useState(true);
+  const [contributionCount, setContributionCount] = useState(5);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -118,6 +122,12 @@ const Resume = () => {
         setEndYear={setEndYear}
         showContributions={showContributions}
         setShowContributions={setShowContributions}
+        showContributionGraph={showContributionGraph}
+        setShowContributionGraph={setShowContributionGraph}
+        showOrganizations={showOrganizations}
+        setShowOrganizations={setShowOrganizations}
+        contributionCount={contributionCount}
+        setContributionCount={setContributionCount}
       />
       <div className="flex-grow p-4 ">
         <div className="container mx-auto flex justify-center">
@@ -150,19 +160,21 @@ const Resume = () => {
 
             <div className="flex w-full mt-6 gap-2">
               {showLanguageChart && (
-                <div className="flex-1 w-1/2">
+                <div className="flex-1 w-1/2 h-full">
                   <LanguageBarChart languages={languageData as Language[]} />
                 </div>
               )}
               {showOtherBox && (
-                <div className="flex-1">
+                <div className="flex-1 h-full">
                   <StatsBox username={username} />
                 </div>
               )}
             </div>
+            <Separator className="my-6 h-[1px] bg-gradient-to-r from-transparent via-gray-500 to-transparent" />
+
             {showRepos && (
               <div className="mt-5 px-2">
-                <h2 className="text-2xl mb-4 text-left text-white">
+                <h2 className="text-2xl mb-4 font-bold underline text-left text-white">
                   Popular Repositories
                 </h2>
                 <ul className="list-disc px-4">
@@ -223,9 +235,27 @@ const Resume = () => {
                 </ul>
               </div>
             )}
-            <ContributionGraph username={username} />
-            <Contributions username={username} />
-            <Organizations username={username} />
+            {showContributionGraph && (
+              <>
+                <Separator className="my-6 h-[1px] bg-gradient-to-r from-transparent via-gray-500 to-transparent" />
+                <ContributionGraph username={username} />
+              </>
+            )}
+            {showContributions && (
+              <>
+                <Separator className="my-6 h-[1px] bg-gradient-to-r from-transparent via-gray-500 to-transparent" />
+                <Contributions
+                  username={username}
+                  contributionCount={contributionCount}
+                />
+              </>
+            )}
+            {showOrganizations && (
+              <>
+                <Separator className="my-6 h-[1px] bg-gradient-to-r from-transparent via-gray-500 to-transparent" />
+                <Organizations username={username} />
+              </>
+            )}
           </div>
         </div>
       </div>

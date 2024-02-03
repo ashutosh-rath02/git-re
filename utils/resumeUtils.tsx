@@ -37,7 +37,8 @@ interface RepoContribution {
 }
 
 export interface Contribution {
-  repoUrl: any;
+  organizationName: string;
+  repoUrl: string;
   repository: string;
   url: string;
   commitCount: number;
@@ -102,7 +103,12 @@ export const fetchContributions = async (
 
     const contributionMap = new Map<
       string,
-      { commitsUrl: string; repoUrl: string; count: number }
+      {
+        organizationName: string;
+        commitsUrl: string;
+        repoUrl: string;
+        count: number;
+      }
     >();
     response.data.items.forEach((item: any) => {
       const repoName = item.repository_url.split("/").pop();
@@ -110,19 +116,26 @@ export const fetchContributions = async (
         item.repository_url.split("/")[
           item.repository_url.split("/").length - 2
         ];
+      const organizationName = repoOwner;
       const commitsUrl = `https://github.com/${repoOwner}/${repoName}/commits?author=${username}`;
       const repoUrl = `https://github.com/${repoOwner}/${repoName}`;
 
       if (contributionMap.has(repoName)) {
         contributionMap.get(repoName)!.count++;
       } else {
-        contributionMap.set(repoName, { commitsUrl, repoUrl, count: 1 });
+        contributionMap.set(repoName, {
+          organizationName,
+          commitsUrl,
+          repoUrl,
+          count: 1,
+        });
       }
     });
 
     const contributions = Array.from(
       contributionMap,
-      ([repository, { commitsUrl, repoUrl, count }]) => ({
+      ([repository, { organizationName, commitsUrl, repoUrl, count }]) => ({
+        organizationName,
         repository,
         url: commitsUrl,
         repoUrl,
