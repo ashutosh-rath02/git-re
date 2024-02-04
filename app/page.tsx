@@ -8,7 +8,6 @@ import "./globals.css";
 export default function Home() {
   const [username, setUsername] = useState("");
   const router = useRouter();
-  //Function handlers
   const handleUsernameChange = (e: {
     target: { value: React.SetStateAction<string> };
   }) => {
