@@ -3,23 +3,24 @@ import { fetchOrganizations, Organization } from "@/utils/resumeUtils";
 
 interface OrganizationsProps {
   username: string;
+  count: number;
 }
 
-const Organizations: React.FC<OrganizationsProps> = ({ username }) => {
+const Organizations: React.FC<OrganizationsProps> = ({ username, count }) => {
   const [organizations, setOrganizations] = useState<Organization[]>([]);
 
   useEffect(() => {
     const fetchAndSetOrganizations = async () => {
       try {
         const orgsData = await fetchOrganizations(username);
-        setOrganizations(orgsData);
+        setOrganizations(orgsData.slice(0, count));
       } catch (error) {
         console.error("Failed to fetch organizations:", error);
       }
     };
 
     fetchAndSetOrganizations();
-  }, [username]);
+  }, [username, count]);
 
   return (
     <div className="mt-5">

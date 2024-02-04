@@ -31,6 +31,8 @@ interface SidebarProps {
   setShowOrganizations: (value: boolean) => void;
   contributionCount: number;
   setContributionCount: (value: number) => void;
+  organizationCount: number;
+  setOrganizationCount: (value: number) => void;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({
@@ -60,10 +62,13 @@ const Sidebar: React.FC<SidebarProps> = ({
   setShowOrganizations,
   contributionCount,
   setContributionCount,
+  organizationCount,
+  setOrganizationCount,
 }) => {
   const [startYear, setStartYearLocal] = useState<number>(
     new Date().getFullYear()
   );
+  const [showOrganizationOptions, setShowOrganizationOptions] = useState(false);
   const [showContributionOptions, setShowContributionOptions] = useState(false);
   const [endYear, setEndYearLocal] = useState<number>(new Date().getFullYear());
   const toggleRepoOptions = () => {
@@ -88,6 +93,9 @@ const Sidebar: React.FC<SidebarProps> = ({
   });
   const toggleContributionOptions = () => {
     setShowContributionOptions(!showContributionOptions);
+  };
+  const toggleOrganizationOptions = () => {
+    setShowOrganizationOptions(!showOrganizationOptions);
   };
   return (
     <div className="w-64 border-r border-gray-300 p-4 space-y-4">
@@ -197,14 +205,34 @@ const Sidebar: React.FC<SidebarProps> = ({
             className="border border-gray-400 rounded p-1 w-24"
           />
         )}
-        <label className="flex items-center space-x-2">
+        <div className="flex items-center space-x-2">
           <input
             type="checkbox"
             checked={showOrganizations}
             onChange={() => setShowOrganizations(!showOrganizations)}
           />
-          <span>Show Organizations</span>
-        </label>
+          <span className="cursor-pointer" onClick={toggleOrganizationOptions}>
+            Show Organizations
+          </span>
+          <ChevronRightIcon
+            style={{
+              cursor: "pointer",
+              transform: showOrganizationOptions ? "rotate(90deg)" : "none",
+              transition: "transform 0.2s ease-in-out",
+            }}
+            height={18}
+            width={18}
+            onClick={toggleOrganizationOptions}
+          />
+        </div>
+        {showOrganizationOptions && (
+          <Input
+            type="number"
+            value={organizationCount.toString()}
+            onChange={(e) => setOrganizationCount(Number(e.target.value))}
+            className="border border-gray-400 rounded p-1 w-24"
+          />
+        )}
       </div>
     </div>
   );

@@ -68,6 +68,7 @@ const Resume = () => {
   const [showContributions, setShowContributions] = useState(true);
   const [showOrganizations, setShowOrganizations] = useState(true);
   const [contributionCount, setContributionCount] = useState(5);
+  const [organizationCount, setOrganizationCount] = useState(5);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -89,7 +90,7 @@ const Resume = () => {
     if (username) {
       fetchData();
     }
-  }, [username, startYear, endYear]);
+  }, [username, startYear, endYear, organizationCount]);
 
   const handleRepoCountChange = (value: number) => {
     setRepoCount(value);
@@ -128,6 +129,8 @@ const Resume = () => {
         setShowOrganizations={setShowOrganizations}
         contributionCount={contributionCount}
         setContributionCount={setContributionCount}
+        organizationCount={organizationCount}
+        setOrganizationCount={setOrganizationCount}
       />
       <div className="flex-grow p-4 ">
         <div className="container mx-auto flex justify-center">
@@ -253,7 +256,7 @@ const Resume = () => {
             {showOrganizations && (
               <>
                 <Separator className="my-6 h-[1px] bg-gradient-to-r from-transparent via-gray-500 to-transparent" />
-                <Organizations username={username} />
+                <Organizations username={username} count={organizationCount} />
               </>
             )}
           </div>

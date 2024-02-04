@@ -92,34 +92,36 @@ const StatsBox = ({ username }: { username: string }) => {
 
   return (
     <div className="box border p-4 rounded-lg shadow-md">
-      <h3 className="text-lg font-semibold mb-4 text-center">GitHub Stats</h3>
-      <p>
-        <strong>Years on GitHub:</strong>{" "}
-        {new Date().getFullYear() - userData.userJoinedDate.getFullYear()}
+      <h3 className="text-lg font-bold mb-4 text-start">GitHub Stats</h3>
+      <p className="flex flex-row justify-stretch">
+        <p>Years on GitHub:</p>{" "}
+        <span>
+          {new Date().getFullYear() - userData.userJoinedDate.getFullYear()}
+        </span>
       </p>
-      <p>
-        <strong>Followers:</strong> {userData.followers}
+      <p className="flex flex-row justify-stretch space-x-2">
+        <p>Followers:</p> <span>{userData.followers}</span>
       </p>
-      <p>
-        <strong>Public Repositories:</strong> {userData.publicRepos}
+      <p className="flex flex-row justify-stretch">
+        <p>Public Repositories:</p> <span>{userData.publicRepos}</span>
       </p>
-      <p>
-        <strong>Stars Received:</strong> {userData.starsReceived}
+      <p className="flex flex-row justify-stretch">
+        <p>Stars Received:</p> <span>{userData.starsReceived}</span>
       </p>
-      <p>
-        <strong>Forks:</strong> {userData.forks}
+      <p className="flex flex-row justify-stretch">
+        <p>Forks:</p> <span>{userData.forks}</span>
       </p>
       {/* <p>
-        <strong>Total Commits:</strong> {userData.totalCommits}
+        <p>Total Commits:</p> {userData.totalCommits}
       </p> */}
-      <p>
-        <strong>Organizations:</strong> {userData.organizations}
+      <p className="flex flex-row justify-stretch">
+        <p>Organizations:</p> <span>{userData.organizations}</span>
       </p>
       {/* <p>
-        <strong>Total Issues Created:</strong> {userData.totalIssues}
+        <p>Total Issues Created:</p> {userData.totalIssues}
       </p>
       <p>
-        <strong>Total PRs Merged:</strong> {userData.totalPRsMerged}
+        <p>Total PRs Merged:</p> {userData.totalPRsMerged}
       </p> */}
     </div>
   );

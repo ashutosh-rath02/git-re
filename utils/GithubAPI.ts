@@ -5,7 +5,6 @@ export const fetchUserContributionLanguages = async (
   username: string
 ): Promise<Language[]> => {
   try {
-    // Fetch repositories the user has contributed to
     const repoResponse = await axios.get(
       `https://api.github.com/search/repositories?q=user:${username}+fork:true`
     );
@@ -14,7 +13,6 @@ export const fetchUserContributionLanguages = async (
     let languageStats: RepoLanguageStats = {};
 
     for (const repo of repos) {
-      // Fetch the repository's language stats (simplified)
       const languagesResponse = await axios.get(repo.languages_url);
       const languages: RepoLanguageStats = languagesResponse.data;
 
@@ -23,7 +21,6 @@ export const fetchUserContributionLanguages = async (
       }
     }
 
-    // Process and sort language data
     const totalBytes = Object.values(languageStats).reduce(
       (sum, bytes) => sum + bytes,
       0
