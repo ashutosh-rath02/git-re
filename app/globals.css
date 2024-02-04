@@ -57,3 +57,49 @@
     @apply bg-background text-foreground;
   }
 }
+
+.loader-container {
+  position: relative;
+  width: 120px;
+  height: 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ball {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  animation: bounce 1s ease-in-out infinite alternate,
+    changeColor 2s linear infinite;
+}
+
+.ball1 {
+  animation-duration: 1.5s;
+}
+.ball2 {
+}
+.ball3 {
+  animation-duration: 0.8s;
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-30px);
+  }
+}
+
+@keyframes changeColor {
+  0%,
+  100% {
+    background-color: #3498db;
+  }
+  50% {
+    background-color: #e74c3c;
+  }
+}

@@ -3,6 +3,7 @@ import React, { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import "./globals.css";
 
 export default function Home() {
   const [username, setUsername] = useState("");
@@ -13,12 +14,15 @@ export default function Home() {
   }) => {
     setUsername(e.target.value);
   };
-
+  const [isLoading, setIsLoading] = useState(false);
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    router.push(`/resume/${username}`);
+    setIsLoading(true);
+    setTimeout(() => {
+      router.push(`/resume/${username}`);
+      setIsLoading(false);
+    }, 2000);
   };
-
   return (
     <main className="flex min-h-[83.5vh] flex-col items-center justify-between p-24">
       <div className="relative flex flex-col mt-16 gap-14 place-items-center">
@@ -53,8 +57,12 @@ export default function Home() {
               value={username}
               onChange={handleUsernameChange}
             />
-            <Button type="submit" className="h-12">
-              Generate
+            <Button
+              type="submit"
+              disabled={isLoading || username.trim() === ""}
+              className="h-12 flex items-center justify-center"
+            >
+              {isLoading ? <div className="loader"></div> : "Generate"}
             </Button>
           </form>
         </div>

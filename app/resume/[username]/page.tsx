@@ -16,8 +16,8 @@ import Organizations from "@/components/Organizations";
 import { Separator } from "@/components/ui/separator";
 import AboutProduct from "@/components/AboutProduct";
 import Repositories from "@/components/Repositories";
-import { Button } from "@/components/ui/button";
 import html2canvas from "html2canvas";
+import "../../globals.css";
 
 interface GitHubProfile {
   name: string;
@@ -73,6 +73,7 @@ const Resume = () => {
   const [showOrganizations, setShowOrganizations] = useState(true);
   const [contributionCount, setContributionCount] = useState(5);
   const [organizationCount, setOrganizationCount] = useState(5);
+  const [loading, setLoading] = useState(true);
 
   const printRef = useRef<HTMLDivElement>(null);
 
@@ -92,19 +93,25 @@ const Resume = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const profileData = await fetch(
-        `https://api.github.com/users/${username}`
-      ).then((res) => res.json());
-      setProfile(profileData);
+      try {
+        setLoading(true);
 
-      const reposData = await fetchPopularRepos(username);
-      setRepos(reposData as unknown as GitHubRepo[]);
+        const profileData = await fetch(
+          `https://api.github.com/users/${username}`
+        ).then((res) => res.json());
+        setProfile(profileData);
 
-      const languages = await fetchLanguageData(username);
-      setLanguageData(languages);
+        const reposData = await fetchPopularRepos(username);
+        setRepos(reposData as unknown as GitHubRepo[]);
 
-      const stats = await fetchUserStats(username);
-      setUserStats(stats);
+        const languages = await fetchLanguageData(username);
+        setLanguageData(languages);
+
+        const stats = await fetchUserStats(username);
+        setUserStats(stats);
+      } finally {
+        setLoading(false);
+      }
     };
 
     if (username) {
@@ -116,8 +123,21 @@ const Resume = () => {
     setRepoCount(value);
   };
 
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen space-y-4">
+        <div className="loader-container flex items-center justify-center">
+          <div className="ball ball1"></div>
+          <div className="ball ball2"></div>
+          <div className="ball ball3"></div>
+        </div>
+        <p>We are fetching your data...</p>
+      </div>
+    );
+  }
+
   if (!profile) {
-    return <div>Loading...</div>;
+    return <div>Error fetching data...</div>;
   }
 
   return (
@@ -223,7 +243,6 @@ const Resume = () => {
             <AboutProduct username={username} />
           </div>
         </div>
-        <Button onClick={handleDownloadImage}>Download as Image</Button>
       </div>
     </div>
   );

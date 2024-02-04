@@ -97,6 +97,26 @@ const Sidebar: React.FC<SidebarProps> = ({
   const toggleOrganizationOptions = () => {
     setShowOrganizationOptions(!showOrganizationOptions);
   };
+
+  const handleRepoCountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const count = Math.max(Number(e.target.value), 1);
+    setRepoCount(count);
+  };
+
+  const handleContributionCountChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const count = Math.max(Number(e.target.value), 1);
+    setContributionCount(count);
+  };
+
+  const handleOrganizationCountChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const count = Math.max(Number(e.target.value), 1);
+    setOrganizationCount(count);
+  };
+
   return (
     <div className="w-64 border-r border-gray-300 p-4 space-y-4">
       <p className="text-lg font-semibold">Customize Display:</p>
@@ -106,6 +126,7 @@ const Sidebar: React.FC<SidebarProps> = ({
             type="checkbox"
             checked={showName}
             onChange={() => setShowName(!showName)}
+            disabled
           />
           <span>Show Name</span>
         </label>
@@ -114,6 +135,7 @@ const Sidebar: React.FC<SidebarProps> = ({
             type="checkbox"
             checked={showBio}
             onChange={() => setShowBio(!showBio)}
+            disabled
           />
           <span>Show Bio</span>
         </label>
@@ -122,6 +144,7 @@ const Sidebar: React.FC<SidebarProps> = ({
             type="checkbox"
             checked={showBlog}
             onChange={() => setShowBlog(!showBlog)}
+            disabled
           />
           <span>Show Blog</span>
         </label>
@@ -130,6 +153,7 @@ const Sidebar: React.FC<SidebarProps> = ({
             type="checkbox"
             checked={showRepos}
             onChange={() => setShowRepos(!showRepos)}
+            disabled
           />
           <span className="cursor-pointer" onClick={toggleRepoOptions}>
             Show Repositories
@@ -149,7 +173,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           <Input
             type="number"
             value={repoCount.toString()}
-            onChange={(e) => setRepoCount(Number(e.target.value))}
+            onChange={handleRepoCountChange}
             className="border border-gray-400 rounded p-1 w-24"
           />
         )}
@@ -158,6 +182,7 @@ const Sidebar: React.FC<SidebarProps> = ({
             type="checkbox"
             checked={showLanguageChart}
             onChange={() => setShowLanguageChart(!showLanguageChart)}
+            disabled
           />
           <span>Show Language Chart</span>
         </label>
@@ -166,6 +191,7 @@ const Sidebar: React.FC<SidebarProps> = ({
             type="checkbox"
             checked={showOtherBox}
             onChange={() => setShowOtherBox(!showOtherBox)}
+            disabled
           />
           <span>Show Other Info</span>
         </label>
@@ -201,7 +227,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           <Input
             type="number"
             value={contributionCount.toString()}
-            onChange={(e) => setContributionCount(Number(e.target.value))}
+            onChange={handleContributionCountChange}
             className="border border-gray-400 rounded p-1 w-24"
           />
         )}
@@ -229,7 +255,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           <Input
             type="number"
             value={organizationCount.toString()}
-            onChange={(e) => setOrganizationCount(Number(e.target.value))}
+            onChange={handleOrganizationCountChange}
             className="border border-gray-400 rounded p-1 w-24"
           />
         )}
