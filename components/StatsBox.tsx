@@ -91,38 +91,67 @@ const StatsBox = ({ username }: { username: string }) => {
   }, [username]);
 
   return (
-    <div className="box border p-4 rounded-lg shadow-md">
-      <h3 className="text-lg font-bold mb-4 text-start">GitHub Stats</h3>
-      <p className="flex flex-row justify-stretch">
-        <p>Years on GitHub:</p>{" "}
-        <span>
-          {new Date().getFullYear() - userData.userJoinedDate.getFullYear()}
-        </span>
-      </p>
-      <p className="flex flex-row justify-stretch space-x-2">
-        <p>Followers:</p> <span>{userData.followers}</span>
-      </p>
-      <p className="flex flex-row justify-stretch">
-        <p>Public Repositories:</p> <span>{userData.publicRepos}</span>
-      </p>
-      <p className="flex flex-row justify-stretch">
-        <p>Stars Received:</p> <span>{userData.starsReceived}</span>
-      </p>
-      <p className="flex flex-row justify-stretch">
-        <p>Forks:</p> <span>{userData.forks}</span>
-      </p>
-      {/* <p>
-        <p>Total Commits:</p> {userData.totalCommits}
-      </p> */}
-      <p className="flex flex-row justify-stretch">
-        <p>Organizations:</p> <span>{userData.organizations}</span>
-      </p>
-      {/* <p>
-        <p>Total Issues Created:</p> {userData.totalIssues}
-      </p>
-      <p>
-        <p>Total PRs Merged:</p> {userData.totalPRsMerged}
-      </p> */}
+    <div className="border p-4 rounded-lg shadow-md">
+      <h3 className="text-lg font-semibold mb-4">GitHub Stats</h3>
+      <div className="flex flex-wrap -mx-2">
+        <div className="w-full sm:w-1/2 p-2">
+          <div className="flex justify-between items-center">
+            <p>Years on GitHub:</p>
+            <span className="font-semibold">
+              {new Date().getFullYear() - userData.userJoinedDate.getFullYear()}
+            </span>
+          </div>
+        </div>
+        <div className="w-full sm:w-1/2 p-2">
+          <div className="flex justify-between items-center">
+            <p>Followers:</p>
+            <span className="font-semibold">{userData.followers}</span>
+          </div>
+        </div>
+        <div className="w-full sm:w-1/2 p-2">
+          <div className="flex justify-between items-center">
+            <p>Public Repositories:</p>
+            <span className="font-semibold">{userData.publicRepos}</span>
+          </div>
+        </div>
+        <div className="w-full sm:w-1/2 p-2">
+          <div className="flex justify-between items-center">
+            <p>Stars Received:</p>
+            <span className="font-semibold">{userData.starsReceived}</span>
+          </div>
+        </div>
+        <div className="w-full sm:w-1/2 p-2">
+          <div className="flex justify-between items-center">
+            <p>Forks:</p>
+            <span className="font-semibold">{userData.forks}</span>
+          </div>
+        </div>
+        <div className="w-full sm:w-1/2 p-2">
+          <div className="flex justify-between items-center">
+            <p>Organizations:</p>
+            <span className="font-semibold">{userData.organizations}</span>
+          </div>
+        </div>
+        {/* Uncomment if needed */}
+        {/* <div className="w-full sm:w-1/2 p-2">
+          <div className="flex justify-between items-center">
+            <p>Total Commits:</p>
+            <span className="font-semibold">{userData.totalCommits}</span>
+          </div>
+        </div>
+        <div className="w-full sm:w-1/2 p-2">
+          <div className="flex justify-between items-center">
+            <p>Total Issues Created:</p>
+            <span className="font-semibold">{userData.totalIssues}</span>
+          </div>
+        </div>
+        <div className="w-full sm:w-1/2 p-2">
+          <div className="flex justify-between items-center">
+            <p>Total PRs Merged:</p>
+            <span className="font-semibold">{userData.totalPRsMerged}</span>
+          </div>
+        </div> */}
+      </div>
     </div>
   );
 };

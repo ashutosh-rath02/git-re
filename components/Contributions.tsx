@@ -39,7 +39,7 @@ const Contributions: React.FC<ContributionsProps> = ({
       <h2 className="text-2xl font-bold underline mb-4 text-left text-white">
         Contributions
       </h2>
-      <ul className="list-disc px-4">
+      <ul className="list-disc px-6">
         {contributions.map((contribution, index) => (
           <li key={index} className="mt-4">
             <a

@@ -27,7 +27,7 @@ const Organizations: React.FC<OrganizationsProps> = ({ username, count }) => {
       <h2 className="text-2xl font-bold underline mb-4 text-left text-white">
         Organizations
       </h2>
-      <ul className="list-disc px-4">
+      <ul className="list-disc px-6">
         {organizations.map((org, index) => (
           <li key={index} className="mt-4">
             <a
