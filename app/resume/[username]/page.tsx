@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import StatsBox from "@/components/StatsBox";
@@ -16,6 +16,8 @@ import Organizations from "@/components/Organizations";
 import { Separator } from "@/components/ui/separator";
 import AboutProduct from "@/components/AboutProduct";
 import Repositories from "@/components/Repositories";
+import { Button } from "@/components/ui/button";
+import html2canvas from "html2canvas";
 
 interface GitHubProfile {
   name: string;
@@ -72,6 +74,22 @@ const Resume = () => {
   const [contributionCount, setContributionCount] = useState(5);
   const [organizationCount, setOrganizationCount] = useState(5);
 
+  const printRef = useRef<HTMLDivElement>(null);
+
+  const handleDownloadImage = async () => {
+    const element = printRef.current;
+    if (element) {
+      const canvas = await html2canvas(element);
+      const image = canvas.toDataURL("image/png");
+      const link = document.createElement("a");
+      link.href = image;
+      link.download = `${username}_resume.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       const profileData = await fetch(
@@ -103,7 +121,7 @@ const Resume = () => {
   }
 
   return (
-    <div className="flex w-full">
+    <div className="flex w-full bg-background text-foreground">
       <Sidebar
         showName={showName}
         setShowName={setShowName}
@@ -135,8 +153,8 @@ const Resume = () => {
         setOrganizationCount={setOrganizationCount}
       />
       <div className="flex-grow p-4 ">
-        <div className="container mx-auto flex justify-center">
-          <div className="h-full w-full bg-gray-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-10 border border-gray-100 shadow-md p-6 max-w-4xl">
+        <div ref={printRef} className="mx-auto flex justify-center">
+          <div className="bg-[#020817] h-full w-full rounded-md bg-clip-padding dark:backdrop-filter dark:backdrop-blur-md dark:bg-opacity-10 border border-gray-100 shadow-md p-6 max-w-4xl">
             <div className="flex flex-col items-center">
               <Image
                 src={profile.avatar_url || ""}
@@ -146,11 +164,13 @@ const Resume = () => {
                 height={124}
               />
               {showName && (
-                <h1 className="text-3xl font-bold text-center">
+                <h1 className="text-3xl font-bold text-center text-[#F8FAFC]">
                   {profile.name || profile.login}
                 </h1>
               )}
-              {showBio && <p className="text-center">{profile.bio}</p>}
+              {showBio && (
+                <p className="text-center text-[#F8FAFC]">{profile.bio}</p>
+              )}
               {showBlog && (
                 <a
                   href={profile.blog}
@@ -163,7 +183,7 @@ const Resume = () => {
               )}
             </div>
 
-            <div className="flex w-full mt-6 gap-2">
+            <div className="flex w-full mt-6 gap-2 text-[#F8FAFC]">
               {showLanguageChart && (
                 <div className="flex-1 w-1/2 h-full">
                   <LanguageBarChart languages={languageData as Language[]} />
@@ -203,6 +223,7 @@ const Resume = () => {
             <AboutProduct username={username} />
           </div>
         </div>
+        <Button onClick={handleDownloadImage}>Download as Image</Button>
       </div>
     </div>
   );

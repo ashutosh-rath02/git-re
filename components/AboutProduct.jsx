@@ -2,7 +2,7 @@ const AboutProduct = ({ username }) => {
   const profileLink = `https://github.com/${username}`;
 
   return (
-    <div className="bg-gray-100 p-4 mt-8 rounded-lg shadow-inner text-gray-700 text-sm text-center">
+    <div className="bg-gray-100 p-4 mt-8 rounded-lg shadow-inner text-gray-400 text-sm text-center">
       <p>
         Discover more about this developer&apos;s journey on
         <a

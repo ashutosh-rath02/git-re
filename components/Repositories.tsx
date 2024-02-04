@@ -20,8 +20,8 @@ interface RepositoriesProps {
 
 const Repositories: React.FC<RepositoriesProps> = ({ repos, repoCount }) => {
   return (
-    <div className="mt-5 px-2">
-      <h2 className="text-2xl mb-4 font-bold underline text-left text-white">
+    <div className="mt-5 px-2 text-[#F8FAFC]">
+      <h2 className="text-2xl mb-4 font-bold underline text-left">
         Popular Repositories
       </h2>
       <ul className="list-disc px-4">
@@ -37,7 +37,7 @@ const Repositories: React.FC<RepositoriesProps> = ({ repos, repoCount }) => {
                 >
                   {repo.name}
                 </a>
-                <span className="text-sm text-white ">({repo.date})</span>
+                <span className="text-sm  ">({repo.date})</span>
               </div>
               {repo.homepage && (
                 <>
@@ -51,7 +51,7 @@ const Repositories: React.FC<RepositoriesProps> = ({ repos, repoCount }) => {
                   </a>
                 </>
               )}
-              <p className="text-gray-200">
+              <p className="text-accent-500">
                 <span className="font-semibold">{repo.language}</span>
                 &nbsp;-&nbsp;
                 {"Owner"}

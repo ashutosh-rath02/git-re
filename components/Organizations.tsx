@@ -23,8 +23,8 @@ const Organizations: React.FC<OrganizationsProps> = ({ username, count }) => {
   }, [username, count]);
 
   return (
-    <div className="mt-5">
-      <h2 className="text-2xl font-bold underline mb-4 text-left text-white">
+    <div className="mt-5 text-[#F8FAFC]">
+      <h2 className="text-2xl font-bold underline mb-4 text-left ">
         Organizations
       </h2>
       <ul className="list-disc px-6">

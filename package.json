@@ -21,6 +21,8 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "date-fns": "^3.3.1",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^2.5.1",
     "next": "14.0.4",
     "next-themes": "^0.2.1",
     "react": "^18",

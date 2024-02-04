@@ -9,7 +9,7 @@ const LanguageBarChart: React.FC<LanguageBarChartProps> = ({ languages }) => {
   const hasLanguages = Array.isArray(languages) && languages.length > 0;
 
   return (
-    <div className="box border p-4 rounded-lg shadow-md bg-dark-500 text-white">
+    <div className="box border p-4 rounded-lg shadow-md bg-dark-500">
       <h2 className="text-lg font-bold mb-2">Most Used Languages</h2>
       <div className="space-y-2">
         {hasLanguages ? (

@@ -10,7 +10,7 @@ const ContributionGraph: React.FC<ContributionGraphProps> = ({ username }) => {
   const graphUrl = `https://ghchart.rshah.org/${username}`;
 
   return (
-    <div className="box border p-4 rounded-lg shadow-md bg-dark-500 text-white flex flex-col mt-4">
+    <div className="box border p-4 rounded-lg shadow-md bg-dark-500  flex flex-col mt-4 text-[#F8FAFC]">
       <h3 className="text-2xl font-semibold mb-4 text-left underline">
         Contribution Graph
       </h3>
