@@ -19,6 +19,7 @@ import AboutProduct from "@/components/AboutProduct";
 import Repositories from "@/components/Repositories";
 import html2canvas from "html2canvas";
 import "../../globals.css";
+import useClientWidth from "@/utils/useClientWidth";
 
 interface GitHubProfile {
   name: string;
@@ -75,7 +76,7 @@ const Resume = () => {
   const [contributionCount, setContributionCount] = useState(5);
   const [organizationCount, setOrganizationCount] = useState(5);
   const [loading, setLoading] = useState(true);
-  const [windowWidth, setWindowWidth] = useState<number | undefined>(undefined);
+  const windowWidth = useClientWidth();
 
   const printRef = useRef<HTMLDivElement>(null);
 
@@ -93,15 +94,6 @@ const Resume = () => {
     }
   };
   useEffect(() => {
-    function handleResize() {
-      setWindowWidth(window.innerWidth);
-    }
-
-    if (typeof window !== "undefined") {
-      setWindowWidth(window.innerWidth);
-      window.addEventListener("resize", handleResize);
-    }
-
     const fetchData = async () => {
       if (!username) {
         return;
@@ -127,12 +119,6 @@ const Resume = () => {
     };
 
     fetchData();
-
-    return () => {
-      if (typeof window !== "undefined") {
-        window.removeEventListener("resize", handleResize);
-      }
-    };
   }, [username, startYear, endYear, organizationCount]);
 
   const handleRepoCountChange = (value: number) => {
