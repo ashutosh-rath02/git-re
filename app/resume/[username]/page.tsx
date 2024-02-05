@@ -75,7 +75,7 @@ const Resume = () => {
   const [contributionCount, setContributionCount] = useState(5);
   const [organizationCount, setOrganizationCount] = useState(5);
   const [loading, setLoading] = useState(true);
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [windowWidth, setWindowWidth] = useState<number | undefined>(undefined);
 
   const printRef = useRef<HTMLDivElement>(null);
 
@@ -93,19 +93,16 @@ const Resume = () => {
     }
   };
   useEffect(() => {
-    // Window resize listener
-    const handleResize = () => setWindowWidth(window.innerWidth);
+    function handleResize() {
+      setWindowWidth(window.innerWidth);
+    }
     window.addEventListener("resize", handleResize);
 
-    // Fetching data logic
     const fetchData = async () => {
       if (!username) {
         return;
       }
-
-      // Start loading
       setLoading(true);
-
       try {
         const profileData = await fetch(
           `https://api.github.com/users/${username}`
@@ -121,14 +118,11 @@ const Resume = () => {
         const stats = await fetchUserStats(username);
         setUserStats(stats);
       } finally {
-        // Stop loading
         setLoading(false);
       }
     };
 
     fetchData();
-
-    // Cleanup
     return () => window.removeEventListener("resize", handleResize);
   }, [username, startYear, endYear, organizationCount, windowWidth]);
 
@@ -149,10 +143,10 @@ const Resume = () => {
     );
   }
 
-  if (windowWidth < 1000) {
+  if (windowWidth && windowWidth < 1000) {
     return (
-      <div className="flex h-screen items-center justify-center">
-        <p>Website is </p>
+      <div className="flex w-11/12 m-auto text-center h-screen items-center justify-center">
+        <p>Website is unavailable for screens below 1000px</p>
       </div>
     );
   }
