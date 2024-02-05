@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
@@ -74,6 +75,7 @@ const Resume = () => {
   const [contributionCount, setContributionCount] = useState(5);
   const [organizationCount, setOrganizationCount] = useState(5);
   const [loading, setLoading] = useState(true);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   const printRef = useRef<HTMLDivElement>(null);
 
@@ -90,6 +92,19 @@ const Resume = () => {
       document.body.removeChild(link);
     }
   };
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  if (windowWidth < 1000) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <p>Not available below 1000px</p>
+      </div>
+    );
+  }
 
   useEffect(() => {
     const fetchData = async () => {

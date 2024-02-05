@@ -1,5 +1,5 @@
 "use client";
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,6 +8,7 @@ import "./globals.css";
 export default function Home() {
   const [username, setUsername] = useState("");
   const router = useRouter();
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const handleUsernameChange = (e: {
     target: { value: React.SetStateAction<string> };
   }) => {
@@ -22,6 +23,21 @@ export default function Home() {
       setIsLoading(false);
     }, 2000);
   };
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  if (windowWidth < 1000) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <p>Not available below 1000px</p>
+      </div>
+    );
+  }
+
   return (
     <main className="flex min-h-[83.5vh] flex-col items-center justify-between p-24">
       <div className="relative flex flex-col mt-16 gap-14 place-items-center">
