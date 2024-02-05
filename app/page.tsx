@@ -61,7 +61,7 @@ export default function Home() {
               disabled={isLoading || username.trim() === ""}
               className="h-12 flex items-center justify-center"
             >
-              {isLoading ? <div className="loader"></div> : "Generate"}
+              {isLoading ? <div className="loader1"></div> : "Generate"}
             </Button>
           </form>
         </div>
