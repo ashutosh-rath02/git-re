@@ -118,7 +118,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   };
 
   return (
-    <div className="w-64 border-r border-gray-300 p-4 space-y-4">
+    <div className="w-64 lg:border-r lg:border-gray-300 p-4 space-y-4">
       <p className="text-lg font-semibold">Customize Display:</p>
       <div className="flex flex-col space-y-2">
         <label className="flex items-center space-x-2">

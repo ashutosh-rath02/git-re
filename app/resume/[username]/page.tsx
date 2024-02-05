@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
@@ -19,7 +18,6 @@ import AboutProduct from "@/components/AboutProduct";
 import Repositories from "@/components/Repositories";
 import html2canvas from "html2canvas";
 import "../../globals.css";
-import useClientWidth from "@/utils/useClientWidth";
 
 interface GitHubProfile {
   name: string;
@@ -76,7 +74,6 @@ const Resume = () => {
   const [contributionCount, setContributionCount] = useState(5);
   const [organizationCount, setOrganizationCount] = useState(5);
   const [loading, setLoading] = useState(true);
-  const windowWidth = useClientWidth();
 
   const printRef = useRef<HTMLDivElement>(null);
 
@@ -93,13 +90,12 @@ const Resume = () => {
       document.body.removeChild(link);
     }
   };
+
   useEffect(() => {
     const fetchData = async () => {
-      if (!username) {
-        return;
-      }
-      setLoading(true);
       try {
+        setLoading(true);
+
         const profileData = await fetch(
           `https://api.github.com/users/${username}`
         ).then((res) => res.json());
@@ -118,7 +114,9 @@ const Resume = () => {
       }
     };
 
-    fetchData();
+    if (username) {
+      fetchData();
+    }
   }, [username, startYear, endYear, organizationCount]);
 
   const handleRepoCountChange = (value: number) => {
@@ -138,51 +136,45 @@ const Resume = () => {
     );
   }
 
-  if (windowWidth && windowWidth < 1000) {
-    return (
-      <div className="flex w-11/12 m-auto text-center h-screen items-center justify-center">
-        <p>Website is unavailable for screens below 1000px</p>
-      </div>
-    );
-  }
-
   if (!profile) {
     return <div>Error fetching data...</div>;
   }
 
   return (
-    <div className="flex w-full bg-background text-foreground">
-      <Sidebar
-        showName={showName}
-        setShowName={setShowName}
-        showBio={showBio}
-        setShowBio={setShowBio}
-        showBlog={showBlog}
-        setShowBlog={setShowBlog}
-        showRepos={showRepos}
-        setShowRepos={setShowRepos}
-        showRepoOptions={showRepoOptions}
-        setShowRepoOptions={setShowRepoOptions}
-        repoCount={repoCount}
-        setRepoCount={handleRepoCountChange}
-        showLanguageChart={showLanguageChart}
-        setShowLanguageChart={setShowLanguageChart}
-        showOtherBox={showOtherBox}
-        setShowOtherBox={setShowOtherBox}
-        setStartYear={setStartYear}
-        setEndYear={setEndYear}
-        showContributions={showContributions}
-        setShowContributions={setShowContributions}
-        showContributionGraph={showContributionGraph}
-        setShowContributionGraph={setShowContributionGraph}
-        showOrganizations={showOrganizations}
-        setShowOrganizations={setShowOrganizations}
-        contributionCount={contributionCount}
-        setContributionCount={setContributionCount}
-        organizationCount={organizationCount}
-        setOrganizationCount={setOrganizationCount}
-      />
-      <div className="flex-grow p-4 ">
+    <div className="flex flex-col lg:flex-row w-full bg-background text-foreground">
+      <div className="lg:w-64 border-r border-gray-300 p-4 space-y-4 order-2 lg:order-1">
+        <Sidebar
+          showName={showName}
+          setShowName={setShowName}
+          showBio={showBio}
+          setShowBio={setShowBio}
+          showBlog={showBlog}
+          setShowBlog={setShowBlog}
+          showRepos={showRepos}
+          setShowRepos={setShowRepos}
+          showRepoOptions={showRepoOptions}
+          setShowRepoOptions={setShowRepoOptions}
+          repoCount={repoCount}
+          setRepoCount={handleRepoCountChange}
+          showLanguageChart={showLanguageChart}
+          setShowLanguageChart={setShowLanguageChart}
+          showOtherBox={showOtherBox}
+          setShowOtherBox={setShowOtherBox}
+          setStartYear={setStartYear}
+          setEndYear={setEndYear}
+          showContributions={showContributions}
+          setShowContributions={setShowContributions}
+          showContributionGraph={showContributionGraph}
+          setShowContributionGraph={setShowContributionGraph}
+          showOrganizations={showOrganizations}
+          setShowOrganizations={setShowOrganizations}
+          contributionCount={contributionCount}
+          setContributionCount={setContributionCount}
+          organizationCount={organizationCount}
+          setOrganizationCount={setOrganizationCount}
+        />
+      </div>
+      <div className="flex-grow p-4 order-1 lg:order-2">
         <div ref={printRef} className="mx-auto flex justify-center">
           <div className="bg-[#020817] h-full w-full rounded-md bg-clip-padding dark:backdrop-filter dark:backdrop-blur-md dark:bg-opacity-10 border border-gray-100 shadow-md p-6 max-w-4xl">
             <div className="flex flex-col items-center">
@@ -213,9 +205,9 @@ const Resume = () => {
               )}
             </div>
 
-            <div className="flex w-full mt-6 gap-2 text-[#F8FAFC]">
+            <div className="flex flex-col lg:flex-row w-full mt-6 gap-2 text-[#F8FAFC]">
               {showLanguageChart && (
-                <div className="flex-1 w-1/2 h-full">
+                <div className="flex-1 w-full lg:w-1/2 h-full">
                   <LanguageBarChart languages={languageData as Language[]} />
                 </div>
               )}
