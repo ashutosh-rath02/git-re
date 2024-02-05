@@ -24,19 +24,19 @@ export default function Home() {
   };
 
   return (
-    <main className="flex min-h-[83.5vh] flex-col items-center justify-between p-24">
-      <div className="relative flex flex-col mt-16 gap-14 place-items-center">
+    <main className="flex min-h-screen flex-col items-center justify-center p-4 lg:p-24">
+      <div className="relative flex flex-col w-full max-w-4xl gap-8 place-items-center">
         <div className="absolute inset-0 grid grid-cols-2 -space-x-52 opacity-40 dark:opacity-20 pointer-events-none">
           <div className="blur-[106px] h-56 bg-gradient-to-br from-primary to-purple-400 dark:from-blue-700"></div>
           <div className="blur-[106px] h-32 bg-gradient-to-r from-cyan-400 to-sky-300 dark:to-indigo-600"></div>
         </div>
-        <div className="flex flex-col items-center justify-center space-y-2 z-10">
-          <h1 className="text-8xl font-black text-center">
+        <div className="flex flex-col items-center justify-center space-y-4 z-10 text-center">
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-black">
             <span className="text-transparent bg-clip-text bg-gradient-to-br gradient-radial from-blue-500 to-blue-900">
               git-re
             </span>
           </h1>
-          <p className="w-11/12 text-4xl font-semibold text-center">
+          <p className="text-xl md:text-2xl lg:text-4xl font-semibold">
             Elevate your&nbsp;
             <span className="text-transparent bg-clip-text bg-gradient-to-br from-blue-500 to-blue-700">
               GitHub
@@ -48,7 +48,7 @@ export default function Home() {
             &nbsp;effortlessly.
           </p>
         </div>
-        <div className="flex w-full max-w-sm items-center space-x-8">
+        <div className="flex w-full md:max-w-sm items-center space-x-4 md:space-x-8">
           <form className="flex w-full space-x-3" onSubmit={handleSubmit}>
             <Input
               type="text"
@@ -60,7 +60,7 @@ export default function Home() {
             <Button
               type="submit"
               disabled={isLoading || username.trim() === ""}
-              className="h-12 flex items-center justify-center"
+              className="h-12 px-6 flex items-center justify-center"
             >
               {isLoading ? <div className="loader1"></div> : "Generate"}
             </Button>
