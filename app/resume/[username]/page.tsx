@@ -93,24 +93,20 @@ const Resume = () => {
     }
   };
   useEffect(() => {
+    // Window resize listener
     const handleResize = () => setWindowWidth(window.innerWidth);
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
-  if (windowWidth < 1000) {
-    return (
-      <div className="flex h-screen items-center justify-center">
-        <p>Not available below 1000px</p>
-      </div>
-    );
-  }
-
-  useEffect(() => {
+    // Fetching data logic
     const fetchData = async () => {
-      try {
-        setLoading(true);
+      if (!username) {
+        return;
+      }
 
+      // Start loading
+      setLoading(true);
+
+      try {
         const profileData = await fetch(
           `https://api.github.com/users/${username}`
         ).then((res) => res.json());
@@ -125,14 +121,16 @@ const Resume = () => {
         const stats = await fetchUserStats(username);
         setUserStats(stats);
       } finally {
+        // Stop loading
         setLoading(false);
       }
     };
 
-    if (username) {
-      fetchData();
-    }
-  }, [username, startYear, endYear, organizationCount]);
+    fetchData();
+
+    // Cleanup
+    return () => window.removeEventListener("resize", handleResize);
+  }, [username, startYear, endYear, organizationCount, windowWidth]);
 
   const handleRepoCountChange = (value: number) => {
     setRepoCount(value);
@@ -147,6 +145,14 @@ const Resume = () => {
           <div className="ball ball3"></div>
         </div>
         <p>We are fetching your data...</p>
+      </div>
+    );
+  }
+
+  if (windowWidth < 1000) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <p>Website is </p>
       </div>
     );
   }
