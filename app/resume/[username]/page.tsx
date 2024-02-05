@@ -96,7 +96,11 @@ const Resume = () => {
     function handleResize() {
       setWindowWidth(window.innerWidth);
     }
-    window.addEventListener("resize", handleResize);
+
+    if (typeof window !== "undefined") {
+      setWindowWidth(window.innerWidth);
+      window.addEventListener("resize", handleResize);
+    }
 
     const fetchData = async () => {
       if (!username) {
@@ -123,8 +127,13 @@ const Resume = () => {
     };
 
     fetchData();
-    return () => window.removeEventListener("resize", handleResize);
-  }, [username, startYear, endYear, organizationCount, windowWidth]);
+
+    return () => {
+      if (typeof window !== "undefined") {
+        window.removeEventListener("resize", handleResize);
+      }
+    };
+  }, [username, startYear, endYear, organizationCount]);
 
   const handleRepoCountChange = (value: number) => {
     setRepoCount(value);
