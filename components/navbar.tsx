@@ -9,7 +9,7 @@ export default function Navbar() {
   const repositoryUrl = "https://github.com/ashutosh-rath02/git-re";
 
   return (
-    <header className="flex h-16 w-full items-center justify-between border-b border-border px-20">
+    <header className="flex h-16 w-full items-center justify-between border-b border-border px-2 lg:px-20">
       <Link
         href={"/"}
         className="text-lg font-black flex flex-row items-center justify-center gap-2 cursor-pointer"

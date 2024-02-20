@@ -24,7 +24,7 @@ export default function Home() {
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-4 lg:p-24">
+    <main className="flex min-h-[83vh] flex-col items-center justify-center p-4 lg:px-24">
       <div className="relative flex flex-col w-full max-w-4xl gap-8 place-items-center">
         <div className="absolute inset-0 grid grid-cols-2 -space-x-52 opacity-40 dark:opacity-20 pointer-events-none">
           <div className="blur-[106px] h-56 bg-gradient-to-br from-primary to-purple-400 dark:from-blue-700"></div>
