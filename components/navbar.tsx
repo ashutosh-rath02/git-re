@@ -5,9 +5,13 @@ import { IoMdGitNetwork } from "react-icons/io";
 import Link from "next/link";
 import { Button } from "./ui/button";
 import AuthButton from "./AuthButton";
+import { supabaseServer } from "@/utils/supabase/server";
 
 export default async function Navbar() {
   const repositoryUrl = "https://github.com/ashutosh-rath02/git-re";
+
+  const supabase = supabaseServer();
+  const { data } = await supabase.auth.getUser();
 
   return (
     <header className="flex h-16 w-full items-center justify-between border-b border-border px-2 lg:px-20">
@@ -29,8 +33,7 @@ export default async function Navbar() {
           Fork
         </a>
         <ModeToggle />
-        <AuthButton />{" "}
-        {/* No props passed as logic is handled within AuthButton */}
+        <AuthButton user={data.user} />
       </div>
     </header>
   );
