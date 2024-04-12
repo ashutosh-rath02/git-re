@@ -3,8 +3,12 @@
 import React from "react";
 import "./globals.css";
 import Form from "@/components/Form";
+import AuthButton from "@/components/AuthButton";
+import { supabaseServer } from "@/utils/supabase/server";
 
-export default function Home() {
+export default async function Home() {
+  const supabase = supabaseServer();
+  const { data } = await supabase.auth.getUser();
   return (
     <main className="flex min-h-[83vh] flex-col items-center justify-center p-4 lg:px-24">
       <div className="relative flex flex-col w-full max-w-4xl gap-8 place-items-center">
@@ -30,7 +34,8 @@ export default function Home() {
             &nbsp;effortlessly.
           </p>
         </div>
-        <Form />
+        {data.user ? <Form /> : <AuthButton user={data.user} />}
+
         <a
           href="https://www.producthunt.com/posts/git-re?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-git&#0045;re"
           target="_blank"
