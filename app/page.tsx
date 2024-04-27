@@ -1,28 +1,14 @@
-"use client";
-import React, { FormEvent, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+/* eslint-disable @next/next/no-img-element */
+// "use client";
+import React from "react";
 import "./globals.css";
+import Form from "@/components/Form";
+import AuthButton from "@/components/AuthButton";
+import { supabaseServer } from "@/utils/supabase/server";
 
-export default function Home() {
-  const [username, setUsername] = useState("");
-  const router = useRouter();
-  const handleUsernameChange = (e: {
-    target: { value: React.SetStateAction<string> };
-  }) => {
-    setUsername(e.target.value);
-  };
-  const [isLoading, setIsLoading] = useState(false);
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setTimeout(() => {
-      router.push(`/resume/${username}`);
-      setIsLoading(false);
-    }, 2000);
-  };
-
+export default async function Home() {
+  const supabase = supabaseServer();
+  const { data } = await supabase.auth.getUser();
   return (
     <main className="flex min-h-[83vh] flex-col items-center justify-center p-4 lg:px-24">
       <div className="relative flex flex-col w-full max-w-4xl gap-8 place-items-center">
@@ -48,24 +34,20 @@ export default function Home() {
             &nbsp;effortlessly.
           </p>
         </div>
-        <div className="flex w-full md:max-w-sm items-center space-x-4 md:space-x-8">
-          <form className="flex w-full space-x-3" onSubmit={handleSubmit}>
-            <Input
-              type="text"
-              placeholder="Enter your GitHub username"
-              className="h-12 flex-grow"
-              value={username}
-              onChange={handleUsernameChange}
-            />
-            <Button
-              type="submit"
-              disabled={isLoading || username.trim() === ""}
-              className="h-12 px-6 flex items-center justify-center"
-            >
-              {isLoading ? <div className="loader1"></div> : "Generate"}
-            </Button>
-          </form>
-        </div>
+        {data.user ? <Form /> : <AuthButton user={data.user} />}
+
+        <a
+          href="https://www.producthunt.com/posts/git-re?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-git&#0045;re"
+          target="_blank"
+        >
+          <img
+            src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=438558&theme=light"
+            alt="git&#0045;re - Elevate&#0032;your&#0032;GitHub&#0032;to&#0032;a&#0032;dynamic&#0032;resume&#0032;effortlessly | Product Hunt"
+            style={{ width: "200px", height: "50px" }}
+            width="250"
+            height="54"
+          />
+        </a>
       </div>
     </main>
   );
