@@ -17,6 +17,7 @@ import { Separator } from "@/components/ui/separator";
 import AboutProduct from "@/components/AboutProduct";
 import Repositories from "@/components/Repositories";
 import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 import "../app/globals.css";
 
 interface GitHubProfile {
@@ -75,19 +76,19 @@ const Resume = () => {
   const [organizationCount, setOrganizationCount] = useState(5);
   const [loading, setLoading] = useState(true);
 
-  const printRef = useRef<HTMLDivElement>(null);
+  const resumeRef = useRef<HTMLDivElement>(null);
 
-  const handleDownloadImage = async () => {
-    const element = printRef.current;
+  const handleDownloadPDF = async () => {
+    const element = resumeRef.current;
     if (element) {
       const canvas = await html2canvas(element);
-      const image = canvas.toDataURL("image/png");
-      const link = document.createElement("a");
-      link.href = image;
-      link.download = `${username}_resume.png`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF("p", "mm", "a4");
+      const imgProps = pdf.getImageProperties(imgData);
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+      pdf.save(`${username}_resume.pdf`);
     }
   };
 
@@ -175,7 +176,7 @@ const Resume = () => {
         />
       </div>
       <div className="flex-grow p-4 order-1 lg:order-2">
-        <div ref={printRef} className="mx-auto flex justify-center">
+        <div ref={resumeRef} className="mx-auto flex justify-center">
           <div className="bg-[#020817] h-full w-full rounded-md bg-clip-padding dark:backdrop-filter dark:backdrop-blur-md dark:bg-opacity-10 border border-gray-100 shadow-md p-6 max-w-4xl">
             <div className="flex flex-col items-center">
               <Image

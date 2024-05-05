@@ -8,8 +8,8 @@ This project is a web application that generates a professional resume from a Gi
 - Generates a professional resume based on GitHub contributions and projects
 
 ## Screenshot
-![image](https://github.com/ashutosh-rath02/git-re/assets/85403534/13ae316c-2254-4da3-b07f-8b55924a9b98)
 
+![image](https://github.com/ashutosh-rath02/git-re/assets/85403534/13ae316c-2254-4da3-b07f-8b55924a9b98)
 
 ## Mentions
 
@@ -20,6 +20,15 @@ The contribution graph in the user profile is generated using [ghchart](https://
 1. Clone the repository to your local machine.
 2. Install the dependencies using `npm install` or `yarn install`.
 3. Start the development server using `npm run dev` or `yarn dev`.
+4. For authentication, we have used Github OAuth using Supabase. To set this up:
+   - Go to your [Supabase Dashboard](https://supabase.io/dashboard).
+   - Select your project / Create a new one.
+   - Navigate to the "Authentication" section, then to the "Settings" tab.
+   - Under "OAuth Providers", find GitHub and fill in the "Client ID" and "Secret" fields with the details from your GitHub OAuth App. If you haven't created a GitHub OAuth App yet, you can follow [this guide](https://docs.github.com/en/developers/apps/building-oauth-apps/creating-an-oauth-app).
+   - Save your changes.
+   - Now you can do the authentication using github
+5. Copy the `.env.example` to `.env.local` and put the secrets.
+6. You are gtg.
 
 ## Tech used
 
@@ -41,4 +50,3 @@ Contributions are welcome! Please open an issue or submit a pull request if you 
 ## License
 
 This project is licensed under the Apache 2.0 License & all rights reserved to author [ashutosh-rath02](https://github.com/ashutosh-rath02)
-

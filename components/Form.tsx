@@ -19,7 +19,7 @@ export default function Form() {
     setTimeout(() => {
       router.push(`/resume/${username}`);
       setIsLoading(false);
-    }, 200);
+    }, 3000);
   };
   return (
     <div className="flex w-full md:max-w-sm items-center space-x-4 md:space-x-8">
