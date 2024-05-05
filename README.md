@@ -7,17 +7,13 @@ This project is a web application that generates a professional resume from a Gi
 - Fetches user data from GitHub's API
 - Generates a professional resume based on GitHub contributions and projects
 
-## Screenshot
-
-![image](https://github.com/ashutosh-rath02/git-re/assets/85403534/13ae316c-2254-4da3-b07f-8b55924a9b98)
-
 ## Mentions
 
 The contribution graph in the user profile is generated using [ghchart](https://ghchart.rshah.org/) by [Rushi Shah](https://github.com/2016rshah). This service creates an image of a user's GitHub contribution graph which can be embedded in a webpage.
 
 ## Setup and Installation
 
-1. Clone the repository to your local machine.
+1. Fork the repository & clone it to your local machine. Create a new branch using `git checkout -b <branch_name>` and proceed.
 2. Install the dependencies using `npm install` or `yarn install`.
 3. Start the development server using `npm run dev` or `yarn dev`.
 4. For authentication, we have used Github OAuth using Supabase. To set this up:
@@ -37,11 +33,15 @@ The contribution graph in the user profile is generated using [ghchart](https://
 - Tailwind CSS
 - Github public API
 
+## Screenshot
+
+![image](https://github.com/ashutosh-rath02/git-re/assets/85403534/13ae316c-2254-4da3-b07f-8b55924a9b98)
+
 ## Upcoming features🎉
 
-- Add Supabase authentication
-- Comparison between users
-- Resume templates
+- [x] Add Supabase authentication
+- [ ] Comparison between users
+- [ ] Resume templates
 
 ## Contributing
 
