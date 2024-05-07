@@ -32,6 +32,8 @@ The contribution graph in the user profile is generated using [ghchart](https://
 - Shadcn/ui
 - Tailwind CSS
 - Github public API
+- Supabase
+- Github OAuth
 
 ## Screenshot
 
