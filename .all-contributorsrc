@@ -1,4 +1,28 @@
 {
   "projectName": "git-re",
-  "projectOwner": "ashutosh-rath02"
+  "projectOwner": "ashutosh-rath02",
+  "files": [
+    "README.md"
+  ],
+  "commitType": "docs",
+  "commitConvention": "angular",
+  "contributorsPerLine": 7,
+  "contributors": [
+    {
+      "login": "ashutosh-rath02",
+      "name": "Ashutosh Rath",
+      "avatar_url": "https://avatars.githubusercontent.com/u/85403534?v=4",
+      "profile": "https://ashutoshrath.vercel.app/",
+      "contributions": [
+        "code",
+        "data",
+        "content",
+        "doc",
+        "design",
+        "mentoring",
+        "projectManagement",
+        "tutorial"
+      ]
+    }
+  ]
 }
