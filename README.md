@@ -58,6 +58,13 @@ This project is licensed under the Apache 2.0 License & all rights reserved to a
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
+<table>
+  <tbody>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://ashutoshrath.vercel.app/"><img src="https://avatars.githubusercontent.com/u/85403534?v=4?s=100" width="100px;" alt="Ashutosh Rath"/><br /><sub><b>Ashutosh Rath</b></sub></a><br /><a href="#code-ashutosh-rath02" title="Code">💻</a> <a href="#data-ashutosh-rath02" title="Data">🔣</a> <a href="#content-ashutosh-rath02" title="Content">🖋</a> <a href="#doc-ashutosh-rath02" title="Documentation">📖</a> <a href="#design-ashutosh-rath02" title="Design">🎨</a> <a href="#mentoring-ashutosh-rath02" title="Mentoring">🧑‍🏫</a> <a href="#projectManagement-ashutosh-rath02" title="Project Management">📆</a> <a href="#tutorial-ashutosh-rath02" title="Tutorials">✅</a></td>
+    </tr>
+  </tbody>
+</table>
 
 <!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
