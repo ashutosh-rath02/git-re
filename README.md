@@ -19,8 +19,8 @@ The contribution graph in the user profile is generated using [ghchart](https://
 4. For authentication, we have used Github OAuth using Supabase. To set this up:
    - Go to your [Supabase Dashboard](https://supabase.io/dashboard).
    - Select your project / Create a new one.
-   - Navigate to the "Authentication" section, then to the "Settings" tab.
-   - Under "OAuth Providers", find GitHub and fill in the "Client ID" and "Secret" fields with the details from your GitHub OAuth App. If you haven't created a GitHub OAuth App yet, you can follow [this guide](https://docs.github.com/en/developers/apps/building-oauth-apps/creating-an-oauth-app).
+   - Navigate to the "Authentication" section, then to the "Providers" tab.
+   - Under "Auth Providers", find GitHub and fill in the "Client ID" and "Secret" fields with the details from your GitHub OAuth App. If you haven't created a GitHub OAuth App yet, you can follow [this guide](https://docs.github.com/en/developers/apps/building-oauth-apps/creating-an-oauth-app).
    - Save your changes.
    - Now you can do the authentication using github
 5. Copy the `.env.example` to `.env.local` and put the secrets.
