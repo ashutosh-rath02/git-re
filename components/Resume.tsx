@@ -19,6 +19,7 @@ import Repositories from "@/components/Repositories";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import "../app/globals.css";
+import Link from "next/link";
 
 interface GitHubProfile {
   name: string;
@@ -123,7 +124,6 @@ const Resume = () => {
   const handleRepoCountChange = (value: number) => {
     setRepoCount(value);
   };
-
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center h-screen space-y-4">
@@ -195,14 +195,14 @@ const Resume = () => {
                 <p className="text-center text-[#F8FAFC]">{profile.bio}</p>
               )}
               {showBlog && (
-                <a
-                  href={profile.blog}
+                <Link
+                  href={`https://${profile.blog}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-600 hover:underline"
                 >
                   {profile.blog}
-                </a>
+                </Link>
               )}
             </div>
 
