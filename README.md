@@ -9,7 +9,9 @@ This project is a web application that generates a professional resume from a Gi
 
 ## Mentions
 
-The contribution graph in the user profile is generated using [ghchart](https://ghchart.rshah.org/) by [Rushi Shah](https://github.com/2016rshah). This service creates an image of a user's GitHub contribution graph which can be embedded in a webpage.
+- The contribution graph in the user profile is generated using [ghchart](https://ghchart.rshah.org/) by [Rushi Shah](https://github.com/2016rshah). This service creates an image of a user's GitHub contribution graph which can be embedded in a webpage. 
+
+- To know to more project connect with me : `.vasudev` (Discord Username)
 
 ## Setup and Installation
 
