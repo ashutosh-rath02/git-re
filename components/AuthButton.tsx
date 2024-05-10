@@ -34,7 +34,7 @@ export default function AuthButton({ user, height, width }: AuthButtonProps) {
   return user ? (
     <Button
       variant="outline"
-      className="inline-flex h-10 animate-shimmer items-center justify-center rounded-md border border-slate-800 bg-[linear-gradient(110deg,#000103,45%,#1e2631,55%,#000103)] bg-[length:200%_100%] px-12 font-medium text-white text-lg transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50"
+      className="inline-flex h-10 animate-shimmer items-center justify-center rounded-md border border-slate-800 bg-[linear-gradient(110deg,#000103,45%,#1e2631,55%,#000103)] bg-[length:200%_100%] px-12 font-medium text-white text-lg transition-colors focus:outline-none focus:ring-2 focus:ring-slate-100 focus:ring-offset-2 focus:ring-offset-slate-50 hover:text-grey-300"
       onClick={handleLogout}
     >
       <GitHubLogoIcon className="mr-2 size-5" /> Logout
@@ -42,7 +42,7 @@ export default function AuthButton({ user, height, width }: AuthButtonProps) {
   ) : (
     <Button
       variant="outline"
-      className="inline-flex h-11 animate-shimmer items-center justify-center rounded-md border-2 border-slate-800 bg-[linear-gradient(110deg,#000103,45%,#1e2631,55%,#000103)] bg-[length:200%_100%] px-12 font-medium  text-white text-lg transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50"
+      className="inline-flex h-11 animate-shimmer items-center justify-center rounded-md border-2 border-slate-800 bg-[linear-gradient(110deg,#000103,45%,#1e2631,55%,#000103)] bg-[length:200%_100%] px-12 font-medium  text-white text-lg transition-colors focus:outline-none focus:ring-2 focus:ring-slate-100 focus:ring-offset-2 focus:ring-offset-slate-50 hover:text-grey-300"
       onClick={handleLoginWithGithub}
     >
       <GitHubLogoIcon className="mr-2 size-5" /> Login
