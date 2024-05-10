@@ -48,6 +48,11 @@ The contribution graph in the user profile is generated using [ghchart](https://
 ## Contributing
 
 Contributions are welcome! Please open an issue or submit a pull request if you would like to help improve the project.
+NOTE 1: Please abide by the [Contributing Guidelines](https://github.com/ashutosh-rath02/git-re/blob/master/CONTRIBUTING.md).
+
+NOTE 2: Please abide by the [Code of Conduct](https://github.com/ashutosh-rath02/git-re/blob/master/CODE_OF_CONDUCT.md).
+
+NOTE 3: We follow the following [coventional commit types](https://github.com/pvdlg/conventional-commit-types)
 
 ## License
 
