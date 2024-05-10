@@ -31,8 +31,8 @@ YOU CAN REFER TO THE FOLLOWING VIDEO FOR GUIDED SETUP :
    - Click on your profile icon, located on top-right of the webpage.
    - Click on "Settings" and go to `Developers settings` by scrolling down the page.
    - Click on `OAuth Apps` and create a new application.
-   - From here you'll get two secret credentials - "Client ID" and "Secret",
-   - Now navigate to Supabase, and go inside "Authentication" tab.
+   - From here you'll get two secret credentials - "Client ID" and "Secret".
+   - Now navigate to Supabase, and go inside "Authentication" tab from the sidebar.
    - Under "Providers", find GitHub and fill in the "Client ID" and "Secret" fields with the details from your GitHub OAuth App.
    - If you haven't created a GitHub OAuth App yet, you can follow [this guide](https://docs.github.com/en/developers/apps/building-oauth-apps/creating-an-oauth-app).
    - Save your changes.
