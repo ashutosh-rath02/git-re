@@ -27,7 +27,7 @@ YOU CAN REFER TO THE FOLLOWING VIDEO FOR GUIDED SETUP :
    - Now go to "API" under `CONFIGURATION` section.
    - Copy the `URL` and `ANON-PUBLIC` from this tab and paste in your .env.local file respectively.
 4. For authentication, we have used Github OAuth using Supabase. To set this up:
-   - Go to [Github](https://github.com/)
+   - Go to [Github](https://github.com/) website.
    - Click on your profile icon, located on top-right of the webpage.
    - Click on "Settings" and go to `Developers settings` by scrolling down the page.
    - Click on `OAuth Apps` and create a new application.
