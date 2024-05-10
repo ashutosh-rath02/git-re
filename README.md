@@ -13,18 +13,31 @@ The contribution graph in the user profile is generated using [ghchart](https://
 
 ## Setup and Installation
 
-1. Fork the repository & clone it to your local machine. Create a new branch using `git checkout -b <branch_name>` and proceed.
-2. Install the dependencies using `npm install` or `yarn install`.
+YOU CAN REFER TO THE FOLLOWING VIDEO FOR GUIDED SETUP :
+- [VIDEO LINK](https://drive.google.com/file/d/1XRGlDaQ61fDzKX8IWgEWxzxr4YT5-4T_/view?usp=drive_link)
+
+1. Fork the repository & clone it to your local machine. 
+2. Create a new branch using `git checkout -b <branch_name>` and proceed.
+3. Install the dependencies using `npm install` or `yarn install`.
 3. Start the development server using `npm run dev` or `yarn dev`.
-4. For authentication, we have used Github OAuth using Supabase. To set this up:
+4. Set Up your Database :
    - Go to your [Supabase Dashboard](https://supabase.io/dashboard).
    - Select your project / Create a new one.
-   - Navigate to the "Authentication" section, then to the "Settings" tab.
-   - Under "OAuth Providers", find GitHub and fill in the "Client ID" and "Secret" fields with the details from your GitHub OAuth App. If you haven't created a GitHub OAuth App yet, you can follow [this guide](https://docs.github.com/en/developers/apps/building-oauth-apps/creating-an-oauth-app).
+   - Navigate to the "Project Settings" in the sidebar of your newly created project.
+   - Now go to "API" under `CONFIGURATION` section.
+   - Copy the `URL` and `ANON-PUBLIC` from this tab and paste in your .env.local file respectively.
+4. For authentication, we have used Github OAuth using Supabase. To set this up:
+   - Go to [Github](https://github.com/)
+   - Click on your profile icon, located on top-right of the webpage.
+   - Click on "Settings" and go to `Developers settings` by scrolling down the page.
+   - Click on `OAuth Apps` and create a new application.
+   - From here you'll get two secret credentials - "Client ID" and "Secret",
+   - Now navigate to Supabase, and go inside "Authentication" tab.
+   - Under "Providers", find GitHub and fill in the "Client ID" and "Secret" fields with the details from your GitHub OAuth App.
+   - If you haven't created a GitHub OAuth App yet, you can follow [this guide](https://docs.github.com/en/developers/apps/building-oauth-apps/creating-an-oauth-app).
    - Save your changes.
-   - Now you can do the authentication using github
-5. Copy the `.env.example` to `.env.local` and put the secrets.
-6. You are gtg.
+   - Now you can do the authentication using github.
+6. You are good to go. 
 
 ## Tech used
 
