@@ -16,7 +16,7 @@ This project is a web application that generates a professional resume from a Gi
 ## Setup and Installation
 
 YOU CAN REFER TO THE FOLLOWING VIDEO FOR GUIDED SETUP :
-- [VIDEO LINK](https://drive.google.com/file/d/1XRGlDaQ61fDzKX8IWgEWxzxr4YT5-4T_/view?usp=drive_link)
+<video controls src="public/GIT-RE Project Setup.mp4" title="Git-re Setup and Installation Video"></video>
 
 1. Fork the repository & clone it to your local machine. 
 2. Create a new branch using `git checkout -b <branch_name>` and proceed.
