@@ -45,13 +45,15 @@ export default function Footer() {
         <h3 className="text-lg font-medium text-[#7E7E7E] mt-4 tracking-wide">
           {"Code · Showcase · Impress"}
         </h3>
-        <Button
-          variant="newDefault"
-          className="w-48 mt-8 rounded-sm py-6 text-base font-semibold dark:text-white"
+        <Link
+          href="https://github.com/ashutosh-rath02/git-re/tree/main"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="w-48 mt-8 rounded-sm py-4 text-base font-semibold dark:text-white flex flex-row items-center bg-primary text-white justify-center"
         >
           <IconStarFilled className="mr-2" />
           Star on GitHub
-        </Button>
+        </Link>
       </div>
       {/* LINKS */}
       <div className="flex flex-col">
