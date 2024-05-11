@@ -6,12 +6,14 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint '**/*.{js,jsx,ts,tsx}' --fix",
+    "lint": "next lint",
     "prepare": "husky install",
     "check-types": "tsc --pretty --noEmit",
     "check-format": "prettier --check .",
+    "check-lint": "npx eslint .",
     "format": "prettier --write .",
-    "test-all": "npm run check-format && npm run check-lint && npm run check-types && npm run build"
+    "test-all": "npm run check-format && npm run check-lint && npm run check-types && npm run build",
+    "test": "echo 'No tests specified'"
   },
   "dependencies": {
     "@radix-ui/react-dropdown-menu": "^2.0.6",
@@ -55,12 +57,13 @@
     "eslint": "^8.57.0",
     "eslint-config-next": "14.2.2",
     "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.3",
     "eslint-plugin-react": "^7.34.1",
     "globals": "^15.2.0",
-    "husky": "^8.0.0",
+    "husky": "^8.0.3",
     "lint-staged": "^15.2.2",
     "postcss": "^8",
-    "prettier": "^3.2.5",
+    "prettier": "3.2.5",
     "tailwindcss": "^3.4.3",
     "typescript": "^5",
     "typescript-eslint": "^7.8.0"
@@ -70,11 +73,11 @@
     "path": false,
     "os": false
   },
+  "eslintConfig": {
+    "extends": "eslint:recommended",
+    "rules": {}
+  },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "eslint --fix",
-      "prettier --write",
-      "git add"
-    ]
+    "*.{js,jsx,ts,tsx}": "eslint --fix"
   }
 }

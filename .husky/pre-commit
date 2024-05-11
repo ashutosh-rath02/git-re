@@ -17,7 +17,7 @@ npm run check-format ||
 )
 
 #check ESLint standards
-npm run lint ||
+npm run check-lint ||
 (
     echo 'eslint check failed. '
     false;
@@ -31,5 +31,6 @@ npm run build ||
 )
 echo 'All Done I am committing this now'
 
+
 npx lint-staged
-npx lint-staged
+
