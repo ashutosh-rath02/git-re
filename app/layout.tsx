@@ -6,6 +6,7 @@ import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import { Analytics } from "@vercel/analytics/react";
 import { Toaster } from "@/components/ui/toaster";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -79,12 +80,15 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Navbar />
-          {children}
-          <Footer />
+          <div className="flex flex-col min-h-[100vh]">
+            <Navbar />
+            <div className="grow">{children}</div>
+            <Footer />
+          </div>
         </ThemeProvider>
         <Analytics />
         <Toaster />
+        <SpeedInsights />
       </body>
     </html>
   );

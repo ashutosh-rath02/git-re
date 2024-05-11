@@ -6,16 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "prepare": "husky install",
-    "check-types": "tsc --pretty --noEmit",
-    "check-format": "prettier --check .",
-    "check-lint": "npx eslint .",
-    "format": "prettier --write .",
-    "test-all": "npm run check-format && npm run check-lint && npm run check-types && npm run build",
-    "test": "echo 'No tests specified'"
+    "lint": "next lint"
   },
   "dependencies": {
+    "@radix-ui/react-avatar": "^1.0.4",
     "@radix-ui/react-dropdown-menu": "^2.0.6",
     "@radix-ui/react-icons": "^1.3.0",
     "@radix-ui/react-select": "^2.0.0",
@@ -26,16 +20,20 @@
     "@supabase/ssr": "^0.3.0",
     "@supabase/supabase-js": "^2.42.0",
     "@vercel/analytics": "^1.1.2",
+    "@vercel/speed-insights": "^1.0.10",
     "axios": "^1.6.8",
     "chart.js": "^4.4.1",
     "chartjs-plugin-datalabels": "^2.2.0",
     "class-variance-authority": "^0.7.0",
-    "clsx": "^2.1.0",
+    "clsx": "^2.1.1",
     "date-fns": "^3.3.1",
-    "framer-motion": "^11.0.28",
+    "file-saver": "^2.0.5",
+    "framer-motion": "^11.1.9",
     "html2canvas": "^1.4.1",
+    "html2pdf.js": "^0.10.1",
     "jspdf": "^2.5.1",
     "mini-svg-data-uri": "^1.4.4",
+    "mongoose": "^8.3.4",
     "next": "^14.2.3",
     "next-themes": "^0.2.1",
     "react": "^18",
@@ -43,41 +41,26 @@
     "react-dom": "^18",
     "react-icons": "^5.0.1",
     "styled-components": "^6.1.8",
-    "tailwind-merge": "^2.2.2",
+    "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
     "twin.macro": "^3.4.0",
     "zustand": "^4.5.2"
   },
   "devDependencies": {
-    "@eslint/js": "^9.2.0",
+    "@types/file-saver": "^2.0.7",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10.4.19",
-    "eslint": "^8.57.0",
+    "eslint": "^8",
     "eslint-config-next": "14.2.2",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-prettier": "^5.1.3",
-    "eslint-plugin-react": "^7.34.1",
-    "globals": "^15.2.0",
-    "husky": "^8.0.3",
-    "lint-staged": "^15.2.2",
     "postcss": "^8",
-    "prettier": "3.2.5",
     "tailwindcss": "^3.4.3",
-    "typescript": "^5",
-    "typescript-eslint": "^7.8.0"
+    "typescript": "^5"
   },
   "browser": {
     "fs": false,
     "path": false,
     "os": false
-  },
-  "eslintConfig": {
-    "extends": "eslint:recommended",
-    "rules": {}
-  },
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx}": "eslint --fix"
   }
 }
