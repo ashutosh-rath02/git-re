@@ -71,7 +71,8 @@
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  animation: bounce 1s ease-in-out infinite alternate,
+  animation:
+    bounce 1s ease-in-out infinite alternate,
     changeColor 2s linear infinite;
 }
 

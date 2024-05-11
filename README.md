@@ -8,8 +8,8 @@ This project is a web application that generates a professional resume from a Gi
 - Generates a professional resume based on GitHub contributions and projects
 
 ## Screenshot
-![image](https://github.com/ashutosh-rath02/git-re/assets/85403534/13ae316c-2254-4da3-b07f-8b55924a9b98)
 
+![image](https://github.com/ashutosh-rath02/git-re/assets/85403534/13ae316c-2254-4da3-b07f-8b55924a9b98)
 
 ## Mentions
 
@@ -41,4 +41,3 @@ Contributions are welcome! Please open an issue or submit a pull request if you 
 ## License
 
 This project is licensed under the Apache 2.0 License & all rights reserved to author [ashutosh-rath02](https://github.com/ashutosh-rath02)
-
