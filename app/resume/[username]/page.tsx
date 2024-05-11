@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       images: [
         {
-          url: `${process.env.NEXT_PUBLIC_URL}/og?username=${params.username}`,
+          url: `${process.env.NEXT_PUBLIC_URL}api/og?username=${params.username}`,
           width: 800,
           height: 600,
         },
