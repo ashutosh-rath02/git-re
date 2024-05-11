@@ -19,9 +19,6 @@ import Repositories from "@/components/Repositories";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import "../app/globals.css";
-import { Button } from "./ui/button";
-import { Share1Icon } from "@radix-ui/react-icons";
-import Head from "next/head";
 import ShareBtn from "./ShareBtn";
 
 interface GitHubProfile {
