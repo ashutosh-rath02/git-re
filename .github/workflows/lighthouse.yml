@@ -1,0 +1,23 @@
+name: Lighthouse Audit
+on:
+  pull_request_target:
+    types: [labeled]
+
+env:
+  PR_URL: https://deploy-preview-${{github.event.number}}--hacknitr.netlify.app
+  
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    if: contains(github.event.pull_request.labels.*.name, 'check-for-lighthouse')
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Audit URLs using Lighthouse
+        uses: treosh/lighthouse-ci-action@v7
+        with:
+          urls: |
+            $PR_URL
+          serverBaseUrl: ${{ secrets.LHCI_SERVER }}
+          serverToken: ${{ secrets.LHCI_TOKEN }}

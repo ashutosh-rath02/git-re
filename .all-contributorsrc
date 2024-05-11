@@ -23,6 +23,33 @@
         "projectManagement",
         "tutorial"
       ]
+    },
+    {
+      "login": "NilanchalaPanda",
+      "name": "NILANCHAL PANDA",
+      "avatar_url": "https://avatars.githubusercontent.com/u/110488337?v=4",
+      "profile": "https://www.linkedin.com/in/nilanchal-panda/",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "RoopsagarK",
+      "name": "Roopsagar K",
+      "avatar_url": "https://avatars.githubusercontent.com/u/107497296?v=4",
+      "profile": "https://github.com/RoopsagarK",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "growupanand",
+      "name": "UTKARSH ANAND",
+      "avatar_url": "https://avatars.githubusercontent.com/u/29487686?v=4",
+      "profile": "https://www.linkedin.com/in/utkarshanand93",
+      "contributions": [
+        "code"
+      ]
     }
   ]
 }

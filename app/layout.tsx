@@ -80,9 +80,11 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Navbar />
-          {children}
-          <Footer />
+          <div className="flex flex-col min-h-[100vh]">
+            <Navbar />
+            <div className="grow">{children}</div>
+            <Footer />
+          </div>
         </ThemeProvider>
         <Analytics />
         <Toaster />
