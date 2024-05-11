@@ -17,7 +17,7 @@ export const HoverEffect = ({
   return (
     <div
       className={cn(
-        "grid grid-cols-1 md:grid-cols-2  lg:grid-cols-3  py-10",
+        "grid grid-cols-1 md:grid-cols-2  lg:grid-cols-3 ",
         className
       )}
     >
@@ -46,17 +46,22 @@ export const HoverEffect = ({
               />
             )}
           </AnimatePresence>
-          <Card className="bg-muted dark:bg-secondary light:border-[2px] shadow-lg">
-            <CardTitle className="flex gap-3 items-center text-blue-950 dark:text-white">
-              <Avatar className="border-[3px] border-primary border-spacing-4">
-                <AvatarImage src={`${item.avatar_url}`} />
-                <AvatarFallback>CN</AvatarFallback>
+          <Card className="bg-muted grid grid-rows-[50%, 50%] dark:bg-secondary border-2 border-light p-2 shadow-lg relative">
+            <div className="text-sm leading-[1.6] overflow-hidden dark:text-gray-100 text-black font-normal h-16">
+              <p>{item.bio ? item.bio : "No bio available"}</p>
+            </div>
+            <div className="text-sm h-16 flex items-center gap-3 mt-2">
+              <Avatar className="border-2 border-blue-500">
+                <AvatarImage src={item.avatar_url} alt={item.username} />
+                <AvatarFallback>{item.username?.slice(0, 2)}</AvatarFallback>
               </Avatar>
-              <p>{item?.name}</p>
-            </CardTitle>
-            <CardDescription className="text-gray-600 dark:text-gray-300">
-              {item?.bio}
-            </CardDescription>
+              <div className="font-medium">
+                <p className="text-black dark:text-gray-100">{item?.name}</p>
+                <p className="text-gray-500 dark:text-gray-400 text-[12px]">
+                  {item.username}
+                </p>
+              </div>
+            </div>
           </Card>
         </Link>
       ))}

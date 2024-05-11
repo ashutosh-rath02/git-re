@@ -8,7 +8,6 @@ const UserDataSchema: Schema = new mongoose.Schema({
   avatar_url: { type: String, required: true },
   bio: { type: String, required: true },
   username: { type: String, required: true, unique: true },
-  userId: { type: String, required: true, unique: false },
 });
 
 const UserModel =
