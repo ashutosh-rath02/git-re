@@ -85,6 +85,7 @@ This project is licensed under the Apache 2.0 License & all rights reserved to a
       <td align="center" valign="top" width="14.28%"><a href="https://www.linkedin.com/in/nilanchal-panda/"><img src="https://avatars.githubusercontent.com/u/110488337?v=4?s=100" width="100px;" alt="NILANCHAL PANDA"/><br /><sub><b>NILANCHAL PANDA</b></sub></a><br /><a href="#code-NilanchalaPanda" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/RoopsagarK"><img src="https://avatars.githubusercontent.com/u/107497296?v=4?s=100" width="100px;" alt="Roopsagar K"/><br /><sub><b>Roopsagar K</b></sub></a><br /><a href="#code-RoopsagarK" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://www.linkedin.com/in/utkarshanand93"><img src="https://avatars.githubusercontent.com/u/29487686?v=4?s=100" width="100px;" alt="UTKARSH ANAND"/><br /><sub><b>UTKARSH ANAND</b></sub></a><br /><a href="#code-growupanand" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/VanshikaSabharwal"><img src="https://avatars.githubusercontent.com/u/143436704?v=4?s=100" width="100px;" alt="Vanshika Sabharwal"/><br /><sub><b>Vanshika Sabharwal</b></sub></a><br /><a href="#code-VanshikaSabharwal" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
