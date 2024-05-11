@@ -3,6 +3,7 @@ import React, { FormEvent, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
+import axios from "axios";
 
 export default function Form() {
   const [username, setUsername] = useState("");
@@ -20,6 +21,14 @@ export default function Form() {
       router.push(`/resume/${username}`);
       setIsLoading(false);
     }, 3000);
+    try {
+      const response = axios.post("/api/users", {
+        git_username: username,
+      });
+      console.log(response);
+    } catch (error) {
+      console.error(`error saving the data ${error}`);
+    }
   };
   return (
     <div className="flex w-full md:max-w-sm items-center space-x-4 md:space-x-8">

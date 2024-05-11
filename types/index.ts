@@ -12,3 +12,10 @@ export interface Language {
   percent: number;
   url: string;
 }
+
+export interface UserData {
+  name: string;
+  avatar_url: string;
+  bio: string;
+  username: string;
+}

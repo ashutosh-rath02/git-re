@@ -5,6 +5,7 @@ import "./globals.css";
 import Form from "@/components/Form";
 import AuthButton from "@/components/AuthButton";
 import { supabaseServer } from "@/utils/supabase/server";
+import RecentGenerations from "@/components/RecentGenerations";
 
 export default async function Home() {
   const supabase = supabaseServer();
@@ -49,6 +50,7 @@ export default async function Home() {
           />
         </a>
       </div>
+      <div>{data.user && <RecentGenerations />}</div>
     </main>
   );
 }
