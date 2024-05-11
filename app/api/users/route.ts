@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import UserModel from "@/utils/models/UserModel";
-import connectDB from "@/utils/config/db";
+// import connectDB from "@/utils/config/db";
 import { supabaseServer } from "@/utils/supabase/server";
 import axios from "axios";
 
@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
       return new Response("Username is required", { status: 400 });
     }
 
-    await connectDB();
+    // await connectDB();
     const existingUser = await UserModel.findOne({ git_username });
 
     if (existingUser) {
@@ -66,7 +66,7 @@ export async function GET() {
   const supabase = supabaseServer();
   const { data } = await supabase.auth.getUser();
   try {
-    await connectDB();
+    // await connectDB();
     const users = await UserModel.find({
       userId: data.user?.id,
     });
