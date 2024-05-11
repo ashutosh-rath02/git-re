@@ -26,7 +26,6 @@ export default function Footer() {
       icon: <TwitterLogoIcon height="20" width="20" />,
     },
   ];
-
   return (
     <footer className="mx-auto w-full cursor-default items-center justify-center backdrop-blur-sm py-4 text-center shadow-xl md:px-0">
       <section className="mx-auto flex w-full max-w-4xl flex-col items-center justify-between gap-y-4 shadow-xl md:flex-row md:gap-y-0">
@@ -43,7 +42,7 @@ export default function Footer() {
 
         <div className="flex gap-4">
           {icons.map((icon, index) => (
-            <Link href={icon.href} target="_blank" key={index}>
+            <Link className="transition-transform duration-500 hover:scale-150" href={icon.href} target="_blank" key={index}>
               {icon.icon}
             </Link>
           ))}
