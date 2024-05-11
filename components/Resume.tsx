@@ -20,6 +20,7 @@ import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import "../app/globals.css";
 import Link from "next/link";
+import ShareBtn from "./ShareBtn";
 
 interface GitHubProfile {
   name: string;
@@ -175,9 +176,11 @@ const Resume = () => {
           setOrganizationCount={setOrganizationCount}
         />
       </div>
+
       <div className="flex-grow p-4 order-1 lg:order-2">
         <div ref={resumeRef} className="mx-auto flex justify-center">
           <div className="bg-[#020817] h-full w-full rounded-md bg-clip-padding dark:backdrop-filter dark:backdrop-blur-md dark:bg-opacity-10 border border-gray-100 shadow-md p-6 max-w-4xl">
+            <ShareBtn username={username} />
             <div className="flex flex-col items-center">
               <Image
                 src={profile.avatar_url || ""}
