@@ -50,7 +50,14 @@ export default async function Home() {
           />
         </a>
       </div>
-      <div>{data.user && <RecentGenerations />}</div>
+      <div>
+        <div className="py-4">
+          <p className="text-4xl font-bold text-center mt-4 text-blue-400 dark:text-gray-500">
+            Here are some of our recent users
+          </p>
+        </div>
+        <RecentGenerations />
+      </div>
     </main>
   );
 }
