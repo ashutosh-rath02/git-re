@@ -53,7 +53,8 @@ export async function GET() {
   try {
     await connectDB();
     const users = await UserModel.find({});
-    return NextResponse.json(users);
+    const reversedUsers = users.reverse();
+    return NextResponse.json(reversedUsers);
   } catch (error) {
     console.error("Error fetching users:", error);
     return new Response("Internal Server Error", { status: 500 });
