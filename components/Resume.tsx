@@ -199,7 +199,7 @@ const Resume = () => {
               )}
               {showBlog && (
                 <Link
-                  href={`https://${profile.blog}`}
+                  href={profile.blog}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-600 hover:underline"
