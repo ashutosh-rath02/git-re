@@ -16,6 +16,13 @@ export default function Form() {
   const [isLoading, setIsLoading] = useState(false);
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
+
+    //Regex to match github username validation
+    const regex = /^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$/i;
+    if (!regex.test(username)) {
+      return;
+    }
+
     setIsLoading(true);
     setTimeout(() => {
       router.push(`/resume/${username}`);
@@ -42,7 +49,7 @@ export default function Form() {
         />
         <Button
           type="submit"
-          disabled={isLoading || username.trim() === ""}
+          disabled={isLoading}
           className="h-12 px-6 flex items-center justify-center"
         >
           {isLoading ? <div className="loader1"></div> : "Generate"}
