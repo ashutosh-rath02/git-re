@@ -6,12 +6,13 @@ import Form from "@/components/Form";
 import AuthButton from "@/components/AuthButton";
 import { supabaseServer } from "@/utils/supabase/server";
 import RecentGenerations from "@/components/RecentGenerations";
+import UserTestimonails from "@/components/UserTestimonials";
 
 export default async function Home() {
   const supabase = supabaseServer();
   const { data } = await supabase.auth.getUser();
   return (
-    <main className="flex flex-col my-[8%] h-screen items-center justify-center p-4 lg:px-24">
+    <main className="flex flex-col my-[8%] items-center justify-center p-4 lg:px-24">
       <div className="relative mb-[6%] h-full flex flex-col max-w-4xl gap-8 place-items-center">
         <div className="absolute inset-0 grid grid-cols-2 -space-x-52 opacity-40 dark:opacity-20 pointer-events-none">
           <div className="blur-[106px] h-56 bg-gradient-to-br from-primary to-purple-400 dark:from-blue-700"></div>
@@ -63,7 +64,7 @@ export default async function Home() {
           </div>
         </div>
       </div>
-      <div className="md:w-full flex flex-col items-center justify-center">
+      <div className="h-[30rem] w-full flex flex-col items-center justify-center">
         <div className="py-4">
           <p className="text-4xl font-bold text-center mt-4">
             Here are some of our recent{" "}
@@ -73,6 +74,9 @@ export default async function Home() {
           </p>
         </div>
         <RecentGenerations />
+      </div>
+      <div className="md:h-[30rem]">
+        <UserTestimonails />
       </div>
     </main>
   );
