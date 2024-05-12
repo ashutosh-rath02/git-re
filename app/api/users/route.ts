@@ -1,23 +1,26 @@
 import { NextRequest, NextResponse } from "next/server";
-import UserModel from "@/utils/models/UserModel";
-import connectDB from "@/utils/config/db";
 import axios from "axios";
+import { supabaseBrowser } from "@/utils/supabase/client";
+
+const supabase = supabaseBrowser();
 
 export async function POST(request: NextRequest) {
   try {
-    console.log(request);
     const { git_username } = await request.json();
 
     if (!git_username) {
       return new Response("Username is required", { status: 400 });
     }
 
-    await connectDB();
-    const existingUser = await UserModel.findOne({ git_username });
+    const existingUser = await supabase
+      .from("recent_users")
+      .select("*")
+      .eq("username", git_username)
+      .single();
 
-    if (existingUser) {
-      console.log("user already exits");
-      return new Response("Username updated successfully", { status: 200 });
+    if (existingUser.data && existingUser.data.name) {
+      console.log("User already exists");
+      return new Response("Username already exists", { status: 400 });
     }
 
     try {
@@ -29,16 +32,36 @@ export async function POST(request: NextRequest) {
           },
         }
       );
+
       const userData = {
-        name: response.data.name,
-        avatar_url: response.data.avatar_url,
-        bio: response.data.bio,
-        username: response.data.login,
+        name: response.data.name || "",
+        avatar_url: response.data.avatar_url || "",
+        bio: response.data.bio || "",
+        username: response.data.login || "",
       };
-      console.log(userData);
-      const newUser = new UserModel(userData);
-      await newUser.save();
-      return new Response("Username updated successfully", { status: 200 });
+
+      if (!userData.name) {
+        console.log("Data is NULL. User is rate-limited by GitHub");
+        return new Response(
+          "Data is NULL. You are rate-limited, please try again later.",
+          { status: 500 }
+        );
+      }
+
+      const { data, error } = await supabase.from("recent_users").insert([
+        {
+          username: userData.username,
+          name: userData.name,
+          bio: userData.bio,
+          avatar_url: userData.avatar_url,
+        },
+      ]);
+
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      return new Response("Username added successfully", { status: 200 });
     } catch (error) {
       console.error("Error fetching user data:", error);
       return new Response("Internal Server Error", { status: 500 });
@@ -51,10 +74,17 @@ export async function POST(request: NextRequest) {
 
 export async function GET() {
   try {
-    await connectDB();
-    const users = await UserModel.find({});
-    const reversedUsers = users.reverse();
-    return NextResponse.json(reversedUsers);
+    const { data: users, error } = await supabase
+      .from("recent_users")
+      .select("*")
+      .order("id", { ascending: false })
+      .limit(7);
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    return NextResponse.json(users, { status: 200 });
   } catch (error) {
     console.error("Error fetching users:", error);
     return new Response("Internal Server Error", { status: 500 });
