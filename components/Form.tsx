@@ -14,7 +14,7 @@ export default function Form() {
     setUsername(e.target.value);
   };
   const [isLoading, setIsLoading] = useState(false);
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setTimeout(() => {
@@ -22,7 +22,7 @@ export default function Form() {
       setIsLoading(false);
     }, 3000);
     try {
-      const response = axios.post("/api/users", {
+      const response = await axios.post("/api/users", {
         git_username: username,
       });
       console.log(response);
