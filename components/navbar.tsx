@@ -6,7 +6,6 @@ import Link from "next/link";
 import { Button } from "./ui/button";
 import AuthButton from "./AuthButton";
 import { supabaseServer } from "@/utils/supabase/server";
-import { IconBrandGithubFilled, IconCubeUnfolded } from "@tabler/icons-react";
 
 export default async function Navbar() {
   const repositoryUrl = "https://github.com/ashutosh-rath02/git-re";
@@ -15,7 +14,7 @@ export default async function Navbar() {
   const { data } = await supabase.auth.getUser();
 
   return (
-    <nav className="max-w-screen-2xl mx-auto sm:px-20 px-3 m-2 mt-7 p-4 w-full flex items-center justify-between">
+    <nav className="max-w-screen-2xl mx-auto sm:px-20 px-3 m-2 p-4 w-full flex items-center justify-between">
       <div className="flex items-center gap-x-2">
         <Link
           href={"/"}
