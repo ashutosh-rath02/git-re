@@ -1,0 +1,47 @@
+name: Eslint Check
+
+on:
+  workflow_call:
+    inputs:
+      fail-on-error:
+        description: 'Fail on error'
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  eslint:
+    name: Eslint Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'yarn'
+          cache-dependency-path: '**/yarn.lock'
+
+      - name: Use Dev Cache
+        id: dev-cache
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-dev
+        with:
+          # Path for node_modules
+          path: '**/node_modules'
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - if: ${{steps.dev-cache.outputs.cache-hit != 'true'}}
+        name: Install Dependencies
+        run: yarn install
+
+      - name: Eslint Check
+        run: yarn lint:find
+        continue-on-error: ${{ github.event.inputs.fail-on-error != 'true'}}

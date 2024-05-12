@@ -5,14 +5,22 @@ import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import { supabaseBrowser } from "@/utils/supabase/client";
 import { User } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
+import { IconCubeUnfolded, IconLogout } from "@tabler/icons-react";
+import { cn } from "@/lib/utils";
 
 type AuthButtonProps = {
   user: User | null;
   height?: number;
   width?: number;
+  className?: string;
 };
 
-export default function AuthButton({ user, height, width }: AuthButtonProps) {
+export default function AuthButton({
+  user,
+  height,
+  width,
+  className,
+}: AuthButtonProps) {
   const router = useRouter();
 
   const handleLoginWithGithub = () => {
@@ -33,19 +41,21 @@ export default function AuthButton({ user, height, width }: AuthButtonProps) {
 
   return user ? (
     <Button
-      variant="outline"
-      className="inline-flex h-10 animate-shimmer items-center justify-center rounded-md border border-slate-800 bg-[linear-gradient(110deg,#000103,45%,#1e2631,55%,#000103)] bg-[length:200%_100%] px-12 font-medium text-white text-lg transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50"
+      variant="newDefault"
+      className={`animate-shimmer h-10 ${className}`}
       onClick={handleLogout}
     >
-      <GitHubLogoIcon className="mr-2 size-5" /> Logout
+      <IconLogout stroke={2} className="mr-2" />
+      Logout
     </Button>
   ) : (
     <Button
-      variant="outline"
-      className="inline-flex h-11 animate-shimmer items-center justify-center rounded-md border-2 border-slate-800 bg-[linear-gradient(110deg,#000103,45%,#1e2631,55%,#000103)] bg-[length:200%_100%] px-12 font-medium  text-white text-lg transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50"
+      variant="newDefault"
+      className={cn(className, "animate-shimmer h-10")}
       onClick={handleLoginWithGithub}
     >
-      <GitHubLogoIcon className="mr-2 size-5" /> Login
+      <IconCubeUnfolded stroke={1} className="mr-2" />
+      Build Resume
     </Button>
   );
 }

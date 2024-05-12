@@ -27,6 +27,9 @@ module.exports = {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
         },
+        primaryLight: "#2D71ED",
+        secondaryText: "#7E7E7E",
+        navbarSecondary: "#3C3C3C",
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
