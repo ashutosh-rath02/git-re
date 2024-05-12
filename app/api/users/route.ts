@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import UserModel from "@/utils/models/UserModel";
-// import connectDB from "@/utils/config/db";
+import connectDB from "@/utils/config/db";
 import axios from "axios";
 
 export async function POST(request: NextRequest) {
@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
 
 export async function GET() {
   try {
-    // await connectDB();
+    await connectDB();
     const users = await UserModel.find({});
     const reversedUsers = users.reverse();
     return NextResponse.json(reversedUsers);

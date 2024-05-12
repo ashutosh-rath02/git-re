@@ -1,32 +1,13 @@
 "use client";
 
 import { InfiniteMovingCards } from "@/components/ui/infinite-moving-cards";
+import testimonials from "@/config/content/Testimonials";
 
 const UserTestimonails = () => {
-  const testimonials = [
-    {
-      quote:
-        "Interesting ! Is there a way to display public repositories from organizations made by the user ?",
-      name: "Yannick",
-      title: "Full-Stack Developer",
-    },
-    {
-      quote:
-        "The idea is very cool :) Would love to be able to export the result as a PDF I can share",
-      name: "Matt El Mouktafi",
-      title: "Founder @Achiev",
-    },
-    {
-      quote: "Looks nice. Good luck to you today",
-      name: "Garen Orchyan",
-      title: "Building Asyncinterview",
-    },
-  ];
-
   return (
     <div className="h-[40rem] w-full relative flex flex-col items-center justify-center overflow-hidden">
-      <h2 className="text-3xl font-bold text-center mb-8 z-10">
-        Hear our Users about{" "}
+      <h2 className="text-3xl font-bold text-center mb-8 z-10 md:text-4xl">
+        Hear what our Users say about{" "}
         <span className="text-transparent bg-clip-text bg-gradient-to-br gradient-radial from-blue-500 to-blue-900">
           git-re
         </span>

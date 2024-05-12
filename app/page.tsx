@@ -73,7 +73,7 @@ export default async function Home() {
             </span>
           </p>
         </div>
-        {/* <RecentGenerations /> */}
+        <RecentGenerations />
       </div>
       <div className="h-[40rem]">
         <UserTestimonails />
