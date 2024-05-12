@@ -15,7 +15,7 @@ export default async function Navbar() {
   const { data } = await supabase.auth.getUser();
 
   return (
-    <nav className="max-w-screen-2xl mx-auto 2xl:px-0 sm:px-20 px-3 m-2 mt-7 p-4 w-full flex items-center justify-between">
+    <nav className="max-w-screen-2xl mx-auto sm:px-20 px-3 m-2 mt-7 p-4 w-full flex items-center justify-between">
       <div className="flex items-center gap-x-2">
         <Link
           href={"/"}

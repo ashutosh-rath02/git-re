@@ -33,7 +33,7 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="max-w-screen-2xl mx-auto 2xl:px-0 sm:px-20 px-3 m-2 p-4 w-full flex flex-col space-y-12 sm:flex-row justify-between items-start">
+    <footer className="max-w-screen-2xl mx-auto sm:px-20 px-3 m-2 p-4 w-full flex flex-col space-y-12 sm:flex-row justify-between items-start">
       <div className="flex flex-col max-w-96">
         <div className="flex items-center gap-x-2">
           <Link
@@ -70,13 +70,13 @@ export default function Footer() {
             </h4>
             <Link
               href="https://github.com/ashutosh-rath02/git-re/"
-              className="mt-3 text-[#7E7E7E] font-medium dark:text-white"
+              className="mt-3 text-secondaryText font-medium dark:text-white"
             >
               Contribute
             </Link>
             <Link
               href="https://www.producthunt.com/products/git-re"
-              className="text-[#7E7E7E] font-medium dark:text-white"
+              className="text-secondaryText font-medium dark:text-white"
             >
               Vote on Product Hunt
             </Link>
@@ -84,14 +84,14 @@ export default function Footer() {
         </div>
         <div className="flex flex-row justify-star items-center sm:justify-between space-x-8 mt-7">
           <ModeToggle />
-          <div className="flex flex-row items-center space-x-8">
+          <div className="flex flex-row items-center space-x-4">
             {icons.map(({ title, href, icon }) => (
               <a
                 key={title}
                 href={href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[#7E7E7E] hover:text-primary dark:text-white"
+                className="text-secondaryText hover:text-primary dark:text-white"
               >
                 {icon}
               </a>
