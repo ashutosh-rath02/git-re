@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Button } from "./ui/button";
 import AuthButton from "./AuthButton";
 import { supabaseServer } from "@/utils/supabase/server";
+import { IconBrandGithubFilled, IconCubeUnfolded } from "@tabler/icons-react";
 
 export default async function Navbar() {
   const repositoryUrl = "https://github.com/ashutosh-rath02/git-re";
@@ -14,27 +15,34 @@ export default async function Navbar() {
   const { data } = await supabase.auth.getUser();
 
   return (
-    <header className="flex h-16 w-full items-center justify-between border-b border-border px-2 lg:px-20">
-      <Link
-        href={"/"}
-        className="text-lg font-black flex flex-row items-center justify-center gap-2 cursor-pointer"
-      >
-        <GitHubLogoIcon width="22" height="22" />
-        git-re
-      </Link>
-      <div className="flex items-center gap-4">
-        <a
-          href={repositoryUrl}
+    <nav className="max-w-screen-2xl mx-auto 2xl:px-0 sm:px-20 px-3 m-2 mt-7 p-4 w-full flex items-center justify-between">
+      <div className="flex items-center gap-x-2">
+        <Link
+          href={"/"}
+          className="text-lg font-black flex flex-row items-center justify-center gap-2 cursor-pointer"
+        >
+          <GitHubLogoIcon width="22" height="22" />
+          git-re
+        </Link>
+      </div>
+      <div className="flex flex-row items-center space-x-8">
+        <Link
+          href="https://github.com/ashutosh-rath02/git-re"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-lg hover:text-primary cursor-pointer flex items-center gap-1"
+          className="text-navbarSecondary hover:text-primary font-semibold transition sm:block hidden dark:text-white"
         >
-          <IoMdGitNetwork size={22} />
-          Fork
-        </a>
-        <ModeToggle />
+          Opensource
+        </Link>
+        <Link
+          href="#"
+          className="text-navbarSecondary hover:text-primary font-semibold transition sm:block hidden dark:text-white"
+        >
+          Testimonial
+        </Link>
+
         <AuthButton user={data.user} />
       </div>
-    </header>
+    </nav>
   );
 }
