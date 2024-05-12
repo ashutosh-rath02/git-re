@@ -33,15 +33,9 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="max-w-screen-2xl mx-auto m-2 p-4 w-full flex flex-col space-y-12 sm:flex-row justify-between items-start">
+    <footer className="max-w-screen-2xl mx-auto 2xl:px-0 sm:px-20 px-3 m-2 p-4 w-full flex flex-col space-y-12 sm:flex-row justify-between items-start">
       <div className="flex flex-col max-w-96">
         <div className="flex items-center gap-x-2">
-          {/* <div>
-            <IconBrandGithubFilled className="text-primaryLight sm:w-[36px] sm:h-[36px] w-[30px] h-[30px]" />
-          </div>
-          <h1 className="sm:text-3xl text-2xl font-semibold text-primaryLight">
-            git-re
-          </h1> */}
           <Link
             href={"/"}
             className="text-lg font-black flex flex-row items-center justify-center gap-2 cursor-pointer"
@@ -50,9 +44,13 @@ export default function Footer() {
             git-re
           </Link>
         </div>
-        <h3 className="text-lg font-medium text-[#7E7E7E] mt-4 tracking-wide">
+        <h3 className="text-lg font-medium text-secondaryText mt-4 tracking-wide">
           {"Code · Showcase · Impress"}
         </h3>
+        <h4 className="mt-4 text-sm font-medium text-secondaryText">
+          {" "}
+          &copy; {currentYear} Made with 🤯 by Ashutosh Rath
+        </h4>
         <Link
           href="https://github.com/ashutosh-rath02/git-re/tree/main"
           target="_blank"
@@ -66,21 +64,6 @@ export default function Footer() {
       {/* LINKS */}
       <div className="flex flex-col">
         <div className="flex flex-row space-x-16">
-          <div className="flex flex-col">
-            <h4 className="text-lg font-semibold text-primary">Legal</h4>
-            <Link
-              href="/privacy"
-              className="text-[#7E7E7E] font-medium mt-3 dark:text-white"
-            >
-              Privacy Policy
-            </Link>
-            <Link
-              href="/terms"
-              className="text-[#7E7E7E] font-medium dark:text-white"
-            >
-              Terms of Service
-            </Link>
-          </div>
           <div className="flex flex-col">
             <h4 className="text-lg font-semibold text-primary">
               Important Links

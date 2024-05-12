@@ -42,7 +42,7 @@ export default function AuthButton({
   return user ? (
     <Button
       variant="newDefault"
-      className={`animate-shimmer h-10 ${className}`} // Add className prop to the Button
+      className={`animate-shimmer h-10 ${className}`}
       onClick={handleLogout}
     >
       <IconLogout stroke={2} className="mr-2" />

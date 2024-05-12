@@ -15,14 +15,8 @@ export default async function Navbar() {
   const { data } = await supabase.auth.getUser();
 
   return (
-    <nav className="max-w-screen-2xl mx-auto m-2 mt-7 p-4 w-full flex items-center justify-between">
+    <nav className="max-w-screen-2xl mx-auto 2xl:px-0 sm:px-20 px-3 m-2 mt-7 p-4 w-full flex items-center justify-between">
       <div className="flex items-center gap-x-2">
-        {/* <div>
-          <IconBrandGithubFilled className="text-primaryLight sm:w-[36px] sm:h-[36px] w-[30px] h-[30px]" />
-        </div>
-        <h1 className="sm:text-3xl text-2xl font-semibold text-primaryLight">
-          git-re
-        </h1> */}
         <Link
           href={"/"}
           className="text-lg font-black flex flex-row items-center justify-center gap-2 cursor-pointer"
@@ -36,13 +30,13 @@ export default async function Navbar() {
           href="https://github.com/ashutosh-rath02/git-re"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-[3C3C3C] hover:text-primary font-semibold transition sm:block hidden"
+          className="text-navbarSecondary hover:text-primary font-semibold transition sm:block hidden"
         >
           Opensource
         </Link>
         <Link
           href="#"
-          className="text-[3C3C3C] hover:text-primary font-semibold transition sm:block hidden"
+          className="text-navbarSecondary hover:text-primary font-semibold transition sm:block hidden"
         >
           Testimonial
         </Link>
