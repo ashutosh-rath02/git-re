@@ -44,10 +44,10 @@ export default function Footer() {
             git-re
           </Link>
         </div>
-        <h3 className="text-lg font-medium text-secondaryText mt-4 tracking-wide">
+        <h3 className="text-lg font-medium text-secondaryText mt-4 tracking-wide dark:text-white">
           {"Code · Showcase · Impress"}
         </h3>
-        <h4 className="mt-4 text-sm font-medium text-secondaryText">
+        <h4 className="mt-4 text-sm font-medium text-secondaryText dark:text-gray-200">
           {" "}
           &copy; {currentYear} Made with 🤯 by Ashutosh Rath
         </h4>

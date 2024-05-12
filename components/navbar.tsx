@@ -30,13 +30,13 @@ export default async function Navbar() {
           href="https://github.com/ashutosh-rath02/git-re"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-navbarSecondary hover:text-primary font-semibold transition sm:block hidden"
+          className="text-navbarSecondary hover:text-primary font-semibold transition sm:block hidden dark:text-white"
         >
           Opensource
         </Link>
         <Link
           href="#"
-          className="text-navbarSecondary hover:text-primary font-semibold transition sm:block hidden"
+          className="text-navbarSecondary hover:text-primary font-semibold transition sm:block hidden dark:text-white"
         >
           Testimonial
         </Link>
