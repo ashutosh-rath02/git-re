@@ -19,7 +19,6 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (existingUser.data && existingUser.data.name) {
-      console.log("User already exists");
       return new Response("Username already exists", { status: 400 });
     }
 
