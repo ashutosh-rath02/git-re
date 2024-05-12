@@ -59,6 +59,16 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "dhairyathedev",
+      "name": "Dhairya Shah",
+      "avatar_url": "https://avatars.githubusercontent.com/u/65452005?v=4",
+      "profile": "http://dhairyashah.dev",
+      "contributions": [
+        "code",
+        "maintenance"
+      ]
     }
   ]
 }
