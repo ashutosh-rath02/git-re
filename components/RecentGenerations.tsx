@@ -60,12 +60,15 @@ const RecentGenerations = () => {
         opts={{
           align: "start",
         }}
-        className="w-full max-w-5xl z-50"
+        className="w-[72vw] md:w-full md:max-w-6xl z-50"
         plugins={[plugin.current]}
       >
         <CarouselContent>
           {usersData.map((item, index) => (
-            <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+            <CarouselItem
+              key={index}
+              className="w-full md:basis-1/2 lg:basis-1/3"
+            >
               <Link
                 href={`/resume/${item?.username}`}
                 key={item?.username}
