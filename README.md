@@ -102,6 +102,9 @@ This project is licensed under the Apache 2.0 License & all rights reserved to a
       <td align="center" valign="top" width="14.28%"><a href="http://dhairyashah.dev"><img src="https://avatars.githubusercontent.com/u/65452005?v=4?s=100" width="100px;" alt="Dhairya Shah"/><br /><sub><b>Dhairya Shah</b></sub></a><br /><a href="#code-dhairyathedev" title="Code">💻</a> <a href="#maintenance-dhairyathedev" title="Maintenance">🚧</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://www.ratishjain.tech/"><img src="https://avatars.githubusercontent.com/u/43003421?v=4?s=100" width="100px;" alt="Ratish jain"/><br /><sub><b>Ratish jain</b></sub></a><br /><a href="#code-ratishjain12" title="Code">💻</a></td>
     </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/SpaciousCoder78"><img src="https://avatars.githubusercontent.com/u/88923986?v=4?s=100" width="100px;" alt="Aryan Karamtoth"/><br /><sub><b>Aryan Karamtoth</b></sub></a><br /><a href="#doc-SpaciousCoder78" title="Documentation">📖</a></td>
+    </tr>
   </tbody>
 </table>
 
