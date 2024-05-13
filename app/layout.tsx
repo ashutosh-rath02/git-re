@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL("https://git-re.vercel.app/"),
+  metadataBase: new URL(new URL(process.env.NEXT_PUBLIC_URL!)),
   openGraph: {
     title: "git-re",
     description: "Generate your GitHub profile into a resume effortlessly.",
