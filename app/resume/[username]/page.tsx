@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: `Hey, Check out my resume at ${process.env.NEXT_PUBLIC_URL}/resume/${params.username}. Want to create your's? Visit https://git-re.vercel.app/ `,
       creator: "@v_ashu_dev",
       images: [
-        `${process.env.NEXT_PUBLIC_URL}api/og?username=${params.username}`,
+        `${process.env.NEXT_PUBLIC_URL}/api/og?username=${params.username}`,
       ],
     },
   };
