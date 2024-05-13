@@ -12,7 +12,7 @@ const UserTestimonails = () => {
           git-re
         </span>
       </h2>
-      <div className="flex justify-center w-[100vw] overflow-hidden md:w-full">
+      <div className="flex justify-center overflow-hidden w-[100vw] md:w-full">
         <div className="w-full max-w-6xl">
           <InfiniteMovingCards
             items={testimonials}
