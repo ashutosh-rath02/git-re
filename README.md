@@ -178,6 +178,7 @@ This project is licensed under the Apache 2.0 License & all rights reserved to a
     </tr>
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/SpaciousCoder78"><img src="https://avatars.githubusercontent.com/u/88923986?v=4?s=100" width="100px;" alt="Aryan Karamtoth"/><br /><sub><b>Aryan Karamtoth</b></sub></a><br /><a href="#doc-SpaciousCoder78" title="Documentation">📖</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="http://jinxvi-portfolio.vercel.app"><img src="https://avatars.githubusercontent.com/u/120160355?v=4?s=100" width="100px;" alt="Adarsh"/><br /><sub><b>Adarsh</b></sub></a><br /><a href="#doc-jinx-vi-0" title="Documentation">📖</a></td>
     </tr>
   </tbody>
 </table>
