@@ -75,7 +75,7 @@ export default async function Home() {
         </div>
         <RecentGenerations />
       </div>
-      <div className="md:h-[30rem]">
+      <div className="flex justify-center items-center h-[30rem]">
         <UserTestimonails />
       </div>
     </main>
