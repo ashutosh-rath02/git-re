@@ -2,6 +2,35 @@
 
 This project is a web application that generates a professional resume from a GitHub profile. Simply enter a GitHub username, and the application will create a resume based on the user's contributions and projects.
 
+## Featured In
+
+<table>
+
+   <tr>
+      <th>Event Logo</th>
+      <th>Event Name</th>
+      <th>Event Description</th>
+   </tr>
+   <tr>
+      <td><img src=".github/assets/gssoc24.png" width="200" height="auto" loading="lazy" alt="GSSoC 24"/></td>
+      <td>GirlScript Summer of Code 2024</td>
+      <td>GirlScript Summer of Code is a three-month-long Open Source Program conducted every summer by GirlScript Foundation. It is an initiative to bring more beginners to Open-Source Software Development.</td>
+   </tr>
+
+</table>
+
+## Table of Contents
+* [Features](https://github.com/ashutosh-rath02/git-re?tab=readme-ov-file#features)
+* [Mentions](https://github.com/ashutosh-rath02/git-re?tab=readme-ov-file#mentions)
+* [Setup and Installation](https://github.com/ashutosh-rath02/git-re?tab=readme-ov-file#setup-and-installation)
+    * [Setup Supabase](https://github.com/ashutosh-rath02/git-re/blob/main/LEARN.md)
+* [Tech Used](https://github.com/ashutosh-rath02/git-re?tab=readme-ov-file#tech-used)
+* [Screenshots](https://github.com/ashutosh-rath02/git-re?tab=readme-ov-file#screenshot)
+* [Upcoming Features](https://github.com/ashutosh-rath02/git-re?tab=readme-ov-file#upcoming-features)
+* [Contributing](https://github.com/ashutosh-rath02/git-re?tab=readme-ov-file#contributing)
+* [License](https://github.com/ashutosh-rath02/git-re?tab=readme-ov-file#license)
+* [Contributors](https://github.com/ashutosh-rath02/git-re?tab=readme-ov-file#contributors)
+
 ## Features
 
 - Fetches user data from GitHub's API
