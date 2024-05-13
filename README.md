@@ -23,6 +23,7 @@ This project is a web application that generates a professional resume from a Gi
 * [Features](https://github.com/ashutosh-rath02/git-re?tab=readme-ov-file#features)
 * [Mentions](https://github.com/ashutosh-rath02/git-re?tab=readme-ov-file#mentions)
 * [Setup and Installation](https://github.com/ashutosh-rath02/git-re?tab=readme-ov-file#setup-and-installation)
+    * [Setup Supabase](https://github.com/ashutosh-rath02/git-re/blob/main/LEARN.md)
 * [Tech Used](https://github.com/ashutosh-rath02/git-re?tab=readme-ov-file#tech-used)
 * [Screenshots](https://github.com/ashutosh-rath02/git-re?tab=readme-ov-file#screenshot)
 * [Upcoming Features](https://github.com/ashutosh-rath02/git-re?tab=readme-ov-file#upcoming-features)
