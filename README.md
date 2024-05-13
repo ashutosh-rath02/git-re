@@ -1,6 +1,6 @@
 # GitHub Resume Generator
 
-This project is a web application that generates a professional resume from a GitHub profile. Simply enter a GitHub username, and the application will create a resume based on the user's contributions and projects.
+This project is a web application that generates a professional resume from a GitHub profile. By entering a GitHub username, this web application generates a professional resume based on the user's contributions and projects.
 
 ## Featured In
 
@@ -40,7 +40,7 @@ This project is a web application that generates a professional resume from a Gi
 
 - The contribution graph in the user profile is generated using [ghchart](https://ghchart.rshah.org/) by [Rushi Shah](https://github.com/2016rshah). This service creates an image of a user's GitHub contribution graph which can be embedded in a webpage.
 
-- To know to more project connect with me : `.vasudev` (Discord Username)
+- To know more about the project connect with me : `.vasudev` (Discord Username)
 
 ## Setup and Installation
 
@@ -54,7 +54,7 @@ YOU CAN REFER TO THE FOLLOWING VIDEO FOR GUIDED SETUP :
 5. Learn more about setting up your database and authentication in the [LEARN.md](/LEARN.md) file.
 6. You are good to go.
 
-## Tech used
+## Tech Used
 
 - NextJS 14
 - Shadcn/ui
@@ -67,7 +67,7 @@ YOU CAN REFER TO THE FOLLOWING VIDEO FOR GUIDED SETUP :
 
 ![image](https://github.com/ashutosh-rath02/git-re/assets/85403534/13ae316c-2254-4da3-b07f-8b55924a9b98)
 
-## Upcoming features🎉
+## Upcoming Features🎉
 
 - [x] Add Supabase authentication
 - [ ] Comparison between users
