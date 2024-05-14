@@ -3,6 +3,7 @@ import React, { FormEvent, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
+import { toast, useToast } from "@/components/ui/use-toast";
 import axios from "axios";
 
 export default function Form() {
@@ -20,6 +21,11 @@ export default function Form() {
     //Regex to match github username validation
     const regex = /^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$/i;
     if (!regex.test(username)) {
+      toast({
+        title: "Error",
+        description: "Not a valid GitHub username.",
+        variant: "destructive",
+      });
       return;
     }
 
