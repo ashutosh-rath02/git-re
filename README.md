@@ -33,6 +33,19 @@
 </table>
 </div>
 
+<div align="center">
+
+## 💻 Tech Stack
+
+![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white)
+![Shadcn UI](https://img.shields.io/badge/Shadcn%20UI-%23FF69B4?style=for-the-badge&logo=github&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![Supabase](https://img.shields.io/badge/Supabase-3954E1?style=for-the-badge&logo=supabase&logoColor=white)
+![GitHub Public API](https://img.shields.io/badge/GitHub%20Public%20API-181717?style=for-the-badge&logo=github&logoColor=white)
+![GitHub OAuth](https://img.shields.io/badge/GitHub%20OAuth-181717?style=for-the-badge&logo=github&logoColor=white)
+
+</div>
+
 ## 🏆 Featured In
 <div align="center">
 
@@ -121,20 +134,6 @@ Follow these steps to set up git-re on your local machine:
 
 6. **You're Good to Go:**
    - With the setup complete, you're ready to start exploring.
-
-<div align="center">
-
-## 💻 Tech Stack
-
-![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white)
-![Shadcn UI](https://img.shields.io/badge/Shadcn%20UI-%23FF69B4?style=for-the-badge&logo=github&logoColor=white)
-![Tailwind CSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
-![Supabase](https://img.shields.io/badge/Supabase-3954E1?style=for-the-badge&logo=supabase&logoColor=white)
-![GitHub Public API](https://img.shields.io/badge/GitHub%20Public%20API-181717?style=for-the-badge&logo=github&logoColor=white)
-![GitHub OAuth](https://img.shields.io/badge/GitHub%20OAuth-181717?style=for-the-badge&logo=github&logoColor=white)
-
-</div>
-
 
 ## Screenshot
 
