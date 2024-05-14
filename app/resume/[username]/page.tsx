@@ -35,12 +35,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
   };
 }
-export default async function Home() {
+export default async function Home({
+  params,
+}: {
+  params: { username: string };
+}) {
   const supabase = createServerComponentClient({ cookies });
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) {
+  const { data: recent_user } = await supabase
+    .from("recent_users")
+    .select("*")
+    .eq("username", params.username)
+    .single();
+  if (!user && !recent_user) {
     redirect("/");
   }
   return (
