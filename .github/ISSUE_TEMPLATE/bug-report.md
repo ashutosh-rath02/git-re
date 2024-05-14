@@ -38,3 +38,20 @@ If applicable, add screenshots to help explain your problem.
 
 **Additional context**
 Add any other context about the problem here.
+
+<!-- For GSSOC only -->
+
+## Task
+
+- [ ] Follow Us On social media - <a href="https://www.linkedin.com/in/rathashutosh/" target="_blank">LinkedIn</a> <a href="https://twitter.com/v_ashu_dev" target="_blank">Twitter</a>
+      Let's connect
+- [ ]      <a href="https://github.com/ashutosh-rath02" target="_blank">GitHub</a>
+
+## Enter you User Id's:
+
+LinkedIn:
+<br>GitHub:
+<br>Discord:
+
+If you Follow us in both social medias we provide 'level2'
+\*Only First time
