@@ -6,40 +6,73 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 
 export default function Form() {
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState<string>("");
+  const [usernameFound, setUsernameFound] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
-  const handleUsernameChange = (e: {
-    target: { value: React.SetStateAction<string> };
-  }) => {
+
+  const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(e.target.value);
+    if (!usernameFound) {
+      setUsernameFound(true); // Reset the state when user starts typing
+    }
   };
-  const [isLoading, setIsLoading] = useState(false);
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    setTimeout(() => {
-      router.push(`/resume/${username}`);
-      setIsLoading(false);
-    }, 3000);
+
     try {
-      const response = await axios.post("/api/users", {
+      const githubResponse = await axios.get(
+        `https://api.github.com/users/${username}`
+      );
+      if (githubResponse.status === 404) {
+        setUsernameFound(false);
+        setIsLoading(false);
+        return;
+      }
+
+      if (githubResponse.status !== 200) {
+        console.log("Unexpected error occurred");
+        setIsLoading(false);
+        return;
+      }
+
+      setTimeout(() => {
+        router.push(`/resume/${username}`);
+      }, 3000);
+
+      const saveResponse = await axios.post("/api/users", {
         git_username: username,
       });
-      console.log(response);
-    } catch (error) {
-      console.error(`error saving the data ${error}`);
+      console.log(saveResponse);
+    } catch (error: any) {
+      if (
+        error.response?.status === 404 ||
+        error.response?.data.message === "Not Found"
+      ) {
+        setUsernameFound(false);
+      }
+      console.error(`Error occurred: ${error.message}`);
+      setIsLoading(false);
     }
   };
+
   return (
     <div className="flex w-full md:max-w-sm items-center space-x-4 md:space-x-8">
       <form className="flex w-full space-x-3" onSubmit={handleSubmit}>
-        <Input
-          type="text"
-          placeholder="Enter your GitHub username"
-          className="h-12 flex-grow"
-          value={username}
-          onChange={handleUsernameChange}
-        />
+        <div className="flex-grow">
+          <Input
+            type="text"
+            placeholder="Enter your GitHub username"
+            className={`h-12 w-full ${usernameFound ? "" : "border-red-500"}`}
+            value={username}
+            onChange={handleUsernameChange}
+          />
+          {!usernameFound && (
+            <p className="text-red-500 mt-1">Username not found</p>
+          )}
+        </div>
         <Button
           type="submit"
           disabled={isLoading || username.trim() === ""}
