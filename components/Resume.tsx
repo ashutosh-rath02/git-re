@@ -93,11 +93,7 @@ const Resume = () => {
       pdf.save(`${username}_resume.pdf`);
     }
   };
-
-  const formatBlogURL = (url:string) => {
-    return url.includes("http") ? url : `https://${url}`;
-  };
-
+ 
 
   useEffect(() => {
     const fetchData = async () => {
@@ -203,13 +199,17 @@ const Resume = () => {
                 <p className="text-center text-[#F8FAFC]">{profile.bio}</p>
               )}
               {showBlog && ( 
-                  <Link
-                    href={formatBlogURL(profile.blog)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-600 hover:underline"
+                    <Link
+                  href={
+                    profile.blog.includes("http")
+                      ? profile.blog
+                      : `https://${profile.blog}`
+                  }
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:underline"
                 >
-                    {profile.blog.split('/').pop()}
+                  {profile.blog}
                 </Link>
               )}
             </div>
