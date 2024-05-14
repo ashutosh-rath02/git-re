@@ -94,6 +94,11 @@ const Resume = () => {
     }
   };
 
+  const formatBlogURL = (url:string) => {
+    return url.includes("http") ? url : `https://${url}`;
+  };
+
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -197,14 +202,14 @@ const Resume = () => {
               {showBio && (
                 <p className="text-center text-[#F8FAFC]">{profile.bio}</p>
               )}
-              {showBlog && (
-                <Link
-                  href={profile.blog}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600 hover:underline"
+              {showBlog && ( 
+                  <Link
+                    href={formatBlogURL(profile.blog)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 hover:underline"
                 >
-                  {profile.blog}
+                    {profile.blog.split('/').pop()}
                 </Link>
               )}
             </div>
