@@ -3,6 +3,7 @@ import React, { FormEvent, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
+import { toast, useToast } from "@/components/ui/use-toast";
 import axios from "axios";
 
 export default function Form() {
@@ -20,6 +21,18 @@ export default function Form() {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+
+    //Regex to match github username validation
+    const regex = /^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$/i;
+    if (!regex.test(username)) {
+      toast({
+        title: "Error",
+        description: "Not a valid GitHub username.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsLoading(true);
 
     try {
@@ -75,7 +88,7 @@ export default function Form() {
         </div>
         <Button
           type="submit"
-          disabled={isLoading || username.trim() === ""}
+          disabled={isLoading}
           className="h-12 px-6 flex items-center justify-center"
         >
           {isLoading ? <div className="loader1"></div> : "Generate"}
