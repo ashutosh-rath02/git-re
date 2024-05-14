@@ -8,9 +8,7 @@ export const size = {
 };
 
 export const contentType = "image/png";
-export default async function Image({
-  params,
-}: {
+export default async function Image(props: {
   params: {
     username: string;
   };
@@ -23,7 +21,7 @@ export default async function Image({
     new URL("/public/assets/Roboto-Italic.ttf", import.meta.url)
   ).then((res) => res.arrayBuffer());
 
-  const { username } = params;
+  const { username } = props.params;
 
   return new ImageResponse(
     (
