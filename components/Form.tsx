@@ -64,7 +64,14 @@ export default function Form() {
         error.response?.status === 404 ||
         error.response?.data.message === "Not Found"
       ) {
+        toast({
+          title: "Error",
+          description: "Username Not Found",
+          variant: "destructive",
+        });
+        setIsLoading(false);
         setUsernameFound(false);
+        return;
       }
       console.error(`Error occurred: ${error.message}`);
       setIsLoading(false);
@@ -78,13 +85,10 @@ export default function Form() {
           <Input
             type="text"
             placeholder="Enter your GitHub username"
-            className={`h-12 w-full ${usernameFound ? "" : "border-red-500"}`}
+            className="h-12 w-full"
             value={username}
             onChange={handleUsernameChange}
           />
-          {!usernameFound && (
-            <p className="text-red-500 mt-1">Username not found</p>
-          )}
         </div>
         <Button
           type="submit"
