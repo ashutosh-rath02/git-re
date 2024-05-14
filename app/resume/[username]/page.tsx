@@ -4,6 +4,7 @@ import React from "react";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { Metadata } from "next";
+import Head from "next/head";
 
 type Props = {
   params: { username: string };

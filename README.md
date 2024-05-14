@@ -1,8 +1,53 @@
+<div align="center">
+
 # GitHub Resume Generator
 
-This project is a web application that generates a professional resume from a GitHub profile. By entering a GitHub username, this web application generates a professional resume based on the user's contributions and projects.
+<i>This project is a web application that generates a professional resume from a GitHub profile. By entering a GitHub username, this web application generates a professional resume based on the user's contributions and projects.</i>
 
-## Featured In
+</div>
+
+<div align = "center">
+<br>
+
+[![License: Apache](https://img.shields.io/badge/License-Apache-red.svg)](http://www.apache.org/licenses/)
+
+<table align="center">
+    <thead align="center">
+        <tr border: 1px;>
+            <td><b>🌟 Stars</b></td>
+            <td><b>🍴 Forks</b></td>
+            <td><b>🐛 Issues</b></td>
+            <td><b>🔔 Open PRs</b></td>
+            <td><b>🔕 Close PRs</b></td>
+        </tr>
+     </thead>
+    <tbody>
+         <tr>
+            <td><img alt="Stars" src="https://img.shields.io/github/stars/ashutosh-rath02/git-re?style=flat&logo=github"/></td>
+             <td><img alt="Forks" src="https://img.shields.io/github/forks/ashutosh-rath02/git-re?style=flat&logo=github"/></td>
+            <td><img alt="Issues" src="https://img.shields.io/github/issues/ashutosh-rath02/git-re?style=flat&logo=github"/></td>
+            <td><img alt="Open Pull Requests" src="https://img.shields.io/github/issues-pr/ashutosh-rath02/git-re?style=flat&logo=github"/></td>
+           <td><img alt="Close Pull Requests" src="https://img.shields.io/github/issues-pr-closed/ashutosh-rath02/git-re?style=flat&color=critical&logo=github"/></td>
+        </tr>
+    </tbody>
+</table>
+</div>
+
+<div align="center">
+
+## 💻 Tech Stack
+
+![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white)
+![Shadcn UI](https://img.shields.io/badge/Shadcn%20UI-%23FF69B4?style=for-the-badge&logo=github&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![Supabase](https://img.shields.io/badge/Supabase-3954E1?style=for-the-badge&logo=supabase&logoColor=white)
+![GitHub Public API](https://img.shields.io/badge/GitHub%20Public%20API-181717?style=for-the-badge&logo=github&logoColor=white)
+![GitHub OAuth](https://img.shields.io/badge/GitHub%20OAuth-181717?style=for-the-badge&logo=github&logoColor=white)
+
+</div>
+
+## 🏆 Featured In
+<div align="center">
 
 <table>
 
@@ -19,6 +64,8 @@ This project is a web application that generates a professional resume from a Gi
 
 </table>
 
+</div>
+
 ## Table of Contents
 * [Features](https://github.com/ashutosh-rath02/git-re?tab=readme-ov-file#features)
 * [Mentions](https://github.com/ashutosh-rath02/git-re?tab=readme-ov-file#mentions)
@@ -31,7 +78,7 @@ This project is a web application that generates a professional resume from a Gi
 * [License](https://github.com/ashutosh-rath02/git-re?tab=readme-ov-file#license)
 * [Contributors](https://github.com/ashutosh-rath02/git-re?tab=readme-ov-file#contributors)
 
-## Features
+## Key Features
 
 - Fetches user data from GitHub's API
 - Generates a professional resume based on GitHub contributions and projects
@@ -47,21 +94,46 @@ This project is a web application that generates a professional resume from a Gi
 YOU CAN REFER TO THE FOLLOWING VIDEO FOR GUIDED SETUP :
 <video controls src="public/GIT-RE Project Setup.mp4" title="Git-re Setup and Installation Video"></video>
 
-1. Fork the repository & clone it to your local machine.
-2. Create a new branch using `git checkout -b <branch_name>` and proceed.
-3. Install the dependencies using `npm install` or `yarn install`.
-4. Start the development server using `npm run dev` or `yarn dev`.
-5. Learn more about setting up your database and authentication in the [LEARN.md](/LEARN.md) file.
-6. You are good to go.
+Follow these steps to set up git-re on your local machine:
 
-## Tech Used
+1. **Fork the Repository & Clone it:**
+   - Fork the git-re repository to your GitHub account.
+   - Clone the forked repository to your local machine using the command:
+     ```
+     git clone https://github.com/your-username/git-re.git
+     ```
 
-- NextJS 14
-- Shadcn/ui
-- Tailwind CSS
-- Github public API
-- Supabase
-- Github OAuth
+2. **Create a New Branch:**
+   - Create a new branch to work on using the command:
+     ```
+     git checkout -b <branch_name>
+     ```
+
+3. **Install Dependencies:**
+   - Navigate to the project directory and install the dependencies using:
+     ```
+     npm install
+     ```
+     or
+     ```
+     yarn install
+     ```
+
+4. **Start the Development Server:**
+   - Start the development server by running:
+     ```
+     npm run dev
+     ```
+     or
+     ```
+     yarn dev
+     ```
+
+5. **Database and Authentication Setup:**
+   - Refer to the [LEARN.md](/LEARN.md) file for detailed instructions on setting up your database and authentication.
+
+6. **You're Good to Go:**
+   - With the setup complete, you're ready to start exploring.
 
 ## Screenshot
 
@@ -76,11 +148,12 @@ YOU CAN REFER TO THE FOLLOWING VIDEO FOR GUIDED SETUP :
 ## Contributing
 
 Contributions are welcome! Please open an issue or submit a pull request if you would like to help improve the project.
-NOTE 1: Please abide by the [Contributing Guidelines](https://github.com/ashutosh-rath02/git-re/blob/master/CONTRIBUTING.md).
 
-NOTE 2: Please abide by the [Code of Conduct](https://github.com/ashutosh-rath02/git-re/blob/master/CODE_OF_CONDUCT.md).
+>NOTE 1: Please abide by the [Contributing Guidelines](https://github.com/ashutosh-rath02/git-re/blob/master/CONTRIBUTING.md).
 
-NOTE 3: We follow the following [coventional commit types](https://github.com/pvdlg/conventional-commit-types)
+>NOTE 2: Please abide by the [Code of Conduct](https://github.com/ashutosh-rath02/git-re/blob/master/CODE_OF_CONDUCT.md).
+
+>NOTE 3: We follow the following [coventional commit types](https://github.com/pvdlg/conventional-commit-types)
 
 ## License
 
@@ -104,6 +177,7 @@ This project is licensed under the Apache 2.0 License & all rights reserved to a
     </tr>
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/SpaciousCoder78"><img src="https://avatars.githubusercontent.com/u/88923986?v=4?s=100" width="100px;" alt="Aryan Karamtoth"/><br /><sub><b>Aryan Karamtoth</b></sub></a><br /><a href="#doc-SpaciousCoder78" title="Documentation">📖</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="http://jinxvi-portfolio.vercel.app"><img src="https://avatars.githubusercontent.com/u/120160355?v=4?s=100" width="100px;" alt="Adarsh"/><br /><sub><b>Adarsh</b></sub></a><br /><a href="#doc-jinx-vi-0" title="Documentation">📖</a></td>
     </tr>
   </tbody>
 </table>
