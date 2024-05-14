@@ -52,6 +52,7 @@ Add any other context about the problem here.
 LinkedIn:
 <br>GitHub:
 <br>Discord:
+<br>Twitter:
 
 If you Follow us in both social medias we provide 'level2'
 \*Only First time

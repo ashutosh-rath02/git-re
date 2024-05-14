@@ -35,6 +35,7 @@ How do we know when the feature is complete?
 LinkedIn:
 <br>GitHub:
 <br>Discord:
+<br>Twitter:
 
 If you Follow us in both social medias we provide 'level2'
 \*Only First time
