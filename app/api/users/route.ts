@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (existingUser.data && existingUser.data.name) {
-      return new Response("Username already exists", { status: 400 });
+      return new Response("Username already exists", { status: 200 });
     }
 
     try {
@@ -80,10 +80,20 @@ export async function GET() {
       .limit(7);
 
     if (error) {
-      throw new Error(error.message);
+      return new Response(
+        JSON.stringify({
+          err_message: error.message,
+          details: error.details,
+          error_code: error.code,
+        }),
+        { status: 500, headers: { "Content-Type": "application/json" } }
+      );
     }
 
-    return NextResponse.json(users, { status: 200 });
+    return new Response(JSON.stringify(users), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
   } catch (error) {
     console.error("Error fetching users:", error);
     return new Response("Internal Server Error", { status: 500 });

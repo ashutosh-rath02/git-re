@@ -33,6 +33,19 @@
 </table>
 </div>
 
+<div align="center">
+
+## 💻 Tech Stack
+
+![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white)
+![Shadcn UI](https://img.shields.io/badge/Shadcn%20UI-%23FF69B4?style=for-the-badge&logo=github&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![Supabase](https://img.shields.io/badge/Supabase-3954E1?style=for-the-badge&logo=supabase&logoColor=white)
+![GitHub Public API](https://img.shields.io/badge/GitHub%20Public%20API-181717?style=for-the-badge&logo=github&logoColor=white)
+![GitHub OAuth](https://img.shields.io/badge/GitHub%20OAuth-181717?style=for-the-badge&logo=github&logoColor=white)
+
+</div>
+
 ## 🏆 Featured In
 <div align="center">
 
@@ -122,20 +135,6 @@ Follow these steps to set up git-re on your local machine:
 6. **You're Good to Go:**
    - With the setup complete, you're ready to start exploring.
 
-<div align="center">
-
-## 💻 Tech Stack
-
-![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white)
-![Shadcn UI](https://img.shields.io/badge/Shadcn%20UI-%23FF69B4?style=for-the-badge&logo=github&logoColor=white)
-![Tailwind CSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
-![Supabase](https://img.shields.io/badge/Supabase-3954E1?style=for-the-badge&logo=supabase&logoColor=white)
-![GitHub Public API](https://img.shields.io/badge/GitHub%20Public%20API-181717?style=for-the-badge&logo=github&logoColor=white)
-![GitHub OAuth](https://img.shields.io/badge/GitHub%20OAuth-181717?style=for-the-badge&logo=github&logoColor=white)
-
-</div>
-
-
 ## Screenshot
 
 ![image](https://github.com/ashutosh-rath02/git-re/assets/85403534/13ae316c-2254-4da3-b07f-8b55924a9b98)
@@ -179,6 +178,9 @@ This project is licensed under the Apache 2.0 License & all rights reserved to a
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/SpaciousCoder78"><img src="https://avatars.githubusercontent.com/u/88923986?v=4?s=100" width="100px;" alt="Aryan Karamtoth"/><br /><sub><b>Aryan Karamtoth</b></sub></a><br /><a href="#doc-SpaciousCoder78" title="Documentation">📖</a></td>
       <td align="center" valign="top" width="14.28%"><a href="http://jinxvi-portfolio.vercel.app"><img src="https://avatars.githubusercontent.com/u/120160355?v=4?s=100" width="100px;" alt="Adarsh"/><br /><sub><b>Adarsh</b></sub></a><br /><a href="#doc-jinx-vi-0" title="Documentation">📖</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/kshavp"><img src="https://avatars.githubusercontent.com/u/95236968?v=4?s=100" width="100px;" alt="Keshav Priyam"/><br /><sub><b>Keshav Priyam</b></sub></a><br /><a href="#code-kshavp" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="http://rashid-siddiqui.netlify.app"><img src="https://avatars.githubusercontent.com/u/124426004?v=4?s=100" width="100px;" alt="Rashid Siddiqui"/><br /><sub><b>Rashid Siddiqui</b></sub></a><br /><a href="#code-RashidSiddiqui2004" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Sahilll15"><img src="https://avatars.githubusercontent.com/u/109215419?v=4?s=100" width="100px;" alt="Sahil Chalke"/><br /><sub><b>Sahil Chalke</b></sub></a><br /><a href="#code-Sahilll15" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
