@@ -4,7 +4,6 @@ import { cn } from "@/utils/cn";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { HoverEffect } from "./ui/card-hover-effect";
-import loading from "@/public/loading.svg";
 import { useState, useEffect } from "react";
 import type { UserData } from "@/types";
 import { useRef } from "react";
