@@ -56,6 +56,7 @@ const ViewResume = () => {
   const [repos, setRepos] = useState<GitHubRepo[]>([]);
   const [languageData, setLanguageData] = useState<Language[]>([]);
   const [userStats, setUserStats] = useState({});
+  const [error, setError] = useState(null);
 
   const printRef = useRef<HTMLDivElement>(null);
 
@@ -63,7 +64,18 @@ const ViewResume = () => {
     const fetchData = async () => {
       const profileData = await fetch(
         `https://api.github.com/users/${username}`
-      ).then((res) => res.json());
+      )
+        .then((res) => {
+          if (!res.ok) {
+            throw Error("The data could not be fetched, please reload");
+          }
+          return res.json();
+        })
+        .catch((error) => {
+          console.error("Error fetching profile data:", error);
+          setError(error.message);
+        });
+
       setProfile(profileData);
 
       const reposData = await fetchPopularRepos(username as string);
@@ -87,6 +99,7 @@ const ViewResume = () => {
 
   return (
     <div className="flex justify-center w-full flex-grow ">
+      {error && <div>{error}</div>}
       <div
         ref={printRef}
         className="bg-card p-6 rounded-md shadow-md max-w-4xl border-2 border-gray-400 mt-2"
