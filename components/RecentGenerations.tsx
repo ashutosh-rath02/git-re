@@ -15,6 +15,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import Image from "next/image";
 
 const RecentGenerations = () => {
   const [usersData, setUsersData] = useState<UserData[]>([]);
@@ -101,6 +102,12 @@ const RecentGenerations = () => {
         </CarouselContent>
         <CarouselPrevious />
         <CarouselNext />
+        {usersData.length == 0 && (
+          <div role="status" className="flex justify-center">
+            <div className="border-gray-300 h-10 w-10 animate-spin rounded-full border-[7px]  border-t-blue-600" />
+            <span className="sr-only">Loading...</span>
+          </div>
+        )}
       </Carousel>
     </div>
   );
