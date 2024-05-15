@@ -53,12 +53,12 @@ const RecentGenerationsLoader = () => {
               <Skeleton className="h-12 w-12 rounded-full" />
             </div>
             <div className="font-medium">
-              <p className="text-black dark:text-gray-100">
+              <div className="text-black dark:text-gray-100">
                 <Skeleton className="h-4 w-[250px]" />
-              </p>
-              <p className="text-gray-500 dark:text-gray-400 text-[12px] mt-2">
+              </div>
+              <div className="text-gray-500 dark:text-gray-400 text-[12px] mt-2">
                 <Skeleton className="h-4 w-[200px]" />
-              </p>
+              </div>
             </div>
           </div>
         </Card>
