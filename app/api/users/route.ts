@@ -80,7 +80,7 @@ export async function GET() {
       .limit(7);
 
     if (error) {
-      throw new Error(error.message);
+      return new Response("public.recent_users not found", { status: 500 });
     }
 
     return NextResponse.json(users, { status: 200 });
