@@ -51,14 +51,10 @@ export default function Form() {
         return;
       }
 
-      setTimeout(() => {
-        router.push(`/resume/${username}`);
-      }, 3000);
-
       const saveResponse = await axios.post("/api/users", {
         git_username: username,
       });
-      console.log(saveResponse);
+      router.push(`/resume/${username}`);
     } catch (error: any) {
       if (
         error.response?.status === 404 ||

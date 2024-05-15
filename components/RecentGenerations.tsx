@@ -15,18 +15,23 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import RecentGenerationsLoader from "./RecetUsersLoading";
 import Image from "next/image";
 
 const RecentGenerations = () => {
   const [usersData, setUsersData] = useState<UserData[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
+        setLoading(true);
         const { data } = await axios.get<UserData[]>("/api/users");
         setUsersData(data);
       } catch (error) {
         console.error(`error fetching the data ${error}`);
+      } finally {
+        setLoading(false);
       }
     };
     fetchUsers();
@@ -54,6 +59,10 @@ const RecentGenerations = () => {
       </div>
     );
   };
+
+  if (loading) {
+    return <RecentGenerationsLoader />;
+  }
 
   return (
     <div>
