@@ -49,7 +49,7 @@ const RecentGenerationsLoader = () => {
             <Skeleton className="h-4 w-[250px]" />
           </div>
           <div className="text-sm h-16 flex items-end gap-3 mt-2">
-            <div className="border-2">
+            <div>
               <Skeleton className="h-12 w-12 rounded-full" />
             </div>
             <div className="font-medium">
