@@ -1,4 +1,5 @@
 import axios from "axios";
+import redis from "@/lib/redis";
 
 const configData = {
   maxItems: 5,
@@ -75,9 +76,36 @@ const sortLanguages = (
     .slice(0, configData.maxLanguages);
 };
 
+const getFromCache = async <T,>(key: string): Promise<T | null> => {
+  const cachedData: any = await redis.get(key);
+  if (cachedData) {
+    console.log("LOADED FROM CACHE");
+    return cachedData;
+  }
+  return null;
+};
+
+const setInCache = async <T,>(
+  key: string,
+  data: T,
+  expirationSeconds: number
+): Promise<void> => {
+  await redis.set(key, JSON.stringify(data), {
+    ex: expirationSeconds,
+  });
+};
+
 export const fetchOrganizations = async (
   username: string
 ): Promise<Organization[]> => {
+  const cacheKey = `organizations:${username}`;
+  const cachedOrganizations = await getFromCache<Organization[]>(cacheKey);
+
+  if (cachedOrganizations) {
+    console.log("LOADED FROM CACHE: ORGS");
+    return cachedOrganizations;
+  }
+
   try {
     const response = await axios.get(
       `https://api.github.com/users/${username}/orgs`
@@ -87,6 +115,9 @@ export const fetchOrganizations = async (
       url: org.html_url,
       joinedYear: new Date(org.created_at).getFullYear(),
     }));
+
+    await setInCache(cacheKey, organizations, 60 * 60); // Cache for 1 hour
+
     return organizations;
   } catch (error) {
     console.error("Error fetching organizations:", error);
@@ -97,6 +128,13 @@ export const fetchOrganizations = async (
 export const fetchContributions = async (
   username: string
 ): Promise<Contribution[]> => {
+  const cacheKey = `contributions:${username}`;
+  const cachedContributions = await getFromCache<Contribution[]>(cacheKey);
+
+  if (cachedContributions) {
+    return cachedContributions;
+  }
+
   try {
     const url = `https://api.github.com/search/issues?q=author:${username}+type:pr+is:merged&per_page=100`;
     const response = await axios.get(url);
@@ -144,6 +182,9 @@ export const fetchContributions = async (
     );
 
     contributions.sort((a, b) => b.commitCount - a.commitCount);
+
+    await setInCache(cacheKey, contributions, 60 * 60); // Cache for 1 hour
+
     return contributions;
   } catch (error) {
     console.error("Error fetching contributions:", error);
@@ -152,13 +193,19 @@ export const fetchContributions = async (
 };
 
 export const fetchPopularRepos = async (username: string): Promise<Repo[]> => {
+  const cacheKey = `popular-repos:${username}`;
+  const cachedRepos = await getFromCache<Repo[]>(cacheKey);
+
+  if (cachedRepos) {
+    return cachedRepos;
+  }
   try {
     const response = await axios.get(
       `https://api.github.com/users/${username}/repos?per_page=100`
     );
     const repos = response.data;
 
-    return repos
+    const formattedRepos = repos
       .filter((repo: any) => !repo.fork)
       .map((repo: any) => ({
         name: repo.name,
@@ -181,14 +228,26 @@ export const fetchPopularRepos = async (username: string): Promise<Repo[]> => {
           b.popularity - a.popularity
       )
       .slice(0, configData.maxItems);
+
+    await setInCache(cacheKey, formattedRepos, 60 * 60); // Cache for 1 hour
+
+    return formattedRepos;
   } catch (error) {
     console.error("Error fetching popular repos:", error);
     return [];
   }
 };
+
 export const fetchLanguageData = async (
   username: string
 ): Promise<Language[]> => {
+  const cacheKey = `language-data:${username}`;
+  const cachedLanguageData = await getFromCache<Language[]>(cacheKey);
+
+  if (cachedLanguageData) {
+    return cachedLanguageData;
+  }
+
   try {
     const response = await axios.get(
       `https://api.github.com/users/${username}/repos`
@@ -202,14 +261,24 @@ export const fetchLanguageData = async (
       }
     }
 
-    return sortLanguages(languageData, username);
+    const formattedLanguageData = sortLanguages(languageData, username);
+
+    await setInCache(cacheKey, formattedLanguageData, 60 * 60); // Cache for 1 hour
+
+    return formattedLanguageData;
   } catch (error) {
     console.error("Error fetching language data:", error);
     return [];
   }
 };
-
 export const fetchUserStats = async (username: string) => {
+  const cacheKey = `user-stats:${username}`;
+  const cachedUserStats = await getFromCache(cacheKey);
+
+  if (cachedUserStats) {
+    return cachedUserStats;
+  }
+
   try {
     const userRes = await axios.get(`https://api.github.com/users/${username}`);
     const orgsRes = await axios.get(
@@ -240,7 +309,7 @@ export const fetchUserStats = async (username: string) => {
     );
     const totalPRsMerged = prsRes.data.total_count;
 
-    return {
+    const userStats = {
       followers: userRes.data.followers,
       publicRepos: userRes.data.public_repos,
       organizations: orgsRes.data.length,
@@ -250,6 +319,10 @@ export const fetchUserStats = async (username: string) => {
       userJoinedDate: userJoinedDate,
       yearsOnGitHub: yearsOnGitHub,
     };
+
+    await setInCache(cacheKey, userStats, 60 * 60); // Cache for 1 hour
+
+    return userStats;
   } catch (error) {
     console.error("Error fetching user statistics:", error);
     return {};

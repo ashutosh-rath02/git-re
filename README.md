@@ -47,6 +47,7 @@
 </div>
 
 ## 🏆 Featured In
+
 <div align="center">
 
 <table>
@@ -67,16 +68,17 @@
 </div>
 
 ## Table of Contents
-* [Features](https://github.com/ashutosh-rath02/git-re?tab=readme-ov-file#features)
-* [Mentions](https://github.com/ashutosh-rath02/git-re?tab=readme-ov-file#mentions)
-* [Setup and Installation](https://github.com/ashutosh-rath02/git-re?tab=readme-ov-file#setup-and-installation)
-    * [Setup Supabase](https://github.com/ashutosh-rath02/git-re/blob/main/LEARN.md)
-* [Tech Used](https://github.com/ashutosh-rath02/git-re?tab=readme-ov-file#tech-used)
-* [Screenshots](https://github.com/ashutosh-rath02/git-re?tab=readme-ov-file#screenshot)
-* [Upcoming Features](https://github.com/ashutosh-rath02/git-re?tab=readme-ov-file#upcoming-features)
-* [Contributing](https://github.com/ashutosh-rath02/git-re?tab=readme-ov-file#contributing)
-* [License](https://github.com/ashutosh-rath02/git-re?tab=readme-ov-file#license)
-* [Contributors](https://github.com/ashutosh-rath02/git-re?tab=readme-ov-file#contributors)
+
+- [Features](https://github.com/ashutosh-rath02/git-re?tab=readme-ov-file#features)
+- [Mentions](https://github.com/ashutosh-rath02/git-re?tab=readme-ov-file#mentions)
+- [Setup and Installation](https://github.com/ashutosh-rath02/git-re?tab=readme-ov-file#setup-and-installation)
+  - [Setup Supabase](https://github.com/ashutosh-rath02/git-re/blob/main/LEARN.md)
+- [Tech Used](https://github.com/ashutosh-rath02/git-re?tab=readme-ov-file#tech-used)
+- [Screenshots](https://github.com/ashutosh-rath02/git-re?tab=readme-ov-file#screenshot)
+- [Upcoming Features](https://github.com/ashutosh-rath02/git-re?tab=readme-ov-file#upcoming-features)
+- [Contributing](https://github.com/ashutosh-rath02/git-re?tab=readme-ov-file#contributing)
+- [License](https://github.com/ashutosh-rath02/git-re?tab=readme-ov-file#license)
+- [Contributors](https://github.com/ashutosh-rath02/git-re?tab=readme-ov-file#contributors)
 
 ## Key Features
 
@@ -97,6 +99,7 @@ YOU CAN REFER TO THE FOLLOWING VIDEO FOR GUIDED SETUP :
 Follow these steps to set up git-re on your local machine:
 
 1. **Fork the Repository & Clone it:**
+
    - Fork the git-re repository to your GitHub account.
    - Clone the forked repository to your local machine using the command:
      ```
@@ -104,12 +107,14 @@ Follow these steps to set up git-re on your local machine:
      ```
 
 2. **Create a New Branch:**
+
    - Create a new branch to work on using the command:
      ```
      git checkout -b <branch_name>
      ```
 
 3. **Install Dependencies:**
+
    - Navigate to the project directory and install the dependencies using:
      ```
      npm install
@@ -120,6 +125,7 @@ Follow these steps to set up git-re on your local machine:
      ```
 
 4. **Start the Development Server:**
+
    - Start the development server by running:
      ```
      npm run dev
@@ -131,8 +137,11 @@ Follow these steps to set up git-re on your local machine:
 
 5. **Database and Authentication Setup:**
    - Refer to the [LEARN.md](/LEARN.md) file for detailed instructions on setting up your database and authentication.
+6. **Caching Implementation: **
 
-6. **You're Good to Go:**
+- - Refer to the [LEARN.md](/LEARN.md) file for detailed instructions on setting up your caching.
+
+7. **You're Good to Go:**
    - With the setup complete, you're ready to start exploring.
 
 ## Screenshot
@@ -149,11 +158,11 @@ Follow these steps to set up git-re on your local machine:
 
 Contributions are welcome! Please open an issue or submit a pull request if you would like to help improve the project.
 
->NOTE 1: Please abide by the [Contributing Guidelines](https://github.com/ashutosh-rath02/git-re/blob/master/CONTRIBUTING.md).
+> NOTE 1: Please abide by the [Contributing Guidelines](https://github.com/ashutosh-rath02/git-re/blob/master/CONTRIBUTING.md).
 
->NOTE 2: Please abide by the [Code of Conduct](https://github.com/ashutosh-rath02/git-re/blob/master/CODE_OF_CONDUCT.md).
+> NOTE 2: Please abide by the [Code of Conduct](https://github.com/ashutosh-rath02/git-re/blob/master/CODE_OF_CONDUCT.md).
 
->NOTE 3: We follow the following [coventional commit types](https://github.com/pvdlg/conventional-commit-types)
+> NOTE 3: We follow the following [coventional commit types](https://github.com/pvdlg/conventional-commit-types)
 
 ## License
 

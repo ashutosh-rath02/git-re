@@ -21,6 +21,7 @@ import jsPDF from "jspdf";
 import "../app/globals.css";
 import Link from "next/link";
 import ShareBtn from "./ShareBtn";
+import redis from "@/lib/redis";
 
 interface GitHubProfile {
   name: string;
@@ -93,17 +94,26 @@ const Resume = () => {
       pdf.save(`${username}_resume.pdf`);
     }
   };
- 
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
 
-        const profileData = await fetch(
-          `https://api.github.com/users/${username}`
-        ).then((res) => res.json());
-        setProfile(profileData);
+        // Check if profile data is cached
+        const cachedProfileData = await redis.get(`profile:${username}`);
+        if (cachedProfileData) {
+          setProfile(cachedProfileData as any);
+        } else {
+          // Fetch profile data and cache it
+          const profileData = await fetch(
+            `https://api.github.com/users/${username}`
+          ).then((res) => res.json());
+          setProfile(profileData);
+          await redis.set(`profile:${username}`, JSON.stringify(profileData), {
+            ex: 60 * 60,
+          }); // Cache for 1 hour
+        }
 
         const reposData = await fetchPopularRepos(username);
         setRepos(reposData as unknown as GitHubRepo[]);
@@ -126,6 +136,7 @@ const Resume = () => {
   const handleRepoCountChange = (value: number) => {
     setRepoCount(value);
   };
+
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center h-screen space-y-4">
@@ -198,8 +209,8 @@ const Resume = () => {
               {showBio && (
                 <p className="text-center text-[#F8FAFC]">{profile.bio}</p>
               )}
-              {showBlog && ( 
-                    <Link
+              {showBlog && (
+                <Link
                   href={
                     profile.blog.includes("http")
                       ? profile.blog
