@@ -71,12 +71,14 @@ export default function Footer() {
             <Link
               href="https://github.com/ashutosh-rath02/git-re/"
               className="mt-3 text-secondaryText font-medium dark:text-white"
+              target="_blank"
             >
               Contribute
             </Link>
             <Link
               href="https://www.producthunt.com/products/git-re"
               className="text-secondaryText font-medium dark:text-white"
+              target="_blank"
             >
               Vote on Product Hunt
             </Link>
