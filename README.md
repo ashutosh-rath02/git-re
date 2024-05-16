@@ -137,9 +137,9 @@ Follow these steps to set up git-re on your local machine:
 
 5. **Database and Authentication Setup:**
    - Refer to the [LEARN.md](/LEARN.md) file for detailed instructions on setting up your database and authentication.
-6. **Caching Implementation: **
+6. **Caching Implementation:**
 
-- - Refer to the [LEARN.md](/LEARN.md) file for detailed instructions on setting up your caching.
+- Refer to the [LEARN.md](/LEARN.md) file for detailed instructions on setting up your caching.
 
 7. **You're Good to Go:**
    - With the setup complete, you're ready to start exploring.
