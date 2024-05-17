@@ -14,7 +14,7 @@ const LanguageBarChart: React.FC<LanguageBarChartProps> = ({ languages }) => {
       <div className="space-y-2">
         {hasLanguages ? (
           languages.map((language) => (
-            <div key={language.name} className="flex items-center space-x-2">
+            <div key={language.name} className="flex items-center">
               <a
                 href={language.url}
                 target="_blank"
@@ -22,7 +22,7 @@ const LanguageBarChart: React.FC<LanguageBarChartProps> = ({ languages }) => {
                 className="w-full flex items-center justify-between"
                 style={{ textDecoration: "none" }}
               >
-                <span className="flex-1 truncate">{language.name}</span>
+                <span className="flex-1">{language.name}</span>
                 <div className="bg-gray-700 flex-1 rounded h-4 overflow-hidden">
                   <div
                     className="bg-gradient-to-r from-blue-400 to-blue-600 h-full"

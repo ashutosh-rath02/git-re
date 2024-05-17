@@ -14,7 +14,9 @@ const ContributionGraph: React.FC<ContributionGraphProps> = ({ username }) => {
       <h3 className="text-2xl font-semibold mb-4 text-left underline">
         Contribution Graph
       </h3>
-      <img
+      <Image
+        width={100}
+        height={100}
         src={graphUrl}
         alt="Contribution Graph"
         style={{ width: "100%", alignItems: "center", wordSpacing: "1rem" }}

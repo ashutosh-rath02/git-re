@@ -21,6 +21,8 @@ import jsPDF from "jspdf";
 import "../app/globals.css";
 import Link from "next/link";
 import ShareBtn from "./ShareBtn";
+import { Button } from "./ui/button";
+import { DownloadIcon } from "@radix-ui/react-icons";
 
 interface GitHubProfile {
   name: string;
@@ -80,17 +82,53 @@ const Resume = () => {
 
   const resumeRef = useRef<HTMLDivElement>(null);
 
-  const handleDownloadPDF = async () => {
+  const handleDownloadPDF = async (): Promise<void> => {
     const element = resumeRef.current;
     if (element) {
+      element.style.backgroundColor = "#020817";
       const canvas = await html2canvas(element);
       const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF("p", "mm", "a4");
+      const pdf = new jsPDF("p", "mm", "a0");
       const imgProps = pdf.getImageProperties(imgData);
       const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      pdf.addImage(
+        imgData,
+        "PNG",
+        0,
+        0,
+        pdfWidth,
+        pdfHeight,
+        undefined,
+        "FAST"
+      );
       pdf.save(`${username}_resume.pdf`);
+      //   const images = Array.from(element.querySelectorAll("img"));
+      //   await Promise.all(
+      //     images.map((img) => {
+      //       return new Promise<void>((resolve) => {
+      //         if (img.complete) {
+      //           resolve();
+      //         } else {
+      //           img.onload = () => resolve();
+      //           img.onerror = () => resolve();
+      //           console.log(img);
+      //         }
+      //       });
+      //     })
+      //   );
+      //   console.log(images);
+
+      //   html2canvas(element, {
+      //     useCORS: true,
+      //     backgroundColor: null,
+      //   }).then((canvas) => {
+      //     const link = document.createElement("a");
+      //     link.href = canvas.toDataURL("image/png");
+      //     link.download = "resume.png";
+      //     link.click();
+      //   });
+      // }
     }
   };
 
@@ -178,9 +216,21 @@ const Resume = () => {
       </div>
 
       <div className="flex-grow p-4 order-1 lg:order-2">
-        <div ref={resumeRef} className="mx-auto flex justify-center">
+        <div className="mx-auto flex justify-end">
+          <ShareBtn username={username} />
+          <Button
+            className="ml-3 text-foreground gap-2 items-center"
+            onClick={handleDownloadPDF}
+          >
+            <DownloadIcon />
+          </Button>
+        </div>
+        <div
+          id="resume"
+          className="mx-auto flex justify-center"
+          ref={resumeRef}
+        >
           <div className="bg-[#020817] h-full w-full rounded-md bg-clip-padding dark:backdrop-filter dark:backdrop-blur-md dark:bg-opacity-10 border border-gray-100 shadow-md p-6 max-w-4xl">
-            <ShareBtn username={username} />
             <div className="flex flex-col items-center">
               <Image
                 src={profile.avatar_url || ""}

@@ -25,7 +25,6 @@ const ShareBtn = ({ username }: { username: string }) => {
           <span>
             <Share1Icon />
           </span>
-          Share
         </Button>
       </DialogTrigger>
       <DialogContent>
