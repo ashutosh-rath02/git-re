@@ -15,17 +15,23 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import RecentGenerationsLoader from "./RecetUsersLoading";
+import Image from "next/image";
 
 const RecentGenerations = () => {
   const [usersData, setUsersData] = useState<UserData[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
+        setLoading(true);
         const { data } = await axios.get<UserData[]>("/api/users");
         setUsersData(data);
       } catch (error) {
         console.error(`error fetching the data ${error}`);
+      } finally {
+        setLoading(false);
       }
     };
     fetchUsers();
@@ -54,18 +60,25 @@ const RecentGenerations = () => {
     );
   };
 
+  if (loading) {
+    return <RecentGenerationsLoader />;
+  }
+
   return (
     <div>
       <Carousel
         opts={{
           align: "start",
         }}
-        className="w-full max-w-5xl z-50"
+        className="w-[72vw] md:w-full md:max-w-6xl z-50"
         plugins={[plugin.current]}
       >
         <CarouselContent>
           {usersData.map((item, index) => (
-            <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+            <CarouselItem
+              key={index}
+              className="w-full md:basis-1/2 lg:basis-1/3"
+            >
               <Link
                 href={`/resume/${item?.username}`}
                 key={item?.username}
@@ -98,6 +111,12 @@ const RecentGenerations = () => {
         </CarouselContent>
         <CarouselPrevious />
         <CarouselNext />
+        {usersData.length == 0 && (
+          <div role="status" className="flex justify-center">
+            <div className="border-gray-300 h-10 w-10 animate-spin rounded-full border-[7px]  border-t-blue-600" />
+            <span className="sr-only">Loading...</span>
+          </div>
+        )}
       </Carousel>
     </div>
   );

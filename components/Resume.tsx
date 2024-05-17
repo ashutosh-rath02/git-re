@@ -131,6 +131,7 @@ const Resume = () => {
       // }
     }
   };
+ 
 
   useEffect(() => {
     const fetchData = async () => {
@@ -247,9 +248,13 @@ const Resume = () => {
               {showBio && (
                 <p className="text-center text-[#F8FAFC]">{profile.bio}</p>
               )}
-              {showBlog && (
-                <Link
-                  href={`https://${profile.blog}`}
+              {showBlog && ( 
+                    <Link
+                  href={
+                    profile.blog.includes("http")
+                      ? profile.blog
+                      : `https://${profile.blog}`
+                  }
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-600 hover:underline"
