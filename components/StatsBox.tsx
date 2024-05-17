@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import redis from "@/lib/redis";
+import { CACHE_TTL } from "@/lib/consts";
 
 interface GitHubData {
   followers: number;
@@ -93,7 +94,7 @@ const StatsBox = ({ username }: { username: string }) => {
       };
 
       setUserData(userData);
-      await redis.set(cacheKey, JSON.stringify(userData), { ex: 60 * 60 }); // Cache for 1 hour
+      await redis.set(cacheKey, JSON.stringify(userData), { ex: CACHE_TTL });
     };
 
     fetchUserData();

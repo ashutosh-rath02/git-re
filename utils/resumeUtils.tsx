@@ -1,5 +1,6 @@
 import axios from "axios";
 import redis from "@/lib/redis";
+import { CACHE_TTL } from "@/lib/consts";
 
 const configData = {
   maxItems: 5,
@@ -116,7 +117,7 @@ export const fetchOrganizations = async (
       joinedYear: new Date(org.created_at).getFullYear(),
     }));
 
-    await setInCache(cacheKey, organizations, 60 * 60); // Cache for 1 hour
+    await setInCache(cacheKey, organizations, CACHE_TTL);
 
     return organizations;
   } catch (error) {
@@ -183,7 +184,7 @@ export const fetchContributions = async (
 
     contributions.sort((a, b) => b.commitCount - a.commitCount);
 
-    await setInCache(cacheKey, contributions, 60 * 60); // Cache for 1 hour
+    await setInCache(cacheKey, contributions, CACHE_TTL);
 
     return contributions;
   } catch (error) {
@@ -229,7 +230,7 @@ export const fetchPopularRepos = async (username: string): Promise<Repo[]> => {
       )
       .slice(0, configData.maxItems);
 
-    await setInCache(cacheKey, formattedRepos, 60 * 60); // Cache for 1 hour
+    await setInCache(cacheKey, formattedRepos, CACHE_TTL);
 
     return formattedRepos;
   } catch (error) {
@@ -263,7 +264,7 @@ export const fetchLanguageData = async (
 
     const formattedLanguageData = sortLanguages(languageData, username);
 
-    await setInCache(cacheKey, formattedLanguageData, 60 * 60); // Cache for 1 hour
+    await setInCache(cacheKey, formattedLanguageData, CACHE_TTL);
 
     return formattedLanguageData;
   } catch (error) {
@@ -320,7 +321,7 @@ export const fetchUserStats = async (username: string) => {
       yearsOnGitHub: yearsOnGitHub,
     };
 
-    await setInCache(cacheKey, userStats, 60 * 60); // Cache for 1 hour
+    await setInCache(cacheKey, userStats, CACHE_TTL);
 
     return userStats;
   } catch (error) {

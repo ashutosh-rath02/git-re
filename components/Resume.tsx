@@ -22,6 +22,7 @@ import "../app/globals.css";
 import Link from "next/link";
 import ShareBtn from "./ShareBtn";
 import redis from "@/lib/redis";
+import { CACHE_TTL } from "@/lib/consts";
 
 interface GitHubProfile {
   name: string;
@@ -111,8 +112,8 @@ const Resume = () => {
           ).then((res) => res.json());
           setProfile(profileData);
           await redis.set(`profile:${username}`, JSON.stringify(profileData), {
-            ex: 60 * 60,
-          }); // Cache for 1 hour
+            ex: CACHE_TTL,
+          });
         }
 
         const reposData = await fetchPopularRepos(username);
