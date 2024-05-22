@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import redis from "@/lib/redis";
+import { CACHE_TTL } from "@/lib/consts";
 
 interface GitHubData {
   followers: number;
@@ -10,7 +12,6 @@ interface GitHubData {
   organizations: number;
   totalIssues: number;
   totalPRsMerged: number;
-  // yearsOnGitHub: number;
   userJoinedDate: Date;
 }
 
@@ -24,12 +25,19 @@ const StatsBox = ({ username }: { username: string }) => {
     organizations: 0,
     totalIssues: 0,
     totalPRsMerged: 0,
-    // yearsOnGitHub: 0,
     userJoinedDate: new Date(),
   });
 
   useEffect(() => {
     const fetchUserData = async () => {
+      const cacheKey = `user-profile-stats:${username}`;
+      const cachedUserData = await redis.get(cacheKey);
+
+      if (cachedUserData) {
+        setUserData(cachedUserData as any);
+        return;
+      }
+
       // Fetching basic user data
       const userRes = await axios.get(
         `https://api.github.com/users/${username}`
@@ -73,7 +81,7 @@ const StatsBox = ({ username }: { username: string }) => {
       );
 
       // Setting the data
-      setUserData({
+      const userData: GitHubData = {
         followers: userRes.data.followers,
         publicRepos: userRes.data.public_repos,
         starsReceived,
@@ -82,9 +90,11 @@ const StatsBox = ({ username }: { username: string }) => {
         organizations: orgsRes.data.length,
         totalIssues: issuesRes.data.total_count,
         totalPRsMerged: prsRes.data.total_count,
-        // yearsOnGitHub: userData.yearsOnGitHub,
         userJoinedDate: new Date(userRes.data.created_at),
-      });
+      };
+
+      setUserData(userData);
+      await redis.set(cacheKey, JSON.stringify(userData), { ex: CACHE_TTL });
     };
 
     fetchUserData();
@@ -98,7 +108,8 @@ const StatsBox = ({ username }: { username: string }) => {
           <div className="flex justify-between items-center">
             <p>Years on GitHub:</p>
             <span className="font-semibold">
-              {new Date().getFullYear() - userData.userJoinedDate.getFullYear()}
+              {new Date().getFullYear() -
+                new Date(userData.userJoinedDate).getFullYear()}
             </span>
           </div>
         </div>
