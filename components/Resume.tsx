@@ -27,7 +27,7 @@ import { CACHE_TTL } from "@/lib/consts";
 interface GitHubProfile {
   name: string;
   bio: string;
-  blog: string;
+  blog?: string;
   login: string;
   avatar_url: string;
   repos_url: string;
@@ -210,7 +210,7 @@ const Resume = () => {
               {showBio && (
                 <p className="text-center text-[#F8FAFC]">{profile.bio}</p>
               )}
-              {showBlog && (
+              {showBlog && profile.blog && (
                 <Link
                   href={
                     profile.blog.includes("http")
