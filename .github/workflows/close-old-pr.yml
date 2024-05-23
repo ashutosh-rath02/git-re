@@ -22,7 +22,7 @@ jobs:
     steps:
     - uses: actions/stale@v7
       with:
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        repo-token: ${{ secrets.MY_SECRET_TOKEN }}
         stale-pr-message: 'This PR has been automatically closed due to inactivity from the owner for 15 days.'
         days-before-pr-stale: 15
         days-before-pr-close: 0
