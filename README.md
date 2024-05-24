@@ -43,6 +43,7 @@
 ![Supabase](https://img.shields.io/badge/Supabase-3954E1?style=for-the-badge&logo=supabase&logoColor=white)
 ![GitHub Public API](https://img.shields.io/badge/GitHub%20Public%20API-181717?style=for-the-badge&logo=github&logoColor=white)
 ![GitHub OAuth](https://img.shields.io/badge/GitHub%20OAuth-181717?style=for-the-badge&logo=github&logoColor=white)
+![Redis](https://img.shields.io/badge/redis-%23DD0031.svg?style=for-the-badge&logo=redis&logoColor=white)
 
 </div>
 
@@ -143,10 +144,6 @@ Follow these steps to set up git-re on your local machine:
 
 7. **You're Good to Go:**
    - With the setup complete, you're ready to start exploring.
-
-## Screenshot
-
-![image](https://github.com/ashutosh-rath02/git-re/assets/85403534/13ae316c-2254-4da3-b07f-8b55924a9b98)
 
 ## Upcoming Features🎉
 
