@@ -190,6 +190,7 @@ This project is licensed under the Apache 2.0 License & all rights reserved to a
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/kshavp"><img src="https://avatars.githubusercontent.com/u/95236968?v=4?s=100" width="100px;" alt="Keshav Priyam"/><br /><sub><b>Keshav Priyam</b></sub></a><br /><a href="#code-kshavp" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="http://rashid-siddiqui.netlify.app"><img src="https://avatars.githubusercontent.com/u/124426004?v=4?s=100" width="100px;" alt="Rashid Siddiqui"/><br /><sub><b>Rashid Siddiqui</b></sub></a><br /><a href="#code-RashidSiddiqui2004" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Sahilll15"><img src="https://avatars.githubusercontent.com/u/109215419?v=4?s=100" width="100px;" alt="Sahil Chalke"/><br /><sub><b>Sahil Chalke</b></sub></a><br /><a href="#code-Sahilll15" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Asymtode712"><img src="https://avatars.githubusercontent.com/u/115717746?v=4?s=100" width="100px;" alt="Siddheya Kulkarni"/><br /><sub><b>Siddheya Kulkarni</b></sub></a><br /><a href="#doc-Asymtode712" title="Documentation">📖</a></td>
     </tr>
   </tbody>
 </table>
