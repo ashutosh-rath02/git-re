@@ -1,8 +1,29 @@
 import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
 import { supabaseBrowser } from "@/utils/supabase/client";
+import redis from "@/lib/redis";
+import { CACHE_TTL } from "@/lib/consts";
 
 const supabase = supabaseBrowser();
+
+const getFromCache = async (key: string) => {
+  const cachedData = await redis.get(key);
+  if (cachedData) {
+    console.log("LOADED FROM CACHE");
+    return cachedData;
+  }
+  return null;
+};
+
+const setInCache = async (
+  key: string,
+  data: any,
+  expirationSeconds: number
+) => {
+  await redis.set(key, JSON.stringify(data), {
+    ex: expirationSeconds,
+  });
+};
 
 export async function POST(request: NextRequest) {
   try {
@@ -72,7 +93,17 @@ export async function POST(request: NextRequest) {
 }
 
 export async function GET() {
+  const cacheKey = "recent-users";
   try {
+    const cachedUsers = await getFromCache(cacheKey);
+
+    if (cachedUsers) {
+      return new Response(JSON.stringify(cachedUsers), {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
     const { data: users, error } = await supabase
       .from("recent_users")
       .select("*")
@@ -89,6 +120,8 @@ export async function GET() {
         { status: 500, headers: { "Content-Type": "application/json" } }
       );
     }
+
+    await setInCache(cacheKey, users, 60 * 60 * 0.5);
 
     return new Response(JSON.stringify(users), {
       status: 200,
