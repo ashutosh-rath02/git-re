@@ -46,16 +46,34 @@ create table
   <img width="1366" alt="Screenshot 2024-05-12 at 5 32 04 PM" src="https://github.com/ashutosh-rath02/git-re/assets/65452005/e6a9b10d-6b17-40f1-b441-e7c89f364832">
   <img width="1337" alt="Screenshot 2024-05-12 at 5 32 30 PM" src="https://github.com/ashutosh-rath02/git-re/assets/65452005/68f7bc0b-79ba-424f-96bd-649756a7c228">
 
+### Implmentation of Caching
+
+- Head over to [Upstash](https://upstash.com/). Sign up or log in to your account.
+- Select the `Redis` option from the dashboard.
+- Create a new caching database.
+  ![Redis Create Database](https://github.com/ashutosh-rath02/git-re/assets/65452005/c3812326-8c9b-420b-9659-fb70259f712c)
+- Fill in the details and create the database.
+  - Select the `Primary Region` closest to your location.
+  - Select the `Read Region` closest to your location.
+  - Tick the `Eviction` option.
+    ![Redis Create DB Form](https://github.com/ashutosh-rath02/git-re/assets/65452005/844ac8ce-b98b-44ff-a0d1-d4e3bd89c824)
+- Copy the connection credentials from `Rest API` section.
+  ![Redis Connection Credentials](https://github.com/ashutosh-rath02/git-re/assets/65452005/cf414ca4-6175-49aa-9e08-e46e54a0c290)
+  - Replace the connection credentials in your `.env.local` file with `NEXT_PUBLIC_UPSTASH_REDIS_URL` and `NEXT_PUBLIC_UPSTASH_REDIS_TOKEN`.
+- You are good to go. Caching is ready to be used.
+
 ### For alternatively contributing using GitHub Desktop
 
 1. **Open GitHub Desktop:**
    Launch GitHub Desktop and log in to your GitHub account if you haven't already.
 
 2. **Clone the Repository:**
+
    - If you haven't cloned the ResourceHub repository yet, you can do so by clicking on the "File" menu and selecting "Clone Repository."
    - Choose the ResourceHub repository from the list of repositories on GitHub and clone it to your local machine.
 
 3. **Switch to the Correct Branch:**
+
    - Ensure you are on the branch that you want to submit a pull request for.
    - If you need to switch branches, you can do so by clicking on the "Current Branch" dropdown menu and selecting the desired branch.
 
@@ -63,6 +81,7 @@ create table
    Make your changes to the code or files in the repository using your preferred code editor.
 
 5. **Commit Changes:**
+
    - In GitHub Desktop, you'll see a list of the files you've changed. Check the box next to each file you want to include in the commit.
    - Enter a summary and description for your changes in the "Summary" and "Description" fields, respectively. Click the "Commit to <branch-name>" button to commit your changes to the local branch.
 
@@ -70,15 +89,17 @@ create table
    After committing your changes, click the "Push origin" button in the top right corner of GitHub Desktop to push your changes to your forked repository on GitHub.
 
 7. **Create a Pull Request:**
+
    - Go to the GitHub website and navigate to your fork of the ResourceHub repository.
    - You should see a button to "Compare & pull request" between your fork and the original repository. Click on it.
 
 8. **Review and Submit:**
+
    - On the pull request page, review your changes and add any additional information, such as a title and description, that you want to include with your pull request.
    - Once you're satisfied, click the "Create pull request" button to submit your pull request.
 
 9. **Wait for Review:**
-    Your pull request will now be available for review by the project maintainers. They may provide feedback or ask for changes before merging your pull request into the main branch of the ResourceHub repository.
+   Your pull request will now be available for review by the project maintainers. They may provide feedback or ask for changes before merging your pull request into the main branch of the ResourceHub repository.
 
 ⭐️ Support the Project
 If you find this project helpful, please consider giving it a star on GitHub! Your support helps to grow the project and reach more contributors.
