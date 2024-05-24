@@ -193,6 +193,9 @@ This project is licensed under the Apache 2.0 License & all rights reserved to a
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Asymtode712"><img src="https://avatars.githubusercontent.com/u/115717746?v=4?s=100" width="100px;" alt="Siddheya Kulkarni"/><br /><sub><b>Siddheya Kulkarni</b></sub></a><br /><a href="#doc-Asymtode712" title="Documentation">📖</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/IbrahimDev00"><img src="https://avatars.githubusercontent.com/u/147825977?v=4?s=100" width="100px;" alt="Ibrahim Chikani"/><br /><sub><b>Ibrahim Chikani</b></sub></a><br /><a href="#code-IbrahimDev00" title="Code">💻</a></td>
     </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/suhanipaliwal"><img src="https://avatars.githubusercontent.com/u/161575955?v=4?s=100" width="100px;" alt="Suhani Singh Paliwal"/><br /><sub><b>Suhani Singh Paliwal</b></sub></a><br /><a href="#doc-suhanipaliwal" title="Documentation">📖</a></td>
+    </tr>
   </tbody>
 </table>
 
