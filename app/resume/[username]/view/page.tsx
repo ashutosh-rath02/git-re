@@ -56,37 +56,63 @@ const ViewResume = () => {
   const [repos, setRepos] = useState<GitHubRepo[]>([]);
   const [languageData, setLanguageData] = useState<Language[]>([]);
   const [userStats, setUserStats] = useState({});
+  const [error, setError] = useState<string | null>(null);
+  const [redirected, setRedirected] = useState(false);
+  const router = useRouter();
 
   const printRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const fetchData = async () => {
-      const profileData = await fetch(
-        `https://api.github.com/users/${username}`
-      ).then((res) => res.json());
-      setProfile(profileData);
+      try {
+        const profileResponse = await fetch(
+          `https://api.github.com/users/${username}`
+        );
+        if (!profileResponse.ok) {
+          if (profileResponse.status === 400) {
+            router.push("/400");
+            setRedirected(true);
+            return;
+          }
+          throw new Error("The data could not be fetched, please reload");
+        }
+        const profileData = await profileResponse.json();
+        setProfile(profileData);
 
-      const reposData = await fetchPopularRepos(username as string);
-      setRepos(reposData as unknown as GitHubRepo[]);
+        const reposData = await fetchPopularRepos(username as string);
+        setRepos(reposData as unknown as GitHubRepo[]);
 
-      const languages = await fetchLanguageData(username as string);
-      setLanguageData(languages);
+        const languages = await fetchLanguageData(username as string);
+        setLanguageData(languages);
 
-      const stats = await fetchUserStats(username as string);
-      setUserStats(stats);
+        const stats = await fetchUserStats(username as string);
+        setUserStats(stats);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        if (error instanceof Error) {
+          setError(error.message);
+        } else {
+          setError("An unknown error occurred");
+        }
+      }
     };
 
-    if (username) {
+    if (username && !redirected) {
       fetchData();
     }
-  }, [username]);
+  }, [username, router, redirected]);
+
+  if (redirected) {
+    return null;
+  }
 
   if (!profile) {
     return <div>Loading...</div>;
   }
 
   return (
-    <div className="flex justify-center w-full flex-grow ">
+    <div className="flex justify-center w-full flex-grow">
+      {error && <div>{error}</div>}
       <div
         ref={printRef}
         className="bg-card p-6 rounded-md shadow-md max-w-4xl border-2 border-gray-400 mt-2"
@@ -103,14 +129,16 @@ const ViewResume = () => {
             {profile.name || profile.login}
           </h1>
           <p className="text-center">{profile.bio}</p>
-          <a
-            href={profile.blog}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-600 hover:underline"
-          >
-            {profile.blog}
-          </a>
+          {profile.blog && (
+            <a
+              href={profile.blog}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:underline"
+            >
+              {profile.blog}
+            </a>
+          )}
         </div>
         <Separator className="my-6 h-[1px] bg-gradient-to-r from-transparent via-gray-500 to-transparent" />
         <div className="flex w-full mt-6 gap-2">

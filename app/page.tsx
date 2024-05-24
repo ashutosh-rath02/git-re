@@ -7,6 +7,7 @@ import AuthButton from "@/components/AuthButton";
 import { supabaseServer } from "@/utils/supabase/server";
 import RecentGenerations from "@/components/RecentGenerations";
 import UserTestimonails from "@/components/UserTestimonials";
+import withErrorBoundary from "@/components/hoc/withErrorBoundary";
 
 export default async function Home() {
   const supabase = supabaseServer();
