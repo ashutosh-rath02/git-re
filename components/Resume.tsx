@@ -4,11 +4,7 @@ import { useParams } from "next/navigation";
 import Image from "next/image";
 import StatsBox from "@/components/StatsBox";
 import Sidebar from "@/components/Sidebar";
-import {
-  fetchPopularRepos,
-  fetchLanguageData,
-  fetchUserStats,
-} from "@/utils/resumeUtils";
+
 import LanguageBarChart from "@/components/LanguageChart";
 import ContributionGraph from "@/components/ContributionGraph";
 import Contributions from "@/components/Contributions";
@@ -23,6 +19,14 @@ import Link from "next/link";
 import ShareBtn from "./ShareBtn";
 import redis from "@/lib/redis";
 import { CACHE_TTL } from "@/lib/consts";
+import {
+  fetchLanguageData,
+  fetchPopularRepos,
+  fetchUserStats,
+} from "@/utils/resumeUtils";
+import { calculateRating } from "@/utils/rating/action";
+import { Button } from "./ui/button";
+import { IconStarFilled, IconUserStar } from "@tabler/icons-react";
 
 interface GitHubProfile {
   name: string;
@@ -78,6 +82,7 @@ const Resume = () => {
   const [showOrganizations, setShowOrganizations] = useState(true);
   const [contributionCount, setContributionCount] = useState(5);
   const [organizationCount, setOrganizationCount] = useState(5);
+  const [rating, setRating] = useState<number>();
   const [loading, setLoading] = useState(true);
 
   const resumeRef = useRef<HTMLDivElement>(null);
@@ -124,6 +129,9 @@ const Resume = () => {
 
         const stats = await fetchUserStats(username);
         setUserStats(stats);
+
+        const rating = await calculateRating(username);
+        setRating(rating);
       } finally {
         setLoading(false);
       }
@@ -193,7 +201,13 @@ const Resume = () => {
       <div className="flex-grow p-4 order-1 lg:order-2">
         <div ref={resumeRef} className="mx-auto flex justify-center">
           <div className="bg-[#020817] h-full w-full rounded-md bg-clip-padding dark:backdrop-filter dark:backdrop-blur-md dark:bg-opacity-10 border border-gray-100 shadow-md p-6 max-w-4xl">
-            <ShareBtn username={username} />
+            <div className="flex justify-between items-center">
+              <ShareBtn username={username} />
+              <Button className="text-white gap-2">
+                <IconStarFilled className="text-white h-5 w-5" />
+                <span className="text-lg ">{rating?.toFixed(1)} / 5</span>
+              </Button>
+            </div>
             <div className="flex flex-col items-center">
               <Image
                 src={profile.avatar_url || ""}
@@ -225,7 +239,6 @@ const Resume = () => {
                 </Link>
               )}
             </div>
-
             <div className="flex flex-col lg:flex-row w-full mt-6 gap-2 text-[#F8FAFC]">
               {showLanguageChart && (
                 <div className="flex-1 w-full lg:w-1/2 h-full">
@@ -239,7 +252,6 @@ const Resume = () => {
               )}
             </div>
             <Separator className="my-6 h-[1px] bg-gradient-to-r from-transparent via-gray-500 to-transparent" />
-
             {showRepos && <Repositories repos={repos} repoCount={repoCount} />}
             {showContributionGraph && (
               <>

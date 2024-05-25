@@ -1,6 +1,7 @@
 import axios from "axios";
 import redis from "@/lib/redis";
 import { CACHE_TTL } from "@/lib/consts";
+import { supabaseBrowser } from "./supabase/client";
 
 const configData = {
   maxItems: 5,
@@ -86,6 +87,8 @@ const getFromCache = async <T,>(key: string): Promise<T | null> => {
   return null;
 };
 
+const supabase = supabaseBrowser();
+
 const setInCache = async <T,>(
   key: string,
   data: T,
@@ -104,6 +107,7 @@ export const fetchOrganizations = async (
 
   if (cachedOrganizations) {
     console.log("LOADED FROM CACHE: ORGS");
+    console.log(cachedOrganizations);
     return cachedOrganizations;
   }
 
@@ -274,9 +278,23 @@ export const fetchLanguageData = async (
 };
 export const fetchUserStats = async (username: string) => {
   const cacheKey = `user-stats:${username}`;
-  const cachedUserStats = await getFromCache(cacheKey);
+  const cachedUserStats = (await getFromCache(cacheKey)) as any;
 
   if (cachedUserStats) {
+    console.log("LOADED FROM CACHE: USER STATS");
+    await supabase
+      .from("recent_users")
+      .update({
+        followers: cachedUserStats.followers,
+        public_repos: cachedUserStats.publicRepos,
+        organizations_count: cachedUserStats.organizations,
+        total_issues_created: cachedUserStats.totalIssuesCreated,
+        total_prs_merged: cachedUserStats.totalPRsMerged,
+        stars_recieved: cachedUserStats.starsReceived,
+        forks: cachedUserStats.forks,
+      })
+      .eq("username", username);
+
     return cachedUserStats;
   }
 
@@ -287,6 +305,18 @@ export const fetchUserStats = async (username: string) => {
     );
     const eventsRes = await axios.get(
       `https://api.github.com/users/${username}/events/public`
+    );
+    const reposRes = await axios.get(
+      `https://api.github.com/users/${username}/repos?per_page=100`
+    );
+    const starsReceived = reposRes.data.reduce(
+      (acc: any, repo: { stargazers_count: any }) =>
+        acc + repo.stargazers_count,
+      0
+    );
+    const forks = reposRes.data.reduce(
+      (acc: any, repo: { forks_count: any }) => acc + repo.forks_count,
+      0
     );
     const userJoinedDate = new Date(userRes.data.created_at);
     const currentYear = new Date().getFullYear();
@@ -319,8 +349,21 @@ export const fetchUserStats = async (username: string) => {
       totalPRsMerged: totalPRsMerged,
       userJoinedDate: userJoinedDate,
       yearsOnGitHub: yearsOnGitHub,
+      starsReceived: starsReceived,
+      forks: forks,
     };
-
+    await supabase
+      .from("recent_users")
+      .update({
+        followers: userStats.followers,
+        public_repos: userStats.publicRepos,
+        organizations_count: userStats.organizations,
+        total_issues_created: userStats.totalIssuesCreated,
+        total_prs_merged: userStats.totalPRsMerged,
+        stars_recieved: userStats.starsReceived,
+        forks: userStats.forks,
+      })
+      .eq("username", username);
     await setInCache(cacheKey, userStats, CACHE_TTL);
 
     return userStats;
