@@ -213,7 +213,11 @@ const Resume = () => {
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger>
-                      <Link href="">
+                      <Link
+                        href="https://github.com/ashutosh-rath02/git-re/blob/main/FAQs/rating.md"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
                         <Button className="text-white gap-2">
                           <IconStarFilled className="text-white h-5 w-5" />
                           <span className="text-lg ">
