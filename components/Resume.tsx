@@ -27,6 +27,12 @@ import {
 import { calculateRating } from "@/utils/rating/action";
 import { Button } from "./ui/button";
 import { IconStarFilled, IconUserStar } from "@tabler/icons-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface GitHubProfile {
   name: string;
@@ -203,10 +209,25 @@ const Resume = () => {
           <div className="bg-[#020817] h-full w-full rounded-md bg-clip-padding dark:backdrop-filter dark:backdrop-blur-md dark:bg-opacity-10 border border-gray-100 shadow-md p-6 max-w-4xl">
             <div className="flex justify-between items-center">
               <ShareBtn username={username} />
-              <Button className="text-white gap-2">
-                <IconStarFilled className="text-white h-5 w-5" />
-                <span className="text-lg ">{rating?.toFixed(1)} / 5</span>
-              </Button>
+              <div>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <Link href="">
+                        <Button className="text-white gap-2">
+                          <IconStarFilled className="text-white h-5 w-5" />
+                          <span className="text-lg ">
+                            {rating?.toFixed(1)} / 5
+                          </span>
+                        </Button>
+                      </Link>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p className="text-white">Click to learn more</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </div>
             </div>
             <div className="flex flex-col items-center">
               <Image
