@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import redis from "@/lib/redis";
 import { CACHE_TTL } from "@/lib/consts";
+import { fetchUserStats } from "@/utils/resumeUtils";
 
 interface GitHubData {
   followers: number;
@@ -30,73 +31,10 @@ const StatsBox = ({ username }: { username: string }) => {
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const cacheKey = `user-profile-stats:${username}`;
-      const cachedUserData = await redis.get(cacheKey);
-
-      if (cachedUserData) {
-        setUserData(cachedUserData as any);
-        return;
-      }
-
-      // Fetching basic user data
-      const userRes = await axios.get(
-        `https://api.github.com/users/${username}`
-      );
-      const orgsRes = await axios.get(
-        `https://api.github.com/users/${username}/orgs`
-      );
-
-      // Fetching stars and forks
-      const reposRes = await axios.get(
-        `https://api.github.com/users/${username}/repos?per_page=100`
-      );
-      const starsReceived = reposRes.data.reduce(
-        (acc: any, repo: { stargazers_count: any }) =>
-          acc + repo.stargazers_count,
-        0
-      );
-      const forks = reposRes.data.reduce(
-        (acc: any, repo: { forks_count: any }) => acc + repo.forks_count,
-        0
-      );
-
-      // Fetching total commits (approximation using PushEvents)
-      const eventsRes = await axios.get(
-        `https://api.github.com/users/${username}/events/public`
-      );
-      const totalCommits = eventsRes.data
-        .filter((event: { type: string }) => event.type === "PushEvent")
-        .reduce(
-          (acc: any, event: { payload: { commits: string | any[] } }) =>
-            acc + event.payload.commits.length,
-          0
-        );
-
-      // Fetching total issues created and PRs merged
-      const issuesRes = await axios.get(
-        `https://api.github.com/search/issues?q=author:${username}+type:issue`
-      );
-      const prsRes = await axios.get(
-        `https://api.github.com/search/issues?q=author:${username}+type:pr+is:merged`
-      );
-
-      // Setting the data
-      const userData: GitHubData = {
-        followers: userRes.data.followers,
-        publicRepos: userRes.data.public_repos,
-        starsReceived,
-        forks,
-        totalCommits,
-        organizations: orgsRes.data.length,
-        totalIssues: issuesRes.data.total_count,
-        totalPRsMerged: prsRes.data.total_count,
-        userJoinedDate: new Date(userRes.data.created_at),
-      };
-
-      setUserData(userData);
-      await redis.set(cacheKey, JSON.stringify(userData), { ex: CACHE_TTL });
+      await fetchUserStats(username).then((data) => {
+        setUserData(data);
+      });
     };
-
     fetchUserData();
   }, [username]);
 
