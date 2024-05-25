@@ -66,6 +66,8 @@ ADD COLUMN total_prs_merged numeric NULL DEFAULT '0'::numeric,
 ADD COLUMN total_issues_created numeric NULL DEFAULT '0'::numeric;
 ```
 
+</details>
+
 - This will create a table named `recent_users` in your Supabase project.
 - Open that table from `Table Editor` and disable the RLS Policy.
   <img width="1366" alt="Screenshot 2024-05-12 at 5 32 04 PM" src="https://github.com/ashutosh-rath02/git-re/assets/65452005/e6a9b10d-6b17-40f1-b441-e7c89f364832">
