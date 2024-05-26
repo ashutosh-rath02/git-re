@@ -8,10 +8,21 @@ import UserTestimonails from "@/components/UserTestimonials";
 import withErrorBoundary from "@/components/hoc/withErrorBoundary";
 import { supabaseBrowser } from "@/utils/supabase/client";
 import "./globals.css";
+import { useSearchParams } from "next/navigation";
+import { toast } from "@/components/ui/use-toast";
 
 export default function Home() {
   const supabase = supabaseBrowser();
+  const searchParams = useSearchParams();
+  const error = searchParams.get("error");
   const [data, setData] = useState<any>({ user: null });
+  if (error) {
+    toast({
+      title: "Error",
+      description: error,
+      variant: "destructive",
+    });
+  }
   useEffect(() => {
     const fetchUser = async () => {
       const { data: user } = await supabase.auth.getUser();
