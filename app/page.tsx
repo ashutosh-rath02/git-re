@@ -1,17 +1,24 @@
 /* eslint-disable @next/next/no-img-element */
-// "use client";
-import React from "react";
-import "./globals.css";
+"use client";
+import { useEffect, useState } from "react";
 import Form from "@/components/Form";
 import AuthButton from "@/components/AuthButton";
-import { supabaseServer } from "@/utils/supabase/server";
 import RecentGenerations from "@/components/RecentGenerations";
 import UserTestimonails from "@/components/UserTestimonials";
 import withErrorBoundary from "@/components/hoc/withErrorBoundary";
+import { supabaseBrowser } from "@/utils/supabase/client";
+import "./globals.css";
 
-export default async function Home() {
-  const supabase = supabaseServer();
-  const { data } = await supabase.auth.getUser();
+export default function Home() {
+  const supabase = supabaseBrowser();
+  const [data, setData] = useState<any>({ user: null });
+  useEffect(() => {
+    const fetchUser = async () => {
+      const { data: user } = await supabase.auth.getUser();
+      setData({ user: user.user });
+    };
+    fetchUser();
+  }, []);
   return (
     <main className="flex flex-col my-[8%] items-center justify-center p-4 lg:px-24">
       <div className="relative mb-[6%] h-full flex flex-col max-w-4xl gap-8 place-items-center">
