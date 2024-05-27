@@ -14,8 +14,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Share1Icon } from "@radix-ui/react-icons";
+import { CopyIcon, Share1Icon } from "@radix-ui/react-icons";
 import { Button } from "./ui/button";
+import CopyLinkBtn from "./CopyLinkBtn";
 
 const ShareBtn = ({ username }: { username: string }) => {
   return (
@@ -50,6 +51,12 @@ const ShareBtn = ({ username }: { username: string }) => {
             >
               <TwitterIcon className="rounded-full" size={40} />
             </TwitterShareButton>
+            <CopyLinkBtn
+              className="rounded-full "
+              url={`${window.origin}/resume/${username}`}
+            >
+              <CopyIcon className="text-black" />
+            </CopyLinkBtn>
           </DialogDescription>
         </DialogHeader>
       </DialogContent>
