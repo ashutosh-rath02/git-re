@@ -35,7 +35,7 @@
     "embla-carousel-autoplay": "^8.0.4",
     "embla-carousel-react": "^8.0.4",
     "file-saver": "^2.0.5",
-    "framer-motion": "^11.1.9",
+    "framer-motion": "^11.2.6",
     "html2canvas": "^1.4.1",
     "html2pdf.js": "^0.10.1",
     "jspdf": "^2.5.1",
