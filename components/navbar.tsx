@@ -5,6 +5,7 @@ import { IoMdGitNetwork } from "react-icons/io";
 import Link from "next/link";
 import { Button } from "./ui/button";
 import AuthButton from "./AuthButton";
+import Hamburger from "./Hamburger";
 import { supabaseServer } from "@/utils/supabase/server";
 
 export default async function Navbar() {
@@ -29,18 +30,21 @@ export default async function Navbar() {
           href="https://github.com/ashutosh-rath02/git-re"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-navbarSecondary hover:text-primary font-semibold transition sm:block hidden dark:text-white"
+          className="text-navbarSecondary hover:text-primary font-semibold transition md:block hidden dark:text-white"
         >
           Opensource
         </Link>
         <Link
           href="#"
-          className="text-navbarSecondary hover:text-primary font-semibold transition sm:block hidden dark:text-white"
+          className="text-navbarSecondary hover:text-primary font-semibold transition md:block hidden dark:text-white"
         >
           Testimonial
         </Link>
 
         <AuthButton user={data.user} />
+
+        <Hamburger/>
+        
       </div>
     </nav>
   );
