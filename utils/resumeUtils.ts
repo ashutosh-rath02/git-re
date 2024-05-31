@@ -4,7 +4,7 @@ import { CACHE_TTL } from "@/lib/consts";
 import { supabaseBrowser } from "./supabase/client";
 
 const configData = {
-  maxItems: 5,
+  maxItems: 6,
   maxLanguages: 5,
 };
 
@@ -198,17 +198,20 @@ export const fetchContributions = async (
 };
 
 export const fetchPopularRepos = async (username: string): Promise<Repo[]> => {
-  const cacheKey = `popular-repos:${username}`;
-  const cachedRepos = await getFromCache<Repo[]>(cacheKey);
+  // const cacheKey = `popular-repos:${username}`;
+  // const cachedRepos = await getFromCache<Repo[]>(cacheKey);
 
-  if (cachedRepos) {
-    return cachedRepos;
-  }
+  // if (cachedRepos) {
+  //   return cachedRepos;
+  // }
   try {
     const response = await axios.get(
       `https://api.github.com/users/${username}/repos?per_page=100`
     );
     const repos = response.data;
+
+    console.log("popular",repos);
+    
 
     const formattedRepos = repos
       .filter((repo: any) => !repo.fork)
@@ -234,7 +237,7 @@ export const fetchPopularRepos = async (username: string): Promise<Repo[]> => {
       )
       .slice(0, configData.maxItems);
 
-    await setInCache(cacheKey, formattedRepos, CACHE_TTL);
+    //await setInCache(cacheKey, formattedRepos, CACHE_TTL);
 
     return formattedRepos;
   } catch (error) {
