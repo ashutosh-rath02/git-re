@@ -198,12 +198,12 @@ export const fetchContributions = async (
 };
 
 export const fetchPopularRepos = async (username: string): Promise<Repo[]> => {
-  // const cacheKey = `popular-repos:${username}`;
-  // const cachedRepos = await getFromCache<Repo[]>(cacheKey);
+  const cacheKey = `popular-repos:${username}`;
+  const cachedRepos = await getFromCache<Repo[]>(cacheKey);
 
-  // if (cachedRepos) {
-  //   return cachedRepos;
-  // }
+  if (cachedRepos) {
+    return cachedRepos;
+  }
   try {
     const response = await axios.get(
       `https://api.github.com/users/${username}/repos?per_page=100`
@@ -237,7 +237,7 @@ export const fetchPopularRepos = async (username: string): Promise<Repo[]> => {
       )
       .slice(0, configData.maxItems);
 
-    //await setInCache(cacheKey, formattedRepos, CACHE_TTL);
+    await setInCache(cacheKey, formattedRepos, CACHE_TTL);
 
     return formattedRepos;
   } catch (error) {
