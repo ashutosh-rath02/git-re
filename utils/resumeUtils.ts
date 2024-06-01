@@ -210,9 +210,6 @@ export const fetchPopularRepos = async (username: string): Promise<Repo[]> => {
     );
     const repos = response.data;
 
-    console.log("popular",repos);
-    
-
     const formattedRepos = repos
       .filter((repo: any) => !repo.fork)
       .map((repo: any) => ({
