@@ -85,7 +85,7 @@ export default function Home() {
       </div>
       <div className="h-[30rem] w-full flex flex-col items-center justify-center">
         <div className="py-4">
-          <p className="text-4xl font-bold text-center mt-4">
+          <p className="text-4xl font-bold text-center mt-4" id="userTestimonials">
             Here are some of our recent{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-br from-blue-500 to-blue-700">
               users
@@ -94,7 +94,7 @@ export default function Home() {
         </div>
         <RecentGenerations />
       </div>
-      <div className="flex justify-center items-center h-[30rem]">
+      <div className="flex justify-center items-center h-[30rem]" id="userTestiminials">
         <UserTestimonails />
       </div>
     </main>
