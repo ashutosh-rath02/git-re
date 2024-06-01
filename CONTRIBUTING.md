@@ -4,6 +4,23 @@ When contributing to this repository, please first discuss the change you wish t
 
 Please note we have a code of conduct, please follow it in all your interactions with the project.
 
+## Build and Run
+
+- Before creating a Pull Request, make sure the project builds and runs successfully.
+- Run the following commands to build the project:
+
+  ```bash
+  npm run build
+  ```
+
+- To run the built project:
+
+  ```bash
+  npm start
+  ```
+
+- Make sure to only open a Pull Request after the above commands run successfully, without any errors.
+
 ## Pull Request Process
 
 1. Ensure any install or build dependencies are removed before the end of the layer when doing a
