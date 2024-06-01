@@ -10,7 +10,7 @@ import { supabaseBrowser } from "@/utils/supabase/client";
 import "./globals.css";
 import { useSearchParams } from "next/navigation";
 import { toast } from "@/components/ui/use-toast";
-
+import Lenis from '@studio-freight/lenis';
 export default function Home() {
   const supabase = supabaseBrowser();
   const searchParams = useSearchParams();
@@ -29,6 +29,14 @@ export default function Home() {
       setData({ user: user.user });
     };
     fetchUser();
+  }, []);
+  useEffect(() => {
+    const lenis = new Lenis();
+    function raf(time:any) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
   }, []);
   return (
     <main className="flex flex-col my-[8%] items-center justify-center p-4 lg:px-24">
