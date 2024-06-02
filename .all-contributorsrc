@@ -150,6 +150,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "TenzDelek",
+      "name": "TenzDelek",
+      "avatar_url": "https://avatars.githubusercontent.com/u/122612557?v=4",
+      "profile": "https://tenzindelekportfolio.vercel.app/",
+      "contributions": [
+        "code"
+      ]
     }
   ]
 }
