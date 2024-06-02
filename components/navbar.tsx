@@ -27,24 +27,23 @@ export default async function Navbar() {
       </div>
       <div className="flex flex-row items-center space-x-8">
         <Link
-          href="https://github.com/ashutosh-rath02/git-re"
-          target="_blank"
+          href={"/"}
           rel="noopener noreferrer"
           className="text-navbarSecondary hover:text-primary font-semibold transition md:block hidden dark:text-white"
         >
-          Opensource
+          Home
         </Link>
-        <Link
-          href="#"
+        <a
+          href="#userTestimonials"
           className="text-navbarSecondary hover:text-primary font-semibold transition md:block hidden dark:text-white"
+          style={{ scrollBehavior: "smooth" }}
         >
           Testimonial
-        </Link>
+        </a>
 
         <AuthButton user={data.user} />
 
-        <Hamburger/>
-        
+        <Hamburger />
       </div>
     </nav>
   );
