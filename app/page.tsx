@@ -10,7 +10,7 @@ import { supabaseBrowser } from "@/utils/supabase/client";
 import "./globals.css";
 import { useSearchParams } from "next/navigation";
 import { toast } from "@/components/ui/use-toast";
-import Lenis from '@studio-freight/lenis';
+import Lenis from "@studio-freight/lenis";
 export default function Home() {
   const supabase = supabaseBrowser();
   const searchParams = useSearchParams();
@@ -32,7 +32,7 @@ export default function Home() {
   }, []);
   useEffect(() => {
     const lenis = new Lenis();
-    function raf(time:any) {
+    function raf(time: any) {
       lenis.raf(time);
       requestAnimationFrame(raf);
     }
@@ -83,9 +83,8 @@ export default function Home() {
               <img
                 src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=438558&theme=light"
                 alt="git&#0045;re - Elevate&#0032;your&#0032;GitHub&#0032;to&#0032;a&#0032;dynamic&#0032;resume&#0032;effortlessly | Product Hunt"
-                style={{ width: "200px", height: "50px" }}
-                width="250"
-                height="54"
+                style={{ height: "58px" }}
+                height="58"
               />
             </a>
           </div>
@@ -93,7 +92,10 @@ export default function Home() {
       </div>
       <div className="h-[30rem] w-full flex flex-col items-center justify-center">
         <div className="py-4">
-          <p className="text-4xl font-bold text-center mt-4" id="userTestimonials">
+          <p
+            className="text-4xl font-bold text-center mt-4"
+            id="userTestimonials"
+          >
             Here are some of our recent{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-br from-blue-500 to-blue-700">
               users
@@ -102,7 +104,10 @@ export default function Home() {
         </div>
         <RecentGenerations />
       </div>
-      <div className="flex justify-center items-center h-[30rem]" id="userTestiminials">
+      <div
+        className="flex justify-center items-center h-[30rem]"
+        id="userTestiminials"
+      >
         <UserTestimonails />
       </div>
     </main>
