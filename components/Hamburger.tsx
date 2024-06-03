@@ -25,17 +25,6 @@ const Hamburger = () => {
         <div className="absolute z-50 w-fit h-fit p-3  top-6 -right-4 rounded-md flex md:hidden flex-col gap-2 ">
           <div className="w-full h-fit p-2 border rounded-md">
             <Link
-              href="https://github.com/ashutosh-rath02/git-re"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-navbarSecondary hover:text-primary font-semibold transition flex md:hidden  dark:text-white"
-            >
-              Opensource
-            </Link>
-          </div>
-
-          <div className="w-full h-fit p-2 border rounded-md">
-            <Link
               href="#"
               className="text-navbarSecondary hover:text-primary font-semibold transition flex md:hidden  dark:text-white"
             >
