@@ -4,7 +4,7 @@ import { CACHE_TTL } from "@/lib/consts";
 import { supabaseBrowser } from "./supabase/client";
 
 const configData = {
-  maxItems: 5,
+  maxItems: 6,
   maxLanguages: 5,
 };
 

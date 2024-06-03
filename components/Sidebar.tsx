@@ -225,10 +225,10 @@ const Sidebar: React.FC<SidebarProps> = ({
         </div>
         {showContributionOptions && (
           <Input
+            className="border border-gray-400 rounded p-1 w-24"
             type="number"
             value={contributionCount.toString()}
-            onChange={handleContributionCountChange}
-            className="border border-gray-400 rounded p-1 w-24"
+            onChange={ handleContributionCountChange }
           />
         )}
         <div className="flex items-center space-x-2">
