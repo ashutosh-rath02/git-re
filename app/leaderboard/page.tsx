@@ -51,8 +51,8 @@ export default function Leaderboard() {
   };
 
   return (
-    <div className="max-w-screen-lg mx-auto">
-      <h1 className="text-2xl font-semibold mb-4">Leaderboard</h1>
+    <div className="max-w-screen-lg mx-auto px-4 lg:px-0">
+      <h1 className="text-2xl font-semibold mb-4 mt-4">Leaderboard</h1>
       <Table>
         <TableHeader>
           <TableRow>
