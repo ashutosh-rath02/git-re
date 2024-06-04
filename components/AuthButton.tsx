@@ -7,7 +7,6 @@ import { User } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
 import { IconCubeUnfolded, IconLogout } from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
-import MagicButton from "./ui/MagicButton";
 
 type AuthButtonProps = {
   user: User | null;
@@ -55,8 +54,7 @@ export default function AuthButton({
       {isLoading ? <div className="loader1"></div> : "Logout"}
     </Button>
   ) : (
-    <>
-    {/* <Button
+    <Button
       variant="newDefault"
       className={cn(className, "animate-shimmer h-10")}
       disabled={isLoading}
@@ -64,13 +62,6 @@ export default function AuthButton({
     >
       <IconCubeUnfolded stroke={1} className="mr-2" />
       {isLoading ? <div className="loader1"></div> : "Build Resume"}
-    </Button> */}
-    <MagicButton
-    title='Build Resume'
-    isLoading={isLoading}
-    onClick={handleLoginWithGithub}
-    />
-    </>
-    
+    </Button>
   );
 }
