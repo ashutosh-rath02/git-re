@@ -28,7 +28,16 @@ const Hamburger = () => {
               href="#"
               className="text-navbarSecondary hover:text-primary font-semibold transition flex md:hidden  dark:text-white"
             >
-              Testimonial
+              Testimonials
+            </Link>
+          </div>
+          <div className="w-full h-fit p-2 border rounded-md">
+            <Link
+              href={"/leaderboard"}
+              rel="noopener noreferrer"
+              className="text-navbarSecondary hover:text-primary font-semibold transition flex md:hidden  dark:text-white"
+            >
+              Leaderboard
             </Link>
           </div>
         </div>

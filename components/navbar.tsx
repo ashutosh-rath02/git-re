@@ -40,6 +40,13 @@ export default async function Navbar() {
         >
           Testimonial
         </a>
+        <Link
+          href={"/leaderboard"}
+          rel="noopener noreferrer"
+          className="text-navbarSecondary hover:text-primary font-semibold transition md:block hidden dark:text-white"
+        >
+          Leaderboard
+        </Link>
 
         <AuthButton user={data.user} />
 
