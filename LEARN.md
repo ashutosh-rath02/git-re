@@ -43,7 +43,7 @@ create table
     organizations_count numeric null default '0'::numeric,
     total_prs_merged numeric null default '0'::numeric,
     total_issues_created numeric null default '0'::numeric,
-    rating double precision null,
+    rating double precision null default '-0.1'::double precision,
     constraint recent_users_pkey primary key (id),
     constraint recent_users_username_key unique (username)
   ) tablespace pg_default;
