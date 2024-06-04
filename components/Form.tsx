@@ -5,7 +5,6 @@ import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import { toast, useToast } from "@/components/ui/use-toast";
 import axios from "axios";
-import MagicButton from "./ui/MagicButton";
 
 export default function Form() {
   const [username, setUsername] = useState<string>("");
