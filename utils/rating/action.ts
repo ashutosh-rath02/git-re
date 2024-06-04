@@ -8,6 +8,7 @@ interface UserStats {
   organizations_count: number;
   total_prs_merged: number;
   total_issues_created: number;
+  rating: number;
 }
 
 const getPointsForStars = (stars: number): number => {
@@ -57,7 +58,7 @@ export const calculateRating = async (username: string): Promise<number> => {
     const { data, error } = await supabase
       .from("recent_users")
       .select(
-        "stars_recieved, followers, public_repos, organizations_count, total_prs_merged, total_issues_created"
+        "stars_recieved, followers, public_repos, organizations_count, total_prs_merged, total_issues_created, rating"
       )
       .eq("username", username)
       .single();
@@ -79,6 +80,7 @@ export const calculateRating = async (username: string): Promise<number> => {
       organizations_count,
       total_prs_merged,
       total_issues_created,
+      rating,
     }: UserStats = data;
 
     const pointsStars = getPointsForStars(stars_recieved);
@@ -103,6 +105,17 @@ export const calculateRating = async (username: string): Promise<number> => {
       weightedOrganizations +
       weightedContributions;
     const normalizedRating = (totalWeightedScore / 5) * 5;
+
+    if (rating !== normalizedRating) {
+      const { error: updateError } = await supabase
+        .from("recent_users")
+        .update({ rating: normalizedRating })
+        .eq("username", username);
+      if (updateError) {
+        console.log("Error updating user rating", updateError);
+        throw updateError;
+      }
+    }
 
     return normalizedRating;
   } catch (e) {

@@ -36,7 +36,6 @@ create table
     avatar_url text not null,
     bio text null,
     username text not null,
-    views numeric null default '0'::numeric,
     stars_recieved numeric null default '0'::numeric,
     forks numeric null default '0'::numeric,
     followers numeric null default '0'::numeric,
@@ -44,29 +43,11 @@ create table
     organizations_count numeric null default '0'::numeric,
     total_prs_merged numeric null default '0'::numeric,
     total_issues_created numeric null default '0'::numeric,
+    rating double precision null default '-0.1'::double precision,
     constraint recent_users_pkey primary key (id),
     constraint recent_users_username_key unique (username)
   ) tablespace pg_default;
 ```
-
-<details open>
-<summary>
-If you are old contributor and have already created the table, you can run the following query to update the table:
-</summary>
-
-```sql
-ALTER TABLE public.recent_users
-ADD COLUMN views numeric NULL DEFAULT '0'::numeric,
-ADD COLUMN stars_recieved numeric NULL DEFAULT '0'::numeric,
-ADD COLUMN forks numeric NULL DEFAULT '0'::numeric,
-ADD COLUMN followers numeric NULL DEFAULT '0'::numeric,
-ADD COLUMN public_repos numeric NULL DEFAULT '0'::numeric,
-ADD COLUMN organizations_count numeric NULL DEFAULT '0'::numeric,
-ADD COLUMN total_prs_merged numeric NULL DEFAULT '0'::numeric,
-ADD COLUMN total_issues_created numeric NULL DEFAULT '0'::numeric;
-```
-
-</details>
 
 - This will create a table named `recent_users` in your Supabase project.
 - Open that table from `Table Editor` and disable the RLS Policy.
