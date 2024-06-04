@@ -31,16 +31,24 @@ interface LeaderboardProp {
 
 export default function Leaderboard() {
   const [leaderboard, setLeaderboard] = useState<LeaderboardProp[]>([]);
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
-    getLeaderboard({}).then((data) => setLeaderboard(data));
-  }, []);
+    getLeaderboard({ page }).then((data) => setLeaderboard(data));
+  }, [page]);
+
+  const handlePrevious = () => {
+    if (page > 1) setPage(page - 1);
+  };
+
+  const handleNext = () => {
+    setPage(page + 1);
+  };
 
   return (
     <div className="max-w-screen-lg mx-auto">
       <h1 className="text-2xl font-semibold mb-4">Leaderboard</h1>
       <Table>
-        <TableCaption>A list of users of git-re.</TableCaption>
         <TableHeader>
           <TableRow>
             <TableHead className="w-[80px]">Rank</TableHead>
@@ -52,7 +60,7 @@ export default function Leaderboard() {
         <TableBody>
           {leaderboard.map((user, index) => (
             <TableRow key={user.username}>
-              <TableCell>{index + 1}</TableCell>
+              <TableCell>{(page - 1) * 20 + index + 1}</TableCell>
               <TableCell>
                 <Avatar>
                   <AvatarImage src={user.avatar_url} />
@@ -69,6 +77,22 @@ export default function Leaderboard() {
           ))}
         </TableBody>
       </Table>
+      <Pagination className="mt-5">
+        <PaginationPrevious
+          onClick={handlePrevious}
+          className="cursor-pointer select-none"
+        >
+          Previous
+        </PaginationPrevious>
+        <PaginationContent>
+          <PaginationItem>
+            <PaginationLink>{page}</PaginationLink>
+          </PaginationItem>
+        </PaginationContent>
+        <PaginationNext onClick={handleNext} className="cursor-pointer">
+          Next
+        </PaginationNext>
+      </Pagination>
     </div>
   );
 }
