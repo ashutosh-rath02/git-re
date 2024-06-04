@@ -39,13 +39,15 @@ export default function Leaderboard() {
   }, [page]);
 
   const handlePrevious = () => {
-    setLeaderboard([]);
-    if (page > 1) setPage(page - 1);
+    if (page > 1) {
+      setPage(page - 1);
+      setLeaderboard([]);
+    }
   };
 
   const handleNext = () => {
-    setLeaderboard([]);
     setPage(page + 1);
+    setLeaderboard([]);
   };
 
   return (
