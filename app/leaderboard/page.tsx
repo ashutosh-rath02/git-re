@@ -22,6 +22,7 @@ import {
 import { getLeaderboard } from "./action";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import Link from "next/link";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface LeaderboardProp {
   avatar_url: string;
@@ -38,10 +39,12 @@ export default function Leaderboard() {
   }, [page]);
 
   const handlePrevious = () => {
+    setLeaderboard([]);
     if (page > 1) setPage(page - 1);
   };
 
   const handleNext = () => {
+    setLeaderboard([]);
     setPage(page + 1);
   };
 
@@ -57,25 +60,48 @@ export default function Leaderboard() {
             <TableHead>Rating</TableHead>
           </TableRow>
         </TableHeader>
-        <TableBody>
-          {leaderboard.map((user, index) => (
-            <TableRow key={user.username}>
-              <TableCell>{(page - 1) * 20 + index + 1}</TableCell>
-              <TableCell>
-                <Avatar>
-                  <AvatarImage src={user.avatar_url} />
-                  <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
-              </TableCell>
-              <TableCell className="font-medium">
-                <Link href={`${process.env.NEXT_PUBLIC_URL}${user.username}`}>
-                  {user.username}
-                </Link>
-              </TableCell>
-              <TableCell>{user.rating}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
+        {leaderboard.length > 0 ? (
+          <TableBody>
+            {leaderboard.map((user, index) => (
+              <TableRow key={user.username}>
+                <TableCell>{(page - 1) * 20 + index + 1}</TableCell>
+                <TableCell>
+                  <Avatar>
+                    <AvatarImage src={user.avatar_url} />
+                    <AvatarFallback>CN</AvatarFallback>
+                  </Avatar>
+                </TableCell>
+                <TableCell className="font-medium">
+                  <Link
+                    href={`${process.env.NEXT_PUBLIC_URL}/resume/${user.username}`}
+                  >
+                    {user.username}
+                  </Link>
+                </TableCell>
+                <TableCell>{user.rating}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        ) : (
+          <TableBody>
+            {Array.from({ length: 5 }, (_, index) => (
+              <TableRow key={index}>
+                <TableCell>
+                  <Skeleton className="h-4 w-[100px]" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-8 w-8 rounded-full" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-4 w-[250px]" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-4 w-[250px]" />
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        )}
       </Table>
       <Pagination className="mt-5">
         <PaginationPrevious
@@ -89,7 +115,11 @@ export default function Leaderboard() {
             <PaginationLink>{page}</PaginationLink>
           </PaginationItem>
         </PaginationContent>
-        <PaginationNext onClick={handleNext} className="cursor-pointer">
+
+        <PaginationNext
+          onClick={handleNext}
+          className="cursor-pointer select-none"
+        >
           Next
         </PaginationNext>
       </Pagination>
