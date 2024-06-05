@@ -27,3 +27,19 @@ export const getLeaderboard = async ({ page = 1 }: LeaderboardProp) => {
     throw error;
   }
 };
+
+export const getIndividualUserRank = async (username: string) => {
+  try {
+    const { data, error } = await supabase.rpc("get_user_rank", {
+      user_username: username,
+    });
+
+    if (error) {
+      throw error;
+    }
+    return data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};

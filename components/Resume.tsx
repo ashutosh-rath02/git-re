@@ -26,13 +26,15 @@ import {
 } from "@/utils/resumeUtils";
 import { calculateRating } from "@/utils/rating/action";
 import { Button } from "./ui/button";
-import { IconStarFilled, IconUserStar } from "@tabler/icons-react";
+import { IconStarFilled, IconTrophy } from "@tabler/icons-react";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { getIndividualUserRank } from "@/app/leaderboard/action";
+import { getRankSuffix } from "@/utils/format";
 
 interface GitHubProfile {
   name: string;
@@ -89,6 +91,7 @@ const Resume = () => {
   const [contributionCount, setContributionCount] = useState(5);
   const [organizationCount, setOrganizationCount] = useState(5);
   const [rating, setRating] = useState<number>();
+  const [rank, setRank] = useState<number>();
   const [loading, setLoading] = useState(true);
 
   const resumeRef = useRef<HTMLDivElement>(null);
@@ -138,6 +141,9 @@ const Resume = () => {
 
         const rating = await calculateRating(username);
         setRating(rating);
+
+        const rank = (await getIndividualUserRank(username))[0].user_rank;
+        setRank(rank);
       } finally {
         setLoading(false);
       }
@@ -209,7 +215,7 @@ const Resume = () => {
           <div className="bg-[#020817] h-full w-full rounded-md bg-clip-padding dark:backdrop-filter dark:backdrop-blur-md dark:bg-opacity-10 border border-gray-100 shadow-md p-6 max-w-4xl">
             <div className="flex justify-between items-center">
               <ShareBtn username={username} />
-              <div>
+              <div className="flex gap-x-4">
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger>
@@ -228,6 +234,24 @@ const Resume = () => {
                     </TooltipTrigger>
                     <TooltipContent>
                       <p className="text-white">Click to learn more</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <Link href="/leaderboard">
+                        <Button className="text-white gap-2">
+                          <IconTrophy className="text-white h-5 w-5" />
+                          <span className="text-lg flex items-center">
+                            {rank}
+                            {getRankSuffix(rank)}
+                          </span>
+                        </Button>
+                      </Link>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p className="text-white">Click to view leaderboard</p>
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
