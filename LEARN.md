@@ -49,7 +49,23 @@ create table
   ) tablespace pg_default;
 ```
 
-- This will create a table named `recent_users` in your Supabase project.
+```sql
+CREATE OR REPLACE FUNCTION get_user_rank(user_username text)
+RETURNS TABLE(user_rank int) AS $$
+BEGIN
+  RETURN QUERY
+  SELECT CAST(rnk AS int)
+  FROM (
+    SELECT username, rating, RANK() OVER (ORDER BY rating DESC) as rnk
+    FROM recent_users
+    WHERE rating != -0.1
+  ) ranked_users
+  WHERE username = user_username;
+END;
+$$ LANGUAGE plpgsql;
+```
+
+- This will create a table named `recent_users` and `get_user_rank` function in your Supabase project.
 - Open that table from `Table Editor` and disable the RLS Policy.
   <img width="1366" alt="Screenshot 2024-05-12 at 5 32 04 PM" src="https://github.com/ashutosh-rath02/git-re/assets/65452005/e6a9b10d-6b17-40f1-b441-e7c89f364832">
   <img width="1337" alt="Screenshot 2024-05-12 at 5 32 30 PM" src="https://github.com/ashutosh-rath02/git-re/assets/65452005/68f7bc0b-79ba-424f-96bd-649756a7c228">
@@ -111,6 +127,10 @@ create table
 
 ⭐️ Support the Project
 If you find this project helpful, please consider giving it a star on GitHub! Your support helps to grow the project and reach more contributors.
+
+```
+
+```
 
 ```
 
