@@ -70,7 +70,9 @@ export default function Leaderboard() {
                 <TableCell>
                   <Avatar>
                     <AvatarImage src={user.avatar_url} />
-                    <AvatarFallback>CN</AvatarFallback>
+                    <AvatarFallback>
+                      {user.username.substring(0, 2).toUpperCase()}
+                    </AvatarFallback>
                   </Avatar>
                 </TableCell>
                 <TableCell className="font-medium">
