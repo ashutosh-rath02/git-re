@@ -1,6 +1,25 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+body {
+  scrollbar-width: thin;
+  scrollbar-color: #051129 #2e2e2ed7;
+}
+::-webkit-scrollbar {
+  width: 12px;
+}
+::-webkit-scrollbar-track {
+  background: #2e2e2ed7;
+}
+::-webkit-scrollbar-thumb {
+  background: #051129;
+  border-radius: 20px;
+  border: 3px solid #2e2e2ed7;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #0d214a;
+}
 
 @layer base {
   :root {
@@ -71,8 +90,7 @@
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  animation:
-    bounce 1s ease-in-out infinite alternate,
+  animation: bounce 1s ease-in-out infinite alternate,
     changeColor 2s linear infinite;
 }
 
