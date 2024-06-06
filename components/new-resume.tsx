@@ -22,6 +22,7 @@ import {
   fetchPopularRepos,
   fetchUserStats,
   fetchOrganizations,
+  fetchContributions,
 } from "@/utils/resumeUtils";
 import { calculateRating } from "@/utils/rating/action";
 import { getIndividualUserRank } from "@/app/leaderboard/action";
@@ -80,6 +81,14 @@ interface OrganizationsProps {
   count: number;
 }
 
+interface ContributionsProps {
+  organizationName: string;
+  repository: string;
+  url: string;
+  repoUrl: string;
+  commitCount: number;
+}
+
 export function NewResume() {
   const { username } = useParams<{ username: string }>();
   const [profile, setProfile] = useState<GitHubProfile | null>(null);
@@ -105,6 +114,7 @@ export function NewResume() {
   const [rank, setRank] = useState<number>();
   const [organizations, setOrganizations] = useState<any>([]);
   const [loading, setLoading] = useState(true);
+  const [contributions, setContributions] = useState<ContributionsProps[]>([]);
   const [userStats, setUserStats] = useState<GitHubData>({
     followers: 0,
     publicRepos: 0,
@@ -154,6 +164,17 @@ export function NewResume() {
 
         const rank = (await getIndividualUserRank(username))[0].user_rank;
         setRank(rank);
+
+        const contributionsData = await fetchContributions(username);
+        setContributions(
+          contributionsData.slice(0, contributionCount).map((contribution) => ({
+            organizationName: contribution.organizationName,
+            repository: contribution.repository,
+            url: contribution.url,
+            repoUrl: contribution.repoUrl,
+            commitCount: contribution.commitCount,
+          }))
+        );
       } finally {
         setLoading(false);
       }
@@ -426,6 +447,43 @@ export function NewResume() {
                 </div>
               </>
             )}
+          </div>
+          <div>
+            <h2 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-50">
+              Contributions
+            </h2>
+
+            <div className="mt-4 space-y-4">
+              {contributions.map((contri, index) => (
+                <div className="flex items-center gap-4" key={index}>
+                  <div className="flex-1">
+                    <div className="text-sm font-medium text-gray-900 dark:text-gray-50">
+                      <Link className="hover:underline" href={"#"}>
+                        {contri.organizationName}/{contri.repository}
+                      </Link>
+                    </div>
+                    <div className="text-sm text-gray-500 dark:text-gray-400">
+                      has contributed to <strong>{contri.repository}</strong>{" "}
+                      with{" "}
+                      <Link
+                        className="hover:underline"
+                        href={contri.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {contri.commitCount} commit(s)
+                      </Link>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <IconGitCommit className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+                    <div className="text-sm text-gray-500 dark:text-gray-400">
+                      {contri.commitCount}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
