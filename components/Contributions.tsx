@@ -5,11 +5,13 @@ import { Contribution as ContributionType } from "@/utils/resumeUtils";
 interface ContributionsProps {
   username: string;
   contributionCount: number;
+  textColor: string;
 }
 
 const Contributions: React.FC<ContributionsProps> = ({
   username,
   contributionCount,
+  textColor
 }) => {
   const [contributions, setContributions] = useState<ContributionType[]>([]);
 
@@ -35,7 +37,7 @@ const Contributions: React.FC<ContributionsProps> = ({
   }, [username, contributionCount]);
 
   return (
-    <div className="mt-5 text-[#F8FAFC]">
+    <div className="mt-5" style={{color:textColor}}>
       <h2 className="text-2xl font-bold underline mb-4 text-left ">
         Contributions
       </h2>

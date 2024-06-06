@@ -93,6 +93,8 @@ const Resume = () => {
   const [rating, setRating] = useState<number>();
   const [rank, setRank] = useState<number>();
   const [loading, setLoading] = useState(true);
+  const [backgroundColor, setBackgroundColor] = useState("#000000");
+  const [textColor, setTextColor] = useState("#F8FAFC");
 
   const resumeRef = useRef<HTMLDivElement>(null);
 
@@ -207,12 +209,19 @@ const Resume = () => {
           setContributionCount={setContributionCount}
           organizationCount={organizationCount}
           setOrganizationCount={setOrganizationCount}
+          backgroundColor={backgroundColor}
+          setBackgroundColor={setBackgroundColor}
+          textColor={textColor}
+          setTextColor={setTextColor}
         />
       </div>
 
-      <div className="flex-grow p-4 order-1 lg:order-2">
+      <div className="flex-grow p-4 order-1 lg:order-2 font-sans">
         <div ref={resumeRef} className="mx-auto flex justify-center">
-          <div className="bg-[#020817] h-full w-full rounded-md bg-clip-padding dark:backdrop-filter dark:backdrop-blur-md dark:bg-opacity-10 border border-gray-100 shadow-md p-6 max-w-4xl">
+          <div
+            className={`h-full w-full rounded-md  border border-gray-100 shadow-md p-6 max-w-4xl`}
+            style={{ background: backgroundColor }}
+          >
             <div className="flex justify-between items-center">
               <ShareBtn username={username} />
               <div className="flex gap-x-4">
@@ -290,18 +299,27 @@ const Resume = () => {
             </div>
             <div className="flex flex-col lg:flex-row w-full mt-6 gap-2 text-[#F8FAFC]">
               {showLanguageChart && (
-                <div className="flex-1 w-full lg:w-1/2 h-full">
+                <div
+                  className="flex-1 w-full lg:w-1/2 h-full"
+                  style={{ color: textColor }}
+                >
                   <LanguageBarChart languages={languageData as Language[]} />
                 </div>
               )}
               {showOtherBox && (
-                <div className="flex-1 h-full">
+                <div className="flex-1 h-full" style={{ color: textColor }}>
                   <StatsBox username={username} />
                 </div>
               )}
             </div>
             <Separator className="my-6 h-[1px] bg-gradient-to-r from-transparent via-gray-500 to-transparent" />
-            {showRepos && <Repositories repos={repos} repoCount={repoCount} />}
+            {showRepos && (
+              <Repositories
+                repos={repos}
+                repoCount={repoCount}
+                textColor={textColor}
+              />
+            )}
             {showContributionGraph && (
               <>
                 <Separator className="my-6 h-[1px] bg-gradient-to-r from-transparent via-gray-500 to-transparent" />
@@ -314,13 +332,14 @@ const Resume = () => {
                 <Contributions
                   username={username}
                   contributionCount={contributionCount}
+                  textColor={textColor}
                 />
               </>
             )}
             {showOrganizations && (
               <>
                 <Separator className="my-6 h-[1px] bg-gradient-to-r from-transparent via-gray-500 to-transparent" />
-                <Organizations username={username} count={organizationCount} />
+                <Organizations username={username} count={organizationCount} textColor={textColor} />
               </>
             )}
             <Separator className="my-6 h-[1px] bg-gradient-to-r from-transparent via-gray-500 to-transparent" />

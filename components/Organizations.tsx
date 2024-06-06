@@ -4,9 +4,10 @@ import { fetchOrganizations, Organization } from "@/utils/resumeUtils";
 interface OrganizationsProps {
   username: string;
   count: number;
+  textColor: string;
 }
 
-const Organizations: React.FC<OrganizationsProps> = ({ username, count }) => {
+const Organizations: React.FC<OrganizationsProps> = ({ username, count,textColor }) => {
   const [organizations, setOrganizations] = useState<Organization[]>([]);
 
   useEffect(() => {
@@ -23,7 +24,7 @@ const Organizations: React.FC<OrganizationsProps> = ({ username, count }) => {
   }, [username, count]);
 
   return (
-    <div className="mt-5 text-[#F8FAFC]">
+    <div className="mt-5" style={{color:textColor}}>
       <h2 className="text-2xl font-bold underline mb-4 text-left ">
         Organizations
       </h2>

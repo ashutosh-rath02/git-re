@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { ChevronRightIcon } from "@radix-ui/react-icons";
 import { Input } from "@/components/ui/input";
 import { Select } from "./ui/select";
+import { Separator } from "./ui/separator";
 
 interface SidebarProps {
   showName: boolean;
@@ -33,6 +34,10 @@ interface SidebarProps {
   setContributionCount: (value: number) => void;
   organizationCount: number;
   setOrganizationCount: (value: number) => void;
+  backgroundColor: string;
+  setBackgroundColor: React.Dispatch<React.SetStateAction<string>>;
+  textColor: string;
+  setTextColor: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({
@@ -64,6 +69,10 @@ const Sidebar: React.FC<SidebarProps> = ({
   setContributionCount,
   organizationCount,
   setOrganizationCount,
+  backgroundColor,
+  setBackgroundColor,
+  textColor,
+  setTextColor
 }) => {
   const [startYear, setStartYearLocal] = useState<number>(
     new Date().getFullYear()
@@ -117,8 +126,11 @@ const Sidebar: React.FC<SidebarProps> = ({
     setOrganizationCount(count);
   };
 
+  const colors = ["#f47373", "#000000", "#dce775", "#2ccce4"];
+  const textColors = ["#F8FAFC", "#000000", "#FCD34D", "#FB7185"];
+
   return (
-    <div className="w-64 p-4 space-y-4 lg:sticky lg:top-0">
+    <div className="w-60 p-4 space-y-4 lg:sticky lg:top-0">
       <p className="text-lg font-semibold">Customize Display:</p>
       <div className="flex flex-col space-y-2">
         <label className="flex items-center space-x-2">
@@ -228,7 +240,7 @@ const Sidebar: React.FC<SidebarProps> = ({
             className="border border-gray-400 rounded p-1 w-24"
             type="number"
             value={contributionCount.toString()}
-            onChange={ handleContributionCountChange }
+            onChange={handleContributionCountChange}
           />
         )}
         <div className="flex items-center space-x-2">
@@ -259,6 +271,80 @@ const Sidebar: React.FC<SidebarProps> = ({
             className="border border-gray-400 rounded p-1 w-24"
           />
         )}
+        <div className="w-fit py-2 rounded-md">
+          <span className="text-sm">Background</span>
+          <div className="w-full flex flex-row flex-wrap ">
+            {colors.map((s) => (
+              <div
+                key={s}
+                style={{ background: s }}
+                className={`rounded-md h-6 w-6 m-1 cursor-pointer active:scale-105  ${
+                  backgroundColor === s
+                    ? "border-2 border-black dark:border-white"
+                    : null
+                } `}
+                onClick={() => {
+                  setBackgroundColor(s);
+                }}
+              />
+            ))}
+            <div className="flex h-6 items-center space-x-4 text-sm m-1">
+              <Separator orientation="vertical" />
+            </div>
+            <div
+              className="h-7 w-7 rounded  !bg-center !bg-cover transition-all"
+              style={{ background: backgroundColor }}
+            ></div>
+            <Input
+              id="backgroundColor"
+              value={backgroundColor}
+              className="col-span-2 h-8 mt-4 w-auto"
+              onChange={(e) => {
+                setBackgroundColor(e.target.value);
+              }}
+              onKeyDown={(event) => {
+                event.stopPropagation();
+              }}
+            />
+          </div>
+        </div>
+        <div className="w-fit py-2 rounded-md">
+          <span className="text-sm">Text color</span>
+          <div className="w-full flex flex-row flex-wrap ">
+            {textColors.map((s) => (
+              <div
+                key={s}
+                style={{ background: s }}
+                className={`rounded-md h-6 w-6 m-1 cursor-pointer active:scale-105  ${
+                  textColor === s
+                    ? "border-2 border-black dark:border-white"
+                    : null
+                } `}
+                onClick={() => {
+                  setTextColor(s);
+                }}
+              />
+            ))}
+            <div className="flex h-6 items-center space-x-4 text-sm m-1">
+              <Separator orientation="vertical" />
+            </div>
+            <div
+              className="h-7 w-7 rounded  !bg-center !bg-cover transition-all"
+              style={{ background: textColor }}
+            ></div>
+            <Input
+              id="textColor"
+              value={textColor}
+              className="col-span-2 h-8 mt-4 w-auto"
+              onChange={(e) => {
+                setTextColor(e.target.value);
+              }}
+              onKeyDown={(event) => {
+                event.stopPropagation();
+              }}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );

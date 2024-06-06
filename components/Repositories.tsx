@@ -16,11 +16,12 @@ interface GitHubRepo {
 interface RepositoriesProps {
   repos: GitHubRepo[];
   repoCount: number;
+  textColor: string;
 }
 
-const Repositories: React.FC<RepositoriesProps> = ({ repos, repoCount }) => {
+const Repositories: React.FC<RepositoriesProps> = ({ repos, repoCount,textColor }) => {
   return (
-    <div className="mt-5 px-2 text-[#F8FAFC]">
+    <div className="mt-5 px-2" style={{color:textColor}}>
       <h2 className="text-2xl mb-4 font-bold underline text-left">
         Popular Repositories
       </h2>
