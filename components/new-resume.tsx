@@ -449,41 +449,45 @@ export function NewResume() {
             )}
           </div>
           <div>
-            <h2 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-50">
-              Contributions
-            </h2>
+            {contributions.length > 0 && (
+              <>
+                <h2 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-50">
+                  Contributions
+                </h2>
 
-            <div className="mt-4 space-y-4">
-              {contributions.map((contri, index) => (
-                <div className="flex items-center gap-4" key={index}>
-                  <div className="flex-1">
-                    <div className="text-sm font-medium text-gray-900 dark:text-gray-50">
-                      <Link className="hover:underline" href={"#"}>
-                        {contri.organizationName}/{contri.repository}
-                      </Link>
+                <div className="mt-4 space-y-4">
+                  {contributions.map((contri, index) => (
+                    <div className="flex items-center gap-4" key={index}>
+                      <div className="flex-1">
+                        <div className="text-sm font-medium text-gray-900 dark:text-gray-50">
+                          <Link className="hover:underline" href={"#"}>
+                            {contri.organizationName}/{contri.repository}
+                          </Link>
+                        </div>
+                        <div className="text-sm text-gray-500 dark:text-gray-400">
+                          has contributed to{" "}
+                          <strong>{contri.repository}</strong> with{" "}
+                          <Link
+                            className="hover:underline"
+                            href={contri.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {contri.commitCount} commit(s)
+                          </Link>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <IconGitCommit className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+                        <div className="text-sm text-gray-500 dark:text-gray-400">
+                          {contri.commitCount}
+                        </div>
+                      </div>
                     </div>
-                    <div className="text-sm text-gray-500 dark:text-gray-400">
-                      has contributed to <strong>{contri.repository}</strong>{" "}
-                      with{" "}
-                      <Link
-                        className="hover:underline"
-                        href={contri.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {contri.commitCount} commit(s)
-                      </Link>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <IconGitCommit className="h-5 w-5 text-gray-500 dark:text-gray-400" />
-                    <div className="text-sm text-gray-500 dark:text-gray-400">
-                      {contri.commitCount}
-                    </div>
-                  </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+              </>
+            )}
           </div>
         </div>
       </div>
