@@ -11,46 +11,218 @@ import {
   IconWorld,
   IconMail,
   IconStar,
+  IconUsers,
+  IconTimeline,
 } from "@tabler/icons-react";
+import { useEffect, useState } from "react";
+import redis from "@/lib/redis";
+import { CACHE_TTL } from "@/lib/consts";
+import {
+  fetchLanguageData,
+  fetchPopularRepos,
+  fetchUserStats,
+  fetchOrganizations,
+} from "@/utils/resumeUtils";
+import { calculateRating } from "@/utils/rating/action";
+import { getIndividualUserRank } from "@/app/leaderboard/action";
+import { useParams } from "next/navigation";
+import GitHubCalendar from "react-github-calendar";
+import { Avatar } from "./ui/avatar";
+import { AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+import Image from "next/image";
+import { useTheme } from "next-themes";
+interface GitHubProfile {
+  name: string;
+  bio: string;
+  blog?: string;
+  login: string;
+  avatar_url: string;
+  repos_url: string;
+  created_at: string;
+}
+interface GitHubData {
+  followers: number;
+  publicRepos: number;
+  starsReceived: number;
+  forks: number;
+  totalCommits: number;
+  organizations: number;
+  totalIssues: number;
+  totalPRsMerged: number;
+  userJoinedDate: Date;
+}
+
+interface GitHubRepo {
+  id: number;
+  name: string;
+  description: string;
+  html_url: string;
+  language: string;
+  homepage?: string;
+  watchers: number;
+  forks: number;
+  popularity: number;
+  watchersLabel: string;
+  forksLabel: string;
+  isOwner: boolean;
+  date: number;
+}
+
+interface Language {
+  name: string;
+  popularity: number;
+  url: string;
+  percent: number;
+}
+interface OrganizationsProps {
+  username: string;
+  count: number;
+}
 
 export function NewResume() {
+  const { username } = useParams<{ username: string }>();
+  const [profile, setProfile] = useState<GitHubProfile | null>(null);
+  const [repos, setRepos] = useState<GitHubRepo[]>([]);
+  const [languageData, setLanguageData] = useState({});
+
+  const [showName, setShowName] = useState(true);
+  const [showBio, setShowBio] = useState(true);
+  const [showBlog, setShowBlog] = useState(true);
+  const [showRepos, setShowRepos] = useState(true);
+  const [showRepoOptions, setShowRepoOptions] = useState(false);
+  const [repoCount, setRepoCount] = useState(5);
+  const [showLanguageChart, setShowLanguageChart] = useState(true);
+  const [showOtherBox, setShowOtherBox] = useState(true);
+  const [startYear, setStartYear] = useState<number>(new Date().getFullYear());
+  const [endYear, setEndYear] = useState<number>(new Date().getFullYear());
+  const [showContributionGraph, setShowContributionGraph] = useState(true);
+  const [showContributions, setShowContributions] = useState(true);
+  const [showOrganizations, setShowOrganizations] = useState(true);
+  const [contributionCount, setContributionCount] = useState(5);
+  const [organizationCount, setOrganizationCount] = useState(5);
+  const [rating, setRating] = useState<number>();
+  const [rank, setRank] = useState<number>();
+  const [organizations, setOrganizations] = useState<any>([]);
+  const [loading, setLoading] = useState(true);
+  const [userStats, setUserStats] = useState<GitHubData>({
+    followers: 0,
+    publicRepos: 0,
+    starsReceived: 0,
+    forks: 0,
+    totalCommits: 0,
+    organizations: 0,
+    totalIssues: 0,
+    totalPRsMerged: 0,
+    userJoinedDate: new Date(),
+  });
+  const { theme } = useTheme();
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+
+        // Check if profile data is cached
+        const cachedProfileData = await redis.get(`profile:${username}`);
+        if (cachedProfileData) {
+          setProfile(cachedProfileData as any);
+        } else {
+          // Fetch profile data and cache it
+          const profileData = await fetch(
+            `https://api.github.com/users/${username}`
+          ).then((res) => res.json());
+          setProfile(profileData);
+          await redis.set(`profile:${username}`, JSON.stringify(profileData), {
+            ex: CACHE_TTL,
+          });
+        }
+
+        const reposData = await fetchPopularRepos(username);
+        setRepos(reposData as unknown as GitHubRepo[]);
+
+        const languages = await fetchLanguageData(username);
+        setLanguageData(languages);
+
+        const stats = await fetchUserStats(username);
+        setUserStats(stats);
+
+        const rating = await calculateRating(username);
+        setRating(rating);
+
+        const orgsData = await fetchOrganizations(username);
+        setOrganizations(orgsData);
+
+        const rank = (await getIndividualUserRank(username))[0].user_rank;
+        setRank(rank);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (username) {
+      fetchData();
+    }
+  }, [username, startYear, endYear, organizationCount]);
+  useEffect(() => {
+    const fetchAndSetOrganizations = async () => {
+      try {
+      } catch (error) {
+        console.error("Failed to fetch organizations:", error);
+      }
+    };
+
+    fetchAndSetOrganizations();
+  }, [organizationCount]);
+
+  const handleRepoCountChange = (value: number) => {
+    setRepoCount(value);
+  };
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen space-y-6">
+        <div className="loader-container flex items-center justify-center">
+          <div className="ball ball1"></div>
+          <div className="ball ball2"></div>
+          <div className="ball ball3"></div>
+        </div>
+        <p>We are fetching your data...</p>
+      </div>
+    );
+  }
   return (
-    <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div className="space-y-6">
           <div className="space-y-2">
+            {profile?.avatar_url && (
+              <Image
+                src={profile.avatar_url}
+                alt={profile.name}
+                width={64}
+                height={64}
+                className="rounded-md w-32 h-32"
+              />
+            )}
             <h1 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-50">
-              Dhairya Shah
+              {profile?.name || profile?.login}
             </h1>
-            <p className="text-lg text-gray-500 dark:text-gray-400">
+            {/* <p className="text-lg text-gray-500 dark:text-gray-400">
               Software Engineer
-            </p>
+            </p> */}
           </div>
           <div className="prose max-w-none">
-            <p>
-              Experienced software engineer with a passion for building scalable
-              and efficient applications. Proficient in a variety of programming
-              languages and frameworks, with a strong focus on delivering
-              high-quality, maintainable code.
-            </p>
+            <p>{profile?.bio}</p>
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div className="flex items-center gap-2">
-              <IconMail className="h-5 w-5 text-gray-500 dark:text-gray-400" />
-              <a
-                className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
-                href="#"
-              >
-                email@email.com
-              </a>
-            </div>
-            <div className="flex items-center gap-2">
               <IconWorld className="h-5 w-5 text-gray-500 dark:text-gray-400" />
               <a
-                className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
+                className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50 truncate"
                 href="#"
               >
-                example.com
+                {profile?.blog &&
+                  (profile?.blog)
+                    .replace(/^https?:\/\//, "")
+                    .replace(/\/$/, "")}
               </a>
             </div>
             <div className="flex items-center gap-2">
@@ -59,16 +231,7 @@ export function NewResume() {
                 className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
                 href="#"
               >
-                dhairyathedev
-              </a>
-            </div>
-            <div className="flex items-center gap-2">
-              <IconBrandLinkedin className="h-5 w-5 text-gray-500 dark:text-gray-400" />
-              <a
-                className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
-                href="#"
-              >
-                example
+                {username}
               </a>
             </div>
           </div>
@@ -79,70 +242,28 @@ export function NewResume() {
               Skills
             </h2>
             <div className="mt-4 grid grid-cols-2 gap-4">
-              <div className="flex items-center gap-2">
-                <IconCode className="h-5 w-5 text-gray-500 dark:text-gray-400" />
-                <div className="flex-1">
-                  <div className="text-sm font-medium text-gray-900 dark:text-gray-50">
-                    JavaScript
+              {Array.isArray(languageData) && languageData.length > 0 ? (
+                languageData.map((language: Language) => (
+                  <div className="flex items-center gap-2" key={language.name}>
+                    <IconCode className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+                    <div className="flex-1">
+                      <div className="text-sm font-medium text-gray-900 dark:text-gray-50">
+                        {language.name}
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-800">
+                        <div
+                          className="bg-primary h-2 rounded-full"
+                          style={{
+                            width: `${language.percent}%`,
+                          }}
+                        />
+                      </div>
+                    </div>
                   </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-800">
-                    <div
-                      className="bg-primary h-2 rounded-full"
-                      style={{
-                        width: "90%",
-                      }}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <IconCode className="h-5 w-5 text-gray-500 dark:text-gray-400" />
-                <div className="flex-1">
-                  <div className="text-sm font-medium text-gray-900 dark:text-gray-50">
-                    React
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-800">
-                    <div
-                      className="bg-primary h-2 rounded-full"
-                      style={{
-                        width: "85%",
-                      }}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <IconCode className="h-5 w-5 text-gray-500 dark:text-gray-400" />
-                <div className="flex-1">
-                  <div className="text-sm font-medium text-gray-900 dark:text-gray-50">
-                    Node.js
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-800">
-                    <div
-                      className="bg-primary h-2 rounded-full"
-                      style={{
-                        width: "80%",
-                      }}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <IconCode className="h-5 w-5 text-gray-500 dark:text-gray-400" />
-                <div className="flex-1">
-                  <div className="text-sm font-medium text-gray-900 dark:text-gray-50">
-                    TypeScript
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-800">
-                    <div
-                      className="bg-primary h-2 rounded-full"
-                      style={{
-                        width: "75%",
-                      }}
-                    />
-                  </div>
-                </div>
-              </div>
+                ))
+              ) : (
+                <p>No language data available.</p>
+              )}
             </div>
           </div>
           <div>
@@ -157,7 +278,7 @@ export function NewResume() {
                     Stars
                   </div>
                   <div className="text-sm text-gray-500 dark:text-gray-400">
-                    1,234
+                    {userStats.starsReceived}
                   </div>
                 </div>
               </div>
@@ -168,7 +289,7 @@ export function NewResume() {
                     Forks
                   </div>
                   <div className="text-sm text-gray-500 dark:text-gray-400">
-                    456
+                    {userStats.forks}
                   </div>
                 </div>
               </div>
@@ -179,7 +300,7 @@ export function NewResume() {
                     Commits
                   </div>
                   <div className="text-sm text-gray-500 dark:text-gray-400">
-                    2,345
+                    {userStats.totalCommits}
                   </div>
                 </div>
               </div>
@@ -190,138 +311,107 @@ export function NewResume() {
                     Repositories
                   </div>
                   <div className="text-sm text-gray-500 dark:text-gray-400">
-                    78
+                    {userStats.publicRepos}
+                  </div>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <IconUsers className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+                <div className="flex-1">
+                  <div className="text-sm font-medium text-gray-900 dark:text-gray-50">
+                    Followers
+                  </div>
+                  <div className="text-sm text-gray-500 dark:text-gray-400">
+                    {userStats.followers}
+                  </div>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <IconTimeline className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+                <div className="flex-1">
+                  <div className="text-sm font-medium text-gray-900 dark:text-gray-50">
+                    Years on GitHub
+                  </div>
+                  <div className="text-sm text-gray-500 dark:text-gray-400">
+                    {new Date().getFullYear() -
+                      new Date(userStats.userJoinedDate).getFullYear()}
                   </div>
                 </div>
               </div>
             </div>
             <div className="mt-8">
-              <h2 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-50">
+              {/* <h2 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-50">
                 Contribution Graph
               </h2>
               <div className="mt-4 w-full h-full">
                 <BarChartComponent className="aspect-[4/3]" />
-              </div>
+              </div> */}
+              <GitHubCalendar
+                username={username}
+                colorScheme={theme === "dark" ? "dark" : "light"}
+                hideTotalCount={true}
+                hideColorLegend={true}
+              />
             </div>
           </div>
           <div>
             <h2 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-50">
               Key Repositories
             </h2>
+
             <div className="mt-4 space-y-4">
-              <div className="flex items-center gap-4">
-                <div className="flex-1">
-                  <div className="text-sm font-medium text-gray-900 dark:text-gray-50">
-                    <a className="hover:underline" href="#">
-                      React UI Library
-                    </a>
+              {repos.slice(0, repoCount).map((repo) => (
+                <div className="flex items-center gap-4" key={repo.id}>
+                  <div className="flex-1">
+                    <div className="text-sm font-medium text-gray-900 dark:text-gray-50">
+                      <a className="hover:underline" href="#">
+                        {repo.name}
+                      </a>
+                    </div>
+                    <div className="text-sm text-gray-500 dark:text-gray-400">
+                      {repo.description}
+                    </div>
                   </div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">
-                    A collection of reusable React components for building
-                    modern web applications.
-                  </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <IconStar className="h-5 w-5 text-gray-500 dark:text-gray-400" />
-                  <div className="text-sm text-gray-500 dark:text-gray-400">
-                    456
-                  </div>
-                </div>
-              </div>
-              <div className="flex items-center gap-4">
-                <div className="flex-1">
-                  <div className="text-sm font-medium text-gray-900 dark:text-gray-50">
-                    <a className="hover:underline" href="#">
-                      Serverless API
-                    </a>
-                  </div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">
-                    A serverless API built with Node.js, AWS Lambda, and
-                    DynamoDB.
+                  <div className="flex items-center gap-2">
+                    <IconStar className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+                    <div className="text-sm text-gray-500 dark:text-gray-400">
+                      {repo.popularity}
+                    </div>
                   </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <IconStar className="h-5 w-5 text-gray-500 dark:text-gray-400" />
-                  <div className="text-sm text-gray-500 dark:text-gray-400">
-                    234
-                  </div>
-                </div>
-              </div>
-              <div className="flex items-center gap-4">
-                <div className="flex-1">
-                  <div className="text-sm font-medium text-gray-900 dark:text-gray-50">
-                    <a className="hover:underline" href="#">
-                      Next.js Blog
-                    </a>
-                  </div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">
-                    A blog built with Next.js, Markdown, and Tailwind CSS.
-                  </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <IconStar className="h-5 w-5 text-gray-500 dark:text-gray-400" />
-                  <div className="text-sm text-gray-500 dark:text-gray-400">
-                    123
-                  </div>
-                </div>
-              </div>
+              ))}
             </div>
+          </div>
+          <div>
+            {organizations.length > 0 && (
+              <>
+                <h2 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-50">
+                  Organizations
+                </h2>
+
+                <div className="mt-4 space-y-4">
+                  {organizations
+                    .slice(0, organizationCount)
+                    .map((org: any, index: any) => (
+                      <div className="flex items-center gap-4" key={index}>
+                        <div className="flex-1">
+                          <div className="text-sm font-medium text-gray-900 dark:text-gray-50">
+                            <a className="hover:underline" href="#">
+                              {org.name}
+                            </a>
+                          </div>
+                          <div className="text-sm text-gray-500 dark:text-gray-400">
+                            {org.description}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>
     </div>
-  );
-}
-
-const data = [
-  {
-    name: "Page A",
-    uv: 4000,
-    pv: 2400,
-    amt: 2400,
-  },
-  {
-    name: "Page B",
-    uv: 3000,
-    pv: 1398,
-    amt: 2210,
-  },
-  {
-    name: "Page C",
-    uv: 2000,
-    pv: 9800,
-    amt: 2290,
-  },
-  {
-    name: "Page D",
-    uv: 2780,
-    pv: 3908,
-    amt: 2000,
-  },
-  {
-    name: "Page E",
-    uv: 1890,
-    pv: 4800,
-    amt: 2181,
-  },
-  {
-    name: "Page F",
-    uv: 2390,
-    pv: 3800,
-    amt: 2500,
-  },
-  {
-    name: "Page G",
-    uv: 3490,
-    pv: 4300,
-    amt: 2100,
-  },
-];
-
-function BarChartComponent(props: any) {
-  return (
-    <BarChart width={350} height={250} data={data}>
-      <Bar dataKey="uv" fill="#3b82f6" />
-    </BarChart>
   );
 }
