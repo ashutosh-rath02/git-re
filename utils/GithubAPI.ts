@@ -6,7 +6,13 @@ export const fetchUserContributionLanguages = async (
 ): Promise<Language[]> => {
   try {
     const repoResponse = await axios.get(
-      `https://api.github.com/search/repositories?q=user:${username}+fork:true`
+      `https://api.github.com/search/repositories?q=user:${username}+fork:true`,
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_GITHUB_TOKEN}`,
+          Accept: "application/vnd.github+json",
+        },
+      }
     );
     const repos = repoResponse.data.items;
 

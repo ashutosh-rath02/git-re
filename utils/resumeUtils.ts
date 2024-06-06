@@ -78,7 +78,7 @@ const sortLanguages = (
     .slice(0, configData.maxLanguages);
 };
 
-const getFromCache = async <T,>(key: string): Promise<T | null> => {
+const getFromCache = async <T>(key: string): Promise<T | null> => {
   const cachedData: any = await redis.get(key);
   if (cachedData) {
     console.log("LOADED FROM CACHE");
@@ -89,7 +89,7 @@ const getFromCache = async <T,>(key: string): Promise<T | null> => {
 
 const supabase = supabaseBrowser();
 
-const setInCache = async <T,>(
+const setInCache = async <T>(
   key: string,
   data: T,
   expirationSeconds: number
@@ -113,7 +113,13 @@ export const fetchOrganizations = async (
 
   try {
     const response = await axios.get(
-      `https://api.github.com/users/${username}/orgs`
+      `https://api.github.com/users/${username}/orgs`,
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_GITHUB_TOKEN}`,
+          Accept: "application/vnd.github+json",
+        },
+      }
     );
     const organizations = response.data.map((org: any) => ({
       name: org.login,
@@ -142,7 +148,12 @@ export const fetchContributions = async (
 
   try {
     const url = `https://api.github.com/search/issues?q=author:${username}+type:pr+is:merged&per_page=100`;
-    const response = await axios.get(url);
+    const response = await axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_GITHUB_TOKEN}`,
+        Accept: "application/vnd.github+json",
+      },
+    });
 
     const contributionMap = new Map<
       string,
@@ -206,7 +217,13 @@ export const fetchPopularRepos = async (username: string): Promise<Repo[]> => {
   }
   try {
     const response = await axios.get(
-      `https://api.github.com/users/${username}/repos?per_page=100`
+      `https://api.github.com/users/${username}/repos?per_page=100`,
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_GITHUB_TOKEN}`,
+          Accept: "application/vnd.github+json",
+        },
+      }
     );
     const repos = response.data;
 
@@ -255,7 +272,13 @@ export const fetchLanguageData = async (
 
   try {
     const response = await axios.get(
-      `https://api.github.com/users/${username}/repos`
+      `https://api.github.com/users/${username}/repos`,
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_GITHUB_TOKEN}`,
+          Accept: "application/vnd.github+json",
+        },
+      }
     );
     const repos = response.data;
 
@@ -299,15 +322,41 @@ export const fetchUserStats = async (username: string) => {
   }
 
   try {
-    const userRes = await axios.get(`https://api.github.com/users/${username}`);
+    const userRes = await axios.get(
+      `https://api.github.com/users/${username}`,
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_GITHUB_TOKEN}`,
+          Accept: "application/vnd.github+json",
+        },
+      }
+    );
     const orgsRes = await axios.get(
-      `https://api.github.com/users/${username}/orgs`
+      `https://api.github.com/users/${username}/orgs`,
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_GITHUB_TOKEN}`,
+          Accept: "application/vnd.github+json",
+        },
+      }
     );
     const eventsRes = await axios.get(
-      `https://api.github.com/users/${username}/events/public`
+      `https://api.github.com/users/${username}/events/public`,
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_GITHUB_TOKEN}`,
+          Accept: "application/vnd.github+json",
+        },
+      }
     );
     const reposRes = await axios.get(
-      `https://api.github.com/users/${username}/repos?per_page=100`
+      `https://api.github.com/users/${username}/repos?per_page=100`,
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_GITHUB_TOKEN}`,
+          Accept: "application/vnd.github+json",
+        },
+      }
     );
     const starsReceived = reposRes.data.reduce(
       (acc: any, repo: { stargazers_count: any }) =>
@@ -331,12 +380,24 @@ export const fetchUserStats = async (username: string) => {
       0
     );
     const issuesRes = await axios.get(
-      `https://api.github.com/search/issues?q=author:${username}+type:issue`
+      `https://api.github.com/search/issues?q=author:${username}+type:issue`,
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_GITHUB_TOKEN}`,
+          Accept: "application/vnd.github+json",
+        },
+      }
     );
     const totalIssuesCreated = issuesRes.data.total_count;
 
     const prsRes = await axios.get(
-      `https://api.github.com/search/issues?q=author:${username}+type:pr+is:merged`
+      `https://api.github.com/search/issues?q=author:${username}+type:pr+is:merged`,
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_GITHUB_TOKEN}`,
+          Accept: "application/vnd.github+json",
+        },
+      }
     );
     const totalPRsMerged = prsRes.data.total_count;
 
