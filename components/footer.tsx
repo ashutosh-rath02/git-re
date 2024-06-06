@@ -2,14 +2,12 @@ import React, { ReactNode } from "react";
 import Link from "next/link";
 import {
   IconBrandGithub,
-  IconBrandGithubFilled,
   IconBrandLinkedin,
   IconBrandX,
   IconStarFilled,
 } from "@tabler/icons-react";
-import { Button } from "./ui/button";
-import { ModeToggle } from "./shared/ToggleBg";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
+import { ModeToggle } from "./shared/ToggleBg";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -26,8 +24,8 @@ export default function Footer() {
       icon: <IconBrandGithub stroke={2} height={24} width={24} />,
     },
     {
-      title: "Twitter",
-      href: "https://twitter.com/v_ashu_dev",
+      title: "X",
+      href: "https://x.com/v_ashu_dev",
       icon: <IconBrandX stroke={2} height={24} width={24} />,
     },
   ];
@@ -37,7 +35,7 @@ export default function Footer() {
       <div className="flex flex-col max-w-96">
         <div className="flex items-center gap-x-2">
           <Link
-            href={"/"}
+            href="/"
             className="text-lg font-black flex flex-row items-center justify-center gap-2 cursor-pointer"
           >
             <GitHubLogoIcon width="22" height="22" />
@@ -48,7 +46,6 @@ export default function Footer() {
           {"Code · Showcase · Impress"}
         </h3>
         <h4 className="mt-4 text-sm font-medium text-secondaryText dark:text-gray-200">
-          {" "}
           &copy; {currentYear} Made with 🤯 by Ashutosh Rath
         </h4>
         <Link
@@ -61,7 +58,6 @@ export default function Footer() {
           Star on GitHub
         </Link>
       </div>
-      {/* LINKS */}
       <div className="flex flex-col">
         <div className="flex flex-row space-x-16">
           <div className="flex flex-col">
@@ -84,13 +80,14 @@ export default function Footer() {
             </Link>
           </div>
         </div>
-        <div className="flex flex-row justify-star items-center sm:justify-between space-x-8 mt-7">
+        <div className="flex flex-row justify-start items-center sm:justify-between space-x-8 mt-7">
           <ModeToggle />
           <div className="flex flex-row items-center space-x-4">
             {icons.map(({ title, href, icon }) => (
               <a
                 key={title}
                 href={href}
+                title={title} // Tooltip text
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-secondaryText hover:text-primary dark:text-white"
