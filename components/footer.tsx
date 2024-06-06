@@ -2,7 +2,6 @@ import React, { ReactNode } from "react";
 import Link from "next/link";
 import {
   IconBrandGithub,
-  IconBrandGithubFilled,
   IconBrandLinkedin,
   IconBrandX,
   IconStarFilled,
@@ -18,17 +17,17 @@ export default function Footer() {
     {
       title: "LinkedIn",
       href: "https://www.linkedin.com/in/rathashutosh/",
-      icon: <IconBrandLinkedin stroke={2} height={24} width={24} />,
+      icon: <IconBrandLinkedin stroke={2} height={24} width={24} title="LinkedIn" />,
     },
     {
       title: "Github",
       href: "https://github.com/ashutosh-rath02",
-      icon: <IconBrandGithub stroke={2} height={24} width={24} />,
+      icon: <IconBrandGithub stroke={2} height={24} width={24} title="Github" />,
     },
     {
       title: "Twitter",
       href: "https://twitter.com/v_ashu_dev",
-      icon: <IconBrandX stroke={2} height={24} width={24} />,
+      icon: <IconBrandX stroke={2} height={24} width={24} title="X" />,
     },
   ];
 
@@ -48,7 +47,6 @@ export default function Footer() {
           {"Code · Showcase · Impress"}
         </h3>
         <h4 className="mt-4 text-sm font-medium text-secondaryText dark:text-gray-200">
-          {" "}
           &copy; {currentYear} Made with 🤯 by Ashutosh Rath
         </h4>
         <Link
@@ -84,7 +82,7 @@ export default function Footer() {
             </Link>
           </div>
         </div>
-        <div className="flex flex-row justify-star items-center sm:justify-between space-x-8 mt-7">
+        <div className="flex flex-row justify-start items-center sm:justify-between space-x-8 mt-7">
           <ModeToggle />
           <div className="flex flex-row items-center space-x-4">
             {icons.map(({ title, href, icon }) => (
@@ -94,6 +92,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-secondaryText hover:text-primary dark:text-white"
+                title={title}
               >
                 {icon}
               </a>
