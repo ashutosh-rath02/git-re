@@ -23,6 +23,7 @@ import { getLeaderboard } from "./action";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import Link from "next/link";
 import { Skeleton } from "@/components/ui/skeleton";
+import Crown from "@/components/leaderboard/crown";
 
 interface LeaderboardProp {
   avatar_url: string;
@@ -75,12 +76,13 @@ export default function Leaderboard() {
                     </AvatarFallback>
                   </Avatar>
                 </TableCell>
-                <TableCell className="font-medium">
+                <TableCell className="font-medium flex gap-x-2">
                   <Link
                     href={`${process.env.NEXT_PUBLIC_URL}/resume/${user.username}`}
                   >
                     {user.username}
                   </Link>
+                  <Crown rank={index + 1} />
                 </TableCell>
                 <TableCell>{user.rating}</TableCell>
               </TableRow>
