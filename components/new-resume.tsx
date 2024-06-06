@@ -31,6 +31,7 @@ import { Avatar } from "./ui/avatar";
 import { AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import Image from "next/image";
 import { useTheme } from "next-themes";
+import Link from "next/link";
 interface GitHubProfile {
   name: string;
   bio: string;
@@ -215,24 +216,30 @@ export function NewResume() {
           <div className="grid grid-cols-2 gap-4">
             <div className="flex items-center gap-2">
               <IconWorld className="h-5 w-5 text-gray-500 dark:text-gray-400" />
-              <a
-                className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50 truncate"
-                href="#"
-              >
-                {profile?.blog &&
-                  (profile?.blog)
-                    .replace(/^https?:\/\//, "")
-                    .replace(/\/$/, "")}
-              </a>
+              {profile?.blog && (
+                <Link
+                  className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50 truncate"
+                  href={profile?.blog}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {profile?.blog &&
+                    (profile?.blog)
+                      .replace(/^https?:\/\//, "")
+                      .replace(/\/$/, "")}
+                </Link>
+              )}
             </div>
             <div className="flex items-center gap-2">
               <IconBrandGithub className="h-5 w-5 text-gray-500 dark:text-gray-400" />
-              <a
+              <Link
                 className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
-                href="#"
+                href={`https://github.com/${username}`}
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 {username}
-              </a>
+              </Link>
             </div>
           </div>
         </div>
@@ -364,9 +371,14 @@ export function NewResume() {
                 <div className="flex items-center gap-4" key={repo.id}>
                   <div className="flex-1">
                     <div className="text-sm font-medium text-gray-900 dark:text-gray-50">
-                      <a className="hover:underline" href="#">
+                      <Link
+                        className="hover:underline"
+                        href={repo.html_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
                         {repo.name}
-                      </a>
+                      </Link>
                     </div>
                     <div className="text-sm text-gray-500 dark:text-gray-400">
                       {repo.description}
@@ -396,9 +408,14 @@ export function NewResume() {
                       <div className="flex items-center gap-4" key={index}>
                         <div className="flex-1">
                           <div className="text-sm font-medium text-gray-900 dark:text-gray-50">
-                            <a className="hover:underline" href="#">
+                            <Link
+                              className="hover:underline"
+                              href={`https://github.com/${org.name}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
                               {org.name}
-                            </a>
+                            </Link>
                           </div>
                           <div className="text-sm text-gray-500 dark:text-gray-400">
                             {org.description}
