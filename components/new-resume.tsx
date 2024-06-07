@@ -491,7 +491,12 @@ export function NewResume() {
                         <div className="flex items-center gap-4" key={index}>
                           <div className="flex-1">
                             <div className="text-sm font-medium text-gray-900 dark:text-gray-50">
-                              <Link className="hover:underline" href={"#"}>
+                              <Link
+                                className="hover:underline"
+                                href={contri.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
                                 {contri.organizationName}/{contri.repository}
                               </Link>
                             </div>
