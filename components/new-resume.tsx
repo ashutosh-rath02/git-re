@@ -262,7 +262,11 @@ export function NewResume() {
                 {profile?.blog && (
                   <Link
                     className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50 truncate"
-                    href={profile?.blog}
+                    href={
+                      profile.blog.includes("http")
+                        ? profile.blog
+                        : `https://${profile.blog}`
+                    }
                     target="_blank"
                     rel="noopener noreferrer"
                   >
