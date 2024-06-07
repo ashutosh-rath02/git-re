@@ -66,7 +66,13 @@ const ViewResume = () => {
     const fetchData = async () => {
       try {
         const profileResponse = await fetch(
-          `https://api.github.com/users/${username}`
+          `https://api.github.com/users/${username}`,
+          {
+            headers: {
+              Authorization: `Bearer ${process.env.NEXT_PUBLIC_GITHUB_TOKEN}`,
+              Accept: "application/vnd.github+json",
+            },
+          }
         );
         if (!profileResponse.ok) {
           if (profileResponse.status === 400) {

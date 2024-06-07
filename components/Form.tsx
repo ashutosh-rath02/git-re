@@ -37,7 +37,13 @@ export default function Form() {
 
     try {
       const githubResponse = await axios.get(
-        `https://api.github.com/users/${username}`
+        `https://api.github.com/users/${username}`,
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_GITHUB_TOKEN}`,
+            Accept: "application/vnd.github+json",
+          },
+        }
       );
       if (githubResponse.status === 404) {
         setUsernameFound(false);
