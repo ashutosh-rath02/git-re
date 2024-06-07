@@ -33,6 +33,8 @@ import { AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import Image from "next/image";
 import { useTheme } from "next-themes";
 import Link from "next/link";
+import { badgeVariants } from "./ui/badge";
+import { getRankSuffix } from "@/utils/format";
 interface GitHubProfile {
   name: string;
   bio: string;
@@ -227,6 +229,24 @@ export function NewResume() {
             <h1 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-50">
               {profile?.name || profile?.login}
             </h1>
+            <div className="flex items-center gap-2">
+              <Link
+                className={badgeVariants({ variant: "outline" })}
+                href={
+                  "https://github.com/ashutosh-rath02/git-re/blob/main/FAQs/rating.md"
+                }
+              >
+                {rating?.toFixed(2)} / 5
+              </Link>
+              <Link
+                className={badgeVariants({ variant: "outline" })}
+                href={"/leaderboard"}
+              >
+                {rank}
+                {getRankSuffix(rank)} on Leaderboard
+              </Link>
+            </div>
+
             {/* <p className="text-lg text-gray-500 dark:text-gray-400">
               Software Engineer
             </p> */}
