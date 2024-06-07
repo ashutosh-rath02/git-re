@@ -47,6 +47,10 @@ export async function POST(request: NextRequest) {
       const response = await axios.get(
         `https://api.github.com/users/${git_username}`,
         {
+          headers: {
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_GITHUB_TOKEN}`,
+            Accept: "application/vnd.github+json",
+          },
           params: {
             fields: "login,bio,avatar_url,name",
           },

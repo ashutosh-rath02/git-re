@@ -122,7 +122,13 @@ const Resume = () => {
         } else {
           // Fetch profile data and cache it
           const profileData = await fetch(
-            `https://api.github.com/users/${username}`
+            `https://api.github.com/users/${username}`,
+            {
+              headers: {
+                Authorization: `Bearer ${process.env.NEXT_PUBLIC_GITHUB_TOKEN}`,
+                Accept: "application/vnd.github+json",
+              },
+            }
           ).then((res) => res.json());
           setProfile(profileData);
           await redis.set(`profile:${username}`, JSON.stringify(profileData), {

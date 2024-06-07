@@ -241,6 +241,13 @@ export function NewResume() {
               <Link
                 className={badgeVariants({ variant: "outline" })}
                 href={"/leaderboard"}
+                {rating} / 5
+              </Link>
+              <Link
+                className={badgeVariants({ variant: "outline" })}
+                href={
+                  "https://github.com/ashutosh-rath02/git-re/blob/main/FAQs/rating.md"
+                }
               >
                 {rank}
                 {getRankSuffix(rank)} on Leaderboard
