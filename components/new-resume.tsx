@@ -236,6 +236,11 @@ export function NewResume() {
                   "https://github.com/ashutosh-rath02/git-re/blob/main/FAQs/rating.md"
                 }
               >
+                {rating?.toFixed(2)} / 5
+              </Link>
+              <Link
+                className={badgeVariants({ variant: "outline" })}
+                href={"/leaderboard"}
                 {rating} / 5
               </Link>
               <Link
