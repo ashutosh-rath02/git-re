@@ -5,6 +5,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { Metadata } from "next";
 import Head from "next/head";
+import { NewResume } from "@/components/new-resume";
 
 type Props = {
   params: { username: string };
@@ -55,7 +56,8 @@ export default async function Home({
   }
   return (
     <div>
-      <Resume />
+      {/* <Resume /> */}
+      <NewResume />
     </div>
   );
 }
