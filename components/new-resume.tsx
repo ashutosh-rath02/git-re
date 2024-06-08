@@ -223,9 +223,10 @@ export function NewResume() {
                 <Image
                   src={profile.avatar_url}
                   alt={profile.name}
-                  width={64}
-                  height={64}
-                  className="rounded-md w-32 h-32"
+                  width={128}
+                  height={128}
+                  className="rounded-md"
+                  quality={100}
                 />
               )}
               <h1 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-50">
