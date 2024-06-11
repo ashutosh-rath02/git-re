@@ -1,6 +1,6 @@
 "use client";
 import { BarChart, Bar, ResponsiveContainer } from "recharts";
-
+import { IconTrendingUp } from "@tabler/icons-react";
 import {
   IconBrandGithub,
   IconBrandLinkedin,
@@ -36,6 +36,7 @@ import Link from "next/link";
 import { badgeVariants } from "./ui/badge";
 import { getRankSuffix } from "@/utils/format";
 import CustomisationDrawer from "./CustomisationDrawer";
+import ProfileTracking from "./ProfileTracking";
 interface GitHubProfile {
   name: string;
   bio: string;
@@ -144,6 +145,7 @@ export function NewResume() {
           const profileData = await fetch(
             `https://api.github.com/users/${username}`
           ).then((res) => res.json());
+
           setProfile(profileData);
           await redis.set(`profile:${username}`, JSON.stringify(profileData), {
             ex: CACHE_TTL,
@@ -206,7 +208,8 @@ export function NewResume() {
   return (
     <>
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="flex justify-end mb-4">
+        <div className="flex justify-end gap-2 mb-4">
+          <ProfileTracking username={username} />
           <CustomisationDrawer
             contributions={contributionCount}
             setContributions={setContributionCount}
