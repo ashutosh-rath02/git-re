@@ -258,9 +258,9 @@ export function NewResume() {
               <p>{profile?.bio}</p>
             </div>
             <div className="grid grid-cols-2 gap-4">
-              <div className="flex items-center gap-2">
-                <IconWorld className="h-5 w-5 text-gray-500 dark:text-gray-400" />
-                {profile?.blog && (
+              {profile?.blog && (
+                <div className="flex items-center gap-2">
+                  <IconWorld className="h-5 w-5 text-gray-500 dark:text-gray-400" />
                   <Link
                     className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50 truncate"
                     href={
@@ -276,8 +276,8 @@ export function NewResume() {
                         .replace(/^https?:\/\//, "")
                         .replace(/\/$/, "")}
                   </Link>
-                )}
-              </div>
+                </div>
+              )}
               <div className="flex items-center gap-2">
                 <IconBrandGithub className="h-5 w-5 text-gray-500 dark:text-gray-400" />
                 <Link
