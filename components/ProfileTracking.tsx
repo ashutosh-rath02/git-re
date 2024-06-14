@@ -149,14 +149,14 @@ export default function ProfileTracking({ username }: Props) {
           Profile Tracking
         </Button>
       </DialogTrigger>
-      <DialogContent className="overflow-hidden w-full h-[550px]">
+      <DialogContent className="overflow-hidden w-full h-[750px]">
         <DialogHeader className=" overflow-hidden">
           <DialogTitle className="flex gap-2 items-center justify-start">
             Profile Tracking
             <IconTrendingUp stroke={3} className="w-5 h-5" />
           </DialogTitle>
         </DialogHeader>
-        <DialogDescription className="flex w-full p-2 overflow-y-auto flex-col gap-2">
+        <DialogDescription className="flex w-full p-2 overflow-auto flex-col gap-2">
           <div className="flex w-full flex-col gap-4">
             <div className="w-full">
               {PieChartData && (
