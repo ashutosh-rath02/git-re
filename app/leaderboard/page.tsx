@@ -34,9 +34,14 @@ interface LeaderboardProp {
 export default function Leaderboard() {
   const [leaderboard, setLeaderboard] = useState<LeaderboardProp[]>([]);
   const [page, setPage] = useState(1);
+  const [maxPage, setMaxPage] = useState(1);
 
   useEffect(() => {
-    getLeaderboard({ page }).then((data) => setLeaderboard(data));
+    getLeaderboard({ page }).then((data) => {
+      setMaxPage(data.maxPages);
+
+      setLeaderboard(data.data);
+    });
   }, [page]);
 
   const handlePrevious = () => {
@@ -47,8 +52,10 @@ export default function Leaderboard() {
   };
 
   const handleNext = () => {
-    setPage(page + 1);
-    setLeaderboard([]);
+    if (page < maxPage) {
+      setPage(page + 1);
+      setLeaderboard([]);
+    }
   };
 
   return (

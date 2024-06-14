@@ -13,16 +13,18 @@ export const getLeaderboard = async ({ page = 1 }: LeaderboardProp) => {
     const from = (page - 1) * itemsPerPage;
     const to = from + itemsPerPage - 1;
 
-    const { data, error } = await supabase
+    const { data, error, count } = await supabase
       .from("recent_users")
-      .select("*")
+      .select("*", { count: "exact" })
       .neq("rating", "-0.1")
       .order("rating", { ascending: false })
       .range(from, to);
 
+    const maxPages = count ? Math.ceil(count / itemsPerPage) : 0;
+
     if (error) throw error;
 
-    return data;
+    return { data, maxPages };
   } catch (error) {
     throw error;
   }
