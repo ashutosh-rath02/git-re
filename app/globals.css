@@ -166,3 +166,7 @@ body {
   height: 24px;
   animation: spin 2s linear infinite;
 }
+
+.no-scroll {
+  overflow: hidden;
+}

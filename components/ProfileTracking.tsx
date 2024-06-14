@@ -11,7 +11,6 @@ import { Button } from "./ui/button";
 import { IconTrendingUp } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 import { Doughnut, Line } from "react-chartjs-2";
-
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -141,6 +140,15 @@ export default function ProfileTracking({ username }: Props) {
     getData();
   }, []);
 
+  useEffect(() => {
+    const body = document.body;
+    body.classList.add("no-scroll");
+
+    return () => {
+      body.classList.remove("no-scroll");
+    };
+  }, []);
+
   return (
     <Dialog>
       <DialogTrigger>
@@ -150,7 +158,7 @@ export default function ProfileTracking({ username }: Props) {
         </Button>
       </DialogTrigger>
       <DialogContent className="overflow-hidden w-full h-[750px]">
-        <DialogHeader className=" overflow-hidden">
+        <DialogHeader className="overflow-hidden">
           <DialogTitle className="flex gap-2 items-center justify-start">
             Profile Tracking
             <IconTrendingUp stroke={3} className="w-5 h-5" />
@@ -161,7 +169,7 @@ export default function ProfileTracking({ username }: Props) {
             <div className="w-full">
               {PieChartData && (
                 <>
-                  <h1 className=" font-medium text-base py-2 text-gray-200">
+                  <h1 className="font-medium text-base py-2 text-gray-200">
                     Types of Events
                   </h1>
                   <Doughnut data={PieChartData} />
@@ -171,7 +179,7 @@ export default function ProfileTracking({ username }: Props) {
             <div className="">
               {LineChartData && (
                 <>
-                  <h1 className=" font-medium text-base py-2 text-gray-200">
+                  <h1 className="font-medium text-base py-2 text-gray-200">
                     Events over time
                   </h1>
                   <Line
