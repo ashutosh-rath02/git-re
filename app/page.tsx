@@ -11,6 +11,7 @@ import "./globals.css";
 import { useSearchParams } from "next/navigation";
 import { toast } from "@/components/ui/use-toast";
 import Lenis from "@studio-freight/lenis";
+import { HeroHighlight } from "@/components/ui/hero-highlight";
 export default function Home() {
   const supabase = supabaseBrowser();
   const searchParams = useSearchParams();
@@ -45,24 +46,26 @@ export default function Home() {
           <div className="blur-[106px] h-56 bg-gradient-to-br from-primary to-purple-400 dark:from-blue-700"></div>
           <div className="blur-[106px] h-32 bg-gradient-to-r from-cyan-400 to-sky-300 dark:to-indigo-600"></div>
         </div>
-        <div className="flex flex-col items-center justify-center space-y-4 z-10 text-center">
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-black">
-            <span className="text-transparent bg-clip-text bg-gradient-to-br gradient-radial from-blue-500 to-blue-900">
-              git-re
-            </span>
-          </h1>
-          <p className="text-xl md:text-2xl lg:text-4xl font-semibold">
-            Elevate your&nbsp;
-            <span className="text-transparent bg-clip-text bg-gradient-to-br from-blue-500 to-blue-700">
-              GitHub
-            </span>
-            &nbsp;to a dynamic&nbsp;
-            <span className="text-transparent bg-clip-text bg-gradient-to-br from-blue-500 to-blue-700">
-              resume
-            </span>
-            &nbsp;effortlessly.
-          </p>
-        </div>
+        <HeroHighlight>
+          <div className="flex flex-col items-center justify-center space-y-4 z-10 text-center">
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black">
+              <span className="text-transparent bg-clip-text bg-gradient-to-br gradient-radial from-blue-500 to-blue-900">
+                git-re
+              </span>
+            </h1>
+            <p className="text-xl md:text-2xl lg:text-4xl font-semibold">
+              Elevate your&nbsp;
+              <span className="text-transparent bg-clip-text bg-gradient-to-br from-blue-500 to-blue-700">
+                GitHub
+              </span>
+              &nbsp;to a dynamic&nbsp;
+              <span className="text-transparent bg-clip-text bg-gradient-to-br from-blue-500 to-blue-700">
+                resume
+              </span>
+              &nbsp;effortlessly.
+            </p>
+          </div>
+        </HeroHighlight>
         <div
           className={
             data.user
