@@ -41,7 +41,7 @@
     "html2pdf.js": "^0.10.1",
     "jspdf": "^2.5.1",
     "mini-svg-data-uri": "^1.4.4",
-    "next": "^14.2.3",
+    "next": "^14.2.4",
     "next-share": "^0.27.0",
     "next-themes": "^0.3.0",
     "nextjs-toploader": "^1.6.12",
