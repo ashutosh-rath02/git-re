@@ -22,7 +22,7 @@
     "@supabase/auth-helpers-nextjs": "^0.10.0",
     "@supabase/ssr": "^0.3.0",
     "@supabase/supabase-js": "^2.43.4",
-    "@tabler/icons-react": "^3.5.0",
+    "@tabler/icons-react": "^3.6.0",
     "@upstash/redis": "^1.31.3",
     "@vercel/analytics": "^1.1.2",
     "@vercel/og": "^0.6.2",
