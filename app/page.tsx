@@ -42,7 +42,7 @@ export default function Home() {
   return (
     <main className="flex flex-col items-center justify-center p-4 lg:px-24">
       <HeroHighlight>
-        <div className="relative mb-[6%] mt-[8%]  h-full flex flex-col max-w-4xl gap-8 place-items-center">
+        <div className="relative mt-[5%] mb-[2%] h-full flex flex-col max-w-4xl gap-8 place-items-center">
           <div className="absolute mt-[8%] inset-0 grid grid-cols-2 -space-x-52 opacity-40 dark:opacity-30 pointer-events-none">
             <div className="blur-[106px] h-56 bg-gradient-to-br from-primary to-purple-400 dark:from-blue-900"></div>
             <div className="blur-[106px] h-32 bg-gradient-to-r from-cyan-400 to-sky-300 dark:to-indigo-600"></div>
@@ -96,7 +96,7 @@ export default function Home() {
         </div>
       </HeroHighlight>
 
-      <div className="h-[30rem] w-full flex flex-col items-center justify-center">
+      <div className="h-[22rem] w-full flex flex-col items-center justify-center">
         <div className="py-4">
           <p
             className="text-4xl font-bold text-center mt-4"
