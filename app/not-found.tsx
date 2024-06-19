@@ -2,7 +2,7 @@ import Link from "next/link";
 
 const NotFound = () => {
   return (
-    <main className="text-center mt-28">
+    <main className="text-center mt-28 mb-52">
       <div className="flex flex-col items-center justify-center gap-6 px-4 md:px-6">
   <div className="animate-fade-in">
   <svg
