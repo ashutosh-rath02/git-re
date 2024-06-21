@@ -29,13 +29,13 @@ export default async function Navbar() {
         <Link
           href={"/"}
           rel="noopener noreferrer"
-          className="text-navbarSecondary hover:text-primary font-semibold transition md:block hidden dark:text-white"
+          className="text-navbarSecondary hover:text-primary font-semibold transition md:block hidden dark:text-white dark:hover:text-primary"
         >
           Home
         </Link>
         <a
           href="#userTestimonials"
-          className="text-navbarSecondary hover:text-primary font-semibold transition md:block hidden dark:text-white"
+          className="text-navbarSecondary hover:text-primary font-semibold transition md:block hidden dark:text-white dark:hover:text-primary"
           style={{ scrollBehavior: "smooth" }}
         >
           Testimonial
@@ -43,7 +43,7 @@ export default async function Navbar() {
         <Link
           href={"/leaderboard"}
           rel="noopener noreferrer"
-          className="text-navbarSecondary hover:text-primary font-semibold transition md:block hidden dark:text-white"
+          className="text-navbarSecondary hover:text-primary font-semibold transition md:block hidden dark:text-white dark:hover:text-primary"
         >
           Leaderboard
         </Link>

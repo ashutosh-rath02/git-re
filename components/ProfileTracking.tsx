@@ -150,7 +150,7 @@ export default function ProfileTracking({ username }: Props) {
         </Button>
       </DialogTrigger>
       <DialogContent className="overflow-hidden w-full h-[550px]">
-        <DialogHeader className=" overflow-hidden">
+        <DialogHeader className="overflow-hidden">
           <DialogTitle className="flex gap-2 items-center justify-start">
             Profile Tracking
             <IconTrendingUp stroke={3} className="w-5 h-5" />
@@ -161,7 +161,7 @@ export default function ProfileTracking({ username }: Props) {
             <div className="w-full">
               {PieChartData && (
                 <>
-                  <h1 className=" font-medium text-base py-2 text-gray-200">
+                  <h1 className=" font-medium text-base py-2 dark:text-gray-200 text-gray-800">
                     Types of Events
                   </h1>
                   <Doughnut data={PieChartData} />
@@ -171,7 +171,7 @@ export default function ProfileTracking({ username }: Props) {
             <div className="">
               {LineChartData && (
                 <>
-                  <h1 className=" font-medium text-base py-2 text-gray-200">
+                  <h1 className=" font-medium text-base py-2 dark:text-gray-200 text-gray-800">
                     Events over time
                   </h1>
                   <Line
