@@ -1,10 +1,8 @@
-import { ApolloClient, InMemoryCache, gql, ApolloQueryResult } from '@apollo/client';
+import { GraphQLClient, gql } from 'graphql-request';
 import { CACHE_TTL } from "@/lib/consts";
 import { supabaseBrowser } from "./supabase/client";
 
-const client = new ApolloClient({
-  uri: 'https://api.github.com/graphql',
-  cache: new InMemoryCache(),
+const client = new GraphQLClient('https://api.github.com/graphql', {
   headers: {
     authorization: `Bearer ${process.env.NEXT_PUBLIC_GITHUB_TOKEN}`,
   },
@@ -146,12 +144,8 @@ interface GitHubData {
 const fetchGitHubData = async (username: string): Promise<GitHubData | null> => {
   try {
     console.log(`Fetching GitHub data for ${username}`);
-    const result: ApolloQueryResult<GitHubData> = await client.query({
-      query: GITHUB_QUERY,
-      variables: { username },
-    });
-
-    return result.data;
+    const data = await client.request(GITHUB_QUERY, { username });
+    return data;
   } catch (error) {
     console.error("Error fetching GitHub data:", error);
     return null;
