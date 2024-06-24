@@ -72,28 +72,31 @@ export default function Leaderboard() {
         </TableHeader>
         {leaderboard.length > 0 ? (
           <TableBody>
-            {leaderboard.map((user, index) => (
-              <TableRow key={user.username}>
-                <TableCell>{(page - 1) * 20 + index + 1}</TableCell>
-                <TableCell>
-                  <Avatar>
-                    <AvatarImage src={user.avatar_url} />
-                    <AvatarFallback>
-                      {user.username.substring(0, 2).toUpperCase()}
-                    </AvatarFallback>
-                  </Avatar>
-                </TableCell>
-                <TableCell className="font-medium flex gap-x-2">
-                  <Link
-                    href={`${process.env.NEXT_PUBLIC_URL}/resume/${user.username}`}
-                  >
-                    {user.username}
-                  </Link>
-                  <Crown rank={index + 1} />
-                </TableCell>
-                <TableCell>{user.rating}</TableCell>
-              </TableRow>
-            ))}
+            {leaderboard.map((user, index) => {
+              const overallRank = (page - 1) * 20 + index + 1;
+              return (
+                <TableRow key={user.username}>
+                  <TableCell>{overallRank}</TableCell>
+                  <TableCell>
+                    <Avatar>
+                      <AvatarImage src={user.avatar_url} />
+                      <AvatarFallback>
+                        {user.username.substring(0, 2).toUpperCase()}
+                      </AvatarFallback>
+                    </Avatar>
+                  </TableCell>
+                  <TableCell className="font-medium flex items-center">
+                    <Crown rank={overallRank} />
+                    <Link
+                      href={`${process.env.NEXT_PUBLIC_URL}/resume/${user.username}`}
+                    >
+                      {user.username}
+                    </Link>
+                  </TableCell>
+                  <TableCell>{user.rating}</TableCell>
+                </TableRow>
+              );
+            })}
           </TableBody>
         ) : (
           <TableBody>
