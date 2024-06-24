@@ -22,6 +22,7 @@ import {
   fetchPopularRepos,
   fetchUserStats,
   fetchOrganizations,
+  fetchContributions,
 } from "@/utils/resumeUtils";
 import { calculateRating } from "@/utils/rating/action";
 import { getIndividualUserRank } from "@/app/leaderboard/action";
@@ -144,17 +145,29 @@ export function NewResume() {
         setProfile(profileData);
 
         // Fetch data using resumeUtils functions
-        const [reposData, languages, stats, orgsData] = await Promise.all([
-          fetchPopularRepos(username),
-          fetchLanguageData(username),
-          fetchUserStats(username),
-          fetchOrganizations(username),
-        ]);
+        const [reposData, languages, stats, orgsData, contributionData] =
+          await Promise.all([
+            fetchPopularRepos(username),
+            fetchLanguageData(username),
+            fetchUserStats(username),
+            fetchOrganizations(username),
+            fetchContributions(username),
+          ]);
 
         setRepos(reposData as any);
         setLanguageData(languages);
         setUserStats(stats as any);
         setOrganizations(orgsData);
+        setContributionCount(contributionData.length);
+        setContributions(
+          contributionData.slice(0, contributionCount).map((contribution) => ({
+            organizationName: contribution.organizationName,
+            repository: contribution.repository,
+            url: contribution.url,
+            repoUrl: contribution.repoUrl,
+            commitCount: contribution.commitCount,
+          }))
+        );
 
         // Fetch rating and rank
         const rating = await calculateRating(username);
@@ -431,39 +444,6 @@ export function NewResume() {
               </div>
             </div>
             <div>
-              {organizations.length > 0 && (
-                <>
-                  <h2 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-50">
-                    Organizations
-                  </h2>
-
-                  <div className="mt-4 space-y-4">
-                    {organizations
-                      .slice(0, organizationCount)
-                      .map((org: any, index: any) => (
-                        <div className="flex items-center gap-4" key={index}>
-                          <div className="flex-1">
-                            <div className="text-sm font-medium text-gray-900 dark:text-gray-50">
-                              <Link
-                                className="hover:underline"
-                                href={`https://github.com/${org.name}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                              >
-                                {org.name}
-                              </Link>
-                            </div>
-                            <div className="text-sm text-gray-500 dark:text-gray-400">
-                              {org.description}
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                  </div>
-                </>
-              )}
-            </div>
-            <div>
               {contributions.length > 0 && (
                 <>
                   <h2 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-50">
@@ -503,6 +483,39 @@ export function NewResume() {
                             <IconGitCommit className="h-5 w-5 text-gray-500 dark:text-gray-400" />
                             <div className="text-sm text-gray-500 dark:text-gray-400">
                               {contri.commitCount}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                  </div>
+                </>
+              )}
+            </div>
+            <div>
+              {organizations.length > 0 && (
+                <>
+                  <h2 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-50">
+                    Organizations
+                  </h2>
+
+                  <div className="mt-4 space-y-4">
+                    {organizations
+                      .slice(0, organizationCount)
+                      .map((org: any, index: any) => (
+                        <div className="flex items-center gap-4" key={index}>
+                          <div className="flex-1">
+                            <div className="text-sm font-medium text-gray-900 dark:text-gray-50">
+                              <Link
+                                className="hover:underline"
+                                href={`https://github.com/${org.name}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                {org.name}
+                              </Link>
+                            </div>
+                            <div className="text-sm text-gray-500 dark:text-gray-400">
+                              {org.description}
                             </div>
                           </div>
                         </div>

@@ -1,6 +1,7 @@
 import { GraphQLClient, gql } from 'graphql-request';
 import { CACHE_TTL } from "@/lib/consts";
 import { supabaseBrowser } from "./supabase/client";
+import axios from 'axios'; // Ensure axios is imported
 
 const client = new GraphQLClient('https://api.github.com/graphql', {
   headers: {
@@ -56,7 +57,16 @@ const GITHUB_QUERY = gql`
       issues(first: 1) {
         totalCount
       }
-      pullRequests(first: 1) {
+      pullRequests(first: 100, states: MERGED) {
+        nodes {
+          repository {
+            name
+            owner {
+              login
+            }
+            url
+          }
+        }
         totalCount
       }
       createdAt
@@ -133,7 +143,18 @@ interface GitHubUser {
     restrictedContributionsCount: number;
   };
   issues: { totalCount: number };
-  pullRequests: { totalCount: number };
+  pullRequests: {
+    nodes: Array<{
+      repository: {
+        name: string;
+        owner: {
+          login: string;
+        };
+        url: string;
+      };
+    }>;
+    totalCount: number;
+  };
   createdAt: string;
 }
 
@@ -141,16 +162,25 @@ interface GitHubData {
   user: GitHubUser;
 }
 
+interface Contribution {
+  organizationName: string;
+  repository: string;
+  url: string;
+  repoUrl: string;
+  commitCount: number;
+}
+
 const fetchGitHubData = async (username: string): Promise<GitHubData | null> => {
   try {
     console.log(`Fetching GitHub data for ${username}`);
-    const data = await client.request(GITHUB_QUERY, { username });
+    const data = await client.request<GitHubData>(GITHUB_QUERY, { username });
     return data;
   } catch (error) {
     console.error("Error fetching GitHub data:", error);
     return null;
   }
 };
+
 
 export const fetchOrganizations = async (username: string): Promise<Organization[]> => {
   const data = await fetchGitHubData(username);
@@ -281,4 +311,56 @@ export const fetchUserStats = async (username: string): Promise<UserStats | null
   }
 
   return userStats;
+};
+
+export const fetchContributions = async (
+  username: string
+): Promise<Contribution[]> => {
+  const data = await fetchGitHubData(username);
+  if (!data) return [];
+
+  const contributionMap = new Map<
+    string,
+    {
+      organizationName: string;
+      commitsUrl: string;
+      repoUrl: string;
+      count: number;
+    }
+  >();
+
+  data.user.pullRequests.nodes.forEach((pr) => {
+    const repoName = pr.repository.name;
+    const repoOwner = pr.repository.owner.login;
+    const organizationName = repoOwner;
+    const commitsUrl = `https://github.com/${repoOwner}/${repoName}/commits?author=${username}`;
+    const repoUrl = pr.repository.url;
+
+    if (contributionMap.has(repoName)) {
+      contributionMap.get(repoName)!.count++;
+    } else {
+      contributionMap.set(repoName, {
+        organizationName,
+        commitsUrl,
+        repoUrl,
+        count: 1,
+      });
+    }
+  });
+
+  const contributions = Array.from(
+    contributionMap,
+    ([repository, { organizationName, commitsUrl, repoUrl, count }]) => ({
+      organizationName,
+      repository,
+      url: commitsUrl,
+      repoUrl,
+      commitCount: count,
+    })
+  );
+
+  contributions.sort((a, b) => b.commitCount - a.commitCount);
+
+
+  return contributions;
 };
