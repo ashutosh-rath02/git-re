@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { fetchContributions } from "@/utils/resumeUtils";
-import { Contribution as ContributionType } from "@/utils/resumeUtils";
 
 interface ContributionsProps {
   username: string;
@@ -11,7 +10,7 @@ const Contributions: React.FC<ContributionsProps> = ({
   username,
   contributionCount,
 }) => {
-  const [contributions, setContributions] = useState<ContributionType[]>([]);
+  const [contributions, setContributions] = useState<any>([]);
 
   useEffect(() => {
     const fetchAndSetContributions = async () => {
@@ -40,7 +39,7 @@ const Contributions: React.FC<ContributionsProps> = ({
         Contributions
       </h2>
       <ul className="list-disc px-6">
-        {contributions.map((contribution, index) => (
+        {contributions.map((contribution: any, index: any) => (
           <li key={index} className="mt-4">
             <a
               href={contribution.repoUrl}

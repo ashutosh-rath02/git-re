@@ -1,4 +1,4 @@
-import Resume from "@/components/Resume";
+// import Resume from "@/components/Resume";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import React from "react";
 import { cookies } from "next/headers";
