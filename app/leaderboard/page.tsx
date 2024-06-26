@@ -72,9 +72,11 @@ export default function Leaderboard() {
         </TableHeader>
         {leaderboard.length > 0 ? (
           <TableBody>
-            {leaderboard.map((user, index) => (
+          {leaderboard.map((user, index) => {
+            const overallRank = (page - 1) * 20 + index + 1;
+            return (
               <TableRow key={user.username}>
-                <TableCell>{(page - 1) * 20 + index + 1}</TableCell>
+                <TableCell>{overallRank}</TableCell>
                 <TableCell>
                   <Avatar>
                     <AvatarImage src={user.avatar_url} />
@@ -89,12 +91,13 @@ export default function Leaderboard() {
                   >
                     {user.username}
                   </Link>
-                  <Crown rank={index + 1} />
+                  <Crown rank={overallRank} />
                 </TableCell>
                 <TableCell>{user.rating}</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
+            );
+          })}
+        </TableBody>
         ) : (
           <TableBody>
             {Array.from({ length: 5 }, (_, index) => (
