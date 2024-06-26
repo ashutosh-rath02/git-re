@@ -70,7 +70,7 @@ const RecentGenerations = () => {
         opts={{
           align: "start",
         }}
-        className="w-[72vw] md:w-full md:max-w-6xl z-50"
+        className="w-[72vw] md:min-w-[84vw] md:max-w-6xl z-50"
         plugins={[plugin.current]}
       >
         <CarouselContent>
