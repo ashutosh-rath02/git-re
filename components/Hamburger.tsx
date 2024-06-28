@@ -40,6 +40,15 @@ const Hamburger = () => {
               Leaderboard
             </Link>
           </div>
+          <div className="w-full h-fit p-2 border rounded-md">
+            <Link
+              href={"/compare"}
+              rel="noopener noreferrer"
+              className="text-navbarSecondary hover:text-primary font-semibold transition flex md:hidden  dark:text-white"
+            >
+              Compare
+            </Link>
+          </div>
         </div>
       )}
     </div>
