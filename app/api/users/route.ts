@@ -64,7 +64,7 @@ export async function POST(request: NextRequest) {
         username: response.data.login || "",
       };
 
-      if (!userData.name) {
+      if (!userData.username) {
         console.log("Data is NULL. User is rate-limited by GitHub");
         return new Response(
           "Data is NULL. You are rate-limited, please try again later.",

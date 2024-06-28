@@ -130,7 +130,13 @@ export default function ProfileTracking({ username }: Props) {
   useEffect(() => {
     const getData = async () => {
       const eventData = await fetch(
-        `https://api.github.com/users/${username}/events`
+        `https://api.github.com/users/${username}/events`,
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_GITHUB_TOKEN}`,
+            Accept: "application/vnd.github+json",
+          },
+        }
       ).then((res) => res.json());
 
       setEvents(eventData);
