@@ -168,8 +168,8 @@ const Compare = () => {
     const compareStats = (stat1: number, stat2: number, key: string) => {
       if (key === 'name') return '';
       if (stat1 > stat2) return 'bg-green-200 dark:bg-green-800';
-      if (stat1 < stat2) return 'bg-red-200 dark:bg-red-800';
-      return 'bg-gray-100 dark:bg-gray-700';
+      if (stat1 < stat2) return 'bg-red-200 dark:bg-red-500';
+      return 'bg-gray-100 dark:bg-gray-400';
     };
   
     const stats = [
