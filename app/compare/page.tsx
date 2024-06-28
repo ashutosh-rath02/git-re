@@ -294,7 +294,7 @@ const Compare = () => {
                 </div>
                 {stats[index + 1] && (
                   <div>
-                    <div className="text-sm font-medium mb-2">{stats[index + 1].label}</div>
+                    <div className="text-2xl max-md:text-lg font-medium mb-2">{stats[index + 1].label}</div>
                     {renderBar(userData1, stats[index + 1].key, maxValues[stats[index + 1].key])}
                     <div className='h-2'></div>
                     {renderBar(userData2, stats[index + 1].key, maxValues[stats[index + 1].key])}
