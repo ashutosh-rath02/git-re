@@ -9,6 +9,7 @@ import Link from 'next/link';
 import { badgeVariants } from '@/components/ui/badge';
 import { getRankSuffix } from '@/utils/format';
 import { fetchUserStats } from '@/utils/resumeUtils';
+import { useTheme } from 'next-themes';
 import RadarChart from '@/components/RadarChart';
 
 

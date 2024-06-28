@@ -46,7 +46,7 @@ const RadarChart = ({ data1, data2 }) => {
     labels: ['Commits', 'Issues', 'Pull Requests', 'Forks'],
     datasets: [
       {
-        label: 'User 1',
+        label: data1.login,
         data: [data1.totalCommits, data1.totalIssues, data1.totalPRsMerged, data1.forks],
         backgroundColor: 'rgba(54, 162, 235, 0.2)',
         borderColor: 'rgba(54, 162, 235, 1)',
@@ -54,7 +54,7 @@ const RadarChart = ({ data1, data2 }) => {
         fill: true,
       },
       {
-        label: 'User 2',
+        label: data2.login,
         data: [data2.totalCommits, data2.totalIssues, data2.totalPRsMerged, data2.forks],
         backgroundColor: 'rgba(220, 252, 231, 0.2)',
         borderColor: 'rgba(52, 211, 153, 1)',
