@@ -107,7 +107,7 @@ const Compare = () => {
     const rating = await calculateRating(username);
     const [rank] = await getIndividualUserRank(username);
     const stats = await fetchUserStats(username);
-    
+
     return { ...profile, ...stats, rating, rank: rank.user_rank, userJoinedDate: new Date(stats.userJoinedDate) };
   };
 
@@ -120,10 +120,10 @@ const Compare = () => {
       setError('Cannot compare the same usernames.');
       return;
     }
-  
+
     setLoading(true);
     setError(null);  // Clear previous errors
-  
+
     try {
       const data1 = await fetchUserData(username1);
       const data2 = await fetchUserData(username2);
@@ -133,10 +133,10 @@ const Compare = () => {
       setError('Either the username(s) does not exist in the leaderboard or is/are invalid.');
       console.error('Error fetching user data:', error);
     }
-  
+
     setLoading(false);
   };
-  
+
   const handleInputChange = (
     setter: React.Dispatch<React.SetStateAction<string>>,
     filterSetter: React.Dispatch<React.SetStateAction<string[]>>,
@@ -145,7 +145,7 @@ const Compare = () => {
     const value = e.target.value;
     setter(value);
     if (value.length > 0) {
-      filterSetter(allSuggestions.filter(suggestion => 
+      filterSetter(allSuggestions.filter(suggestion =>
         suggestion.toLowerCase().includes(value.toLowerCase())
       ).slice(0, 5));
       showSetter(true);
@@ -171,7 +171,7 @@ const Compare = () => {
       if (stat1 < stat2) return 'bg-red-200 dark:bg-red-500';
       return 'bg-gray-100 dark:bg-gray-400';
     };
-  
+
     const stats = [
       { label: 'Name', key: 'name' },
       { label: 'Rating', key: 'rating' },
@@ -184,7 +184,7 @@ const Compare = () => {
       { label: 'Forks', key: 'forks' },
       { label: 'Years on GitHub', key: 'yearsOnGitHub' },
     ];
-  
+
     return (
       <div className="w-full overflow-x-auto" style={{ boxShadow: '0 0 15px rgba(52, 211, 153, 0.5)' }}>
         <table className="w-full border-collapse">
@@ -193,27 +193,28 @@ const Compare = () => {
               <tr key={key} className="border-b dark:border-gray-700">
                 <td className="p-2 font-medium">{label}</td>
                 <td className={`p-2 text-center ${compareStats(userData1[key as keyof UserData] as number, userData2[key as keyof UserData] as number, key)}`}>
-                  {key === 'name' ? (userData1[key] || userData1.login) : userData1[key as keyof UserData].toString()}
+                  {key === 'name' ? (userData1[key] || userData1.login) : key === 'rating' ? userData1[key as keyof UserData].toFixed(2) : userData1[key as keyof UserData].toString()}
                 </td>
                 <td className={`p-2 text-center ${compareStats(userData2[key as keyof UserData] as number, userData1[key as keyof UserData] as number, key)}`}>
-                  {key === 'name' ? (userData2[key] || userData2.login) : userData2[key as keyof UserData].toString()}
+                  {key === 'name' ? (userData2[key] || userData2.login) : key === 'rating' ? userData2[key as keyof UserData].toFixed(2) : userData2[key as keyof UserData].toString()}
                 </td>
               </tr>
             ))}
+
           </tbody>
         </table>
       </div>
     );
   };
-  
+
 
   const UserCard = ({ userData, isWinner }: { userData: UserData; isWinner: boolean }) => {
-    const formattedJoinedDate = isNaN(userData.userJoinedDate.getTime()) 
-      ? 'Unknown' 
+    const formattedJoinedDate = isNaN(userData.userJoinedDate.getTime())
+      ? 'Unknown'
       : userData.userJoinedDate.toDateString();
 
     return (
-      <div className={`border p-4 rounded-lg ${isWinner ? 'bg-green-100 dark:bg-green-800' : ''} border-gray-300 dark:border-gray-700` } style={{
+      <div className={`border p-4 rounded-lg ${isWinner ? 'bg-green-100 dark:bg-green-800' : ''} border-gray-300 dark:border-gray-700`} style={{
         boxShadow: '0 0 15px rgba(52, 211, 153, 0.5)'
       }}>
         <Image src={userData.avatar_url} alt={userData.name} width={100} height={100} className="rounded-full mb-4" />
@@ -250,24 +251,24 @@ const Compare = () => {
       { label: 'Years on GitHub', key: 'yearsOnGitHub' },
     ];
 
-   const maxValues = stats.reduce((acc, { key }) => {
-  acc[key as keyof UserData] = Math.max(userData1[key as keyof UserData], userData2[key as keyof UserData]);
-  return acc;
-}, {} as Record<keyof UserData, number>);
+    const maxValues = stats.reduce((acc, { key }) => {
+      acc[key as keyof UserData] = Math.max(userData1[key as keyof UserData], userData2[key as keyof UserData]);
+      return acc;
+    }, {} as Record<keyof UserData, number>);
 
     const renderBar = (userData: UserData, key: string, maxValue: number) => (
       <div className="flex items-center space-x-2 w-full">
         <span className="text-sm font-medium w-24 truncate">{userData.name || userData.login}</span>
         <div className="flex-grow h-6 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-        {maxValue > 0 ? (
-          <div
-            className={`h-full ${userData === userData1 ? 'bg-blue-500' : 'bg-green-500'}`}
-            style={{ width: `${(userData[key] / maxValue) * 100}%` }}
-          />
-        ) : (
-          <div className="h-full w-0" /> // Empty bar when both values are zero
-        )}
-      </div>
+          {maxValue > 0 ? (
+            <div
+              className={`h-full ${userData === userData1 ? 'bg-blue-500' : 'bg-green-500'}`}
+              style={{ width: `${(userData[key] / maxValue) * 100}%` }}
+            />
+          ) : (
+            <div className="h-full w-0" /> // Empty bar when both values are zero
+          )}
+        </div>
         <span className="text-sm w-16 text-right">{userData[key]}</span>
       </div>
     );
@@ -279,12 +280,12 @@ const Compare = () => {
           {stats.map(({ label, key }, index) => (
             index % 2 === 0 && (
               <div
-              key={key}
-              className="space-y-4 border rounded-2xl p-4"
-              style={{
-                boxShadow: '0 0 15px rgba(52, 211, 153, 0.5)'
-              }}
-            >
+                key={key}
+                className="space-y-4 border rounded-2xl p-4"
+                style={{
+                  boxShadow: '0 0 15px rgba(52, 211, 153, 0.5)'
+                }}
+              >
                 <div>
                   <div className="text-2xl max-md:text-lg font-medium mb-2">{label}</div>
                   {renderBar(userData1, key, maxValues[key])}
@@ -310,7 +311,7 @@ const Compare = () => {
   return (
     <div className="max-w-screen-lg mx-auto px-4 py-2 lg:px-4 max-md:rounded-none rounded-2xl bg-white dark:bg-inherit text-black dark:text-white">
       <h1 className="text-2xl font-semibold mb-6 mt-4">Compare GitHub Users</h1>
-      
+
       <div className="flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4 mb-6">
         <div className="flex-grow relative">
           <Input
@@ -351,48 +352,48 @@ const Compare = () => {
               {filteredSuggestions2.length > 0 ? (
                 filteredSuggestions2.map((suggestion) => (
                   <div
-                  key={suggestion}
-                  className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
-                  onClick={handleSuggestionClick(setUsername2, setShowSuggestions2, suggestion)}
-                >
-                  {suggestion}
-                </div>
-              ))
-            ) : (
-              <div className="px-4 py-2">No suggestions found</div>
-            )}
-          </div>
-        )}
-      </div>
-      <Button 
-        className="h-12 px-6 bg-blue-500 dark:bg-blue-600 hover:bg-blue-600 dark:hover:bg-blue-700 text-white" 
-        onClick={handleCompare} 
-        disabled={loading}
-      >
-        {loading ? 'Comparing...' : 'Compare'}
-      </Button>
-    </div>
-
-    {error && (
-      <div className="w-full p-4 bg-red-100 border border-red-400 text-red-700 rounded-md mb-6">
-        {error}
-      </div>
-    )}
-
-
-    {userData1 && userData2 && (
-      <div className="mt-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          <UserCard userData={userData1} isWinner={userData1.rank < userData2.rank} />
-          <UserCard userData={userData2} isWinner={userData2.rank < userData1.rank} />
+                    key={suggestion}
+                    className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+                    onClick={handleSuggestionClick(setUsername2, setShowSuggestions2, suggestion)}
+                  >
+                    {suggestion}
+                  </div>
+                ))
+              ) : (
+                <div className="px-4 py-2">No suggestions found</div>
+              )}
+            </div>
+          )}
         </div>
-        <ComparisonTable userData1={userData1} userData2={userData2} />
-        <ComparisonBarChart userData1={userData1} userData2={userData2} />
-        <RadarChart data1={userData1} data2={userData2} />
+        <Button
+          className="h-12 px-6 bg-blue-500 dark:bg-blue-600 hover:bg-blue-600 dark:hover:bg-blue-700 text-white"
+          onClick={handleCompare}
+          disabled={loading}
+        >
+          {loading ? 'Comparing...' : 'Compare'}
+        </Button>
       </div>
-    )}
-  </div>
-);
+
+      {error && (
+        <div className="w-full p-4 bg-red-100 border border-red-400 text-red-700 rounded-md mb-6">
+          {error}
+        </div>
+      )}
+
+
+      {userData1 && userData2 && (
+        <div className="mt-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <UserCard userData={userData1} isWinner={userData1.rank < userData2.rank} />
+            <UserCard userData={userData2} isWinner={userData2.rank < userData1.rank} />
+          </div>
+          <ComparisonTable userData1={userData1} userData2={userData2} />
+          <ComparisonBarChart userData1={userData1} userData2={userData2} />
+          <RadarChart data1={userData1} data2={userData2} />
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default Compare;
