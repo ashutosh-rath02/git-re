@@ -51,7 +51,7 @@ export default function Footer() {
           {" "}
           &copy; {currentYear} Made with 🤯 by{" "}
           <Link
-            href="https://ashutoshrath.vercel.app/"
+            href="https://www.ashutoshrath.me/"
             target="_blank"
             className="hover:text-primary transition"
           >
