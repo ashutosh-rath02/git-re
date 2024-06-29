@@ -22,8 +22,8 @@ const Hamburger = () => {
         />
       )}
       {menuOpen && (
-        <div className="absolute z-50 w-fit h-fit p-3  top-6 -right-4 rounded-md flex md:hidden flex-col gap-2 ">
-          <div className="w-full h-fit p-2 border rounded-md">
+        <div className="absolute z-50 w-fit h-fit p-3  top-6 -right-4 rounded-md flex md:hidden flex-col gap-">
+          <div className="w-full h-fit p-2 border rounded-md bg-white dark:bg-black">
             <Link
               href="#"
               className="text-navbarSecondary hover:text-primary font-semibold transition flex md:hidden  dark:text-white"
@@ -31,13 +31,22 @@ const Hamburger = () => {
               Testimonials
             </Link>
           </div>
-          <div className="w-full h-fit p-2 border rounded-md">
+          <div className="w-full h-fit p-2 border rounded-md bg-white dark:bg-black">
             <Link
               href={"/leaderboard"}
               rel="noopener noreferrer"
               className="text-navbarSecondary hover:text-primary font-semibold transition flex md:hidden  dark:text-white"
             >
               Leaderboard
+            </Link>
+          </div>
+          <div className="w-full h-fit p-2 border rounded-md bg-white dark:bg-black">
+            <Link
+              href={"/compare"}
+              rel="noopener noreferrer"
+              className="text-navbarSecondary hover:text-primary font-semibold transition flex md:hidden  dark:text-white"
+            >
+              Compare
             </Link>
           </div>
         </div>
