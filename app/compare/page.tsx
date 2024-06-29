@@ -11,6 +11,7 @@ import { getRankSuffix } from "@/utils/format";
 import { fetchUserStats } from "@/utils/resumeUtils";
 import { useTheme } from "next-themes";
 import RadarChart from "@/components/RadarChart";
+import { fetchSuggestions } from "./action";
 
 interface UserData {
   yearsOnGitHub: number;
@@ -57,10 +58,9 @@ const Compare = () => {
     let allData: string[] = [];
 
     try {
-      const { data } = await getLeaderboard({ page: 1 });
-      if (data.length > 0) {
-        allData = [...allData, ...data.map((user) => user.username)];
-      }
+      const data = await fetchSuggestions();
+      allData = data.map((user) => user.username);
+      console.log("Suggestions fetched:", allData);
     } catch (error) {
       console.error("Error fetching suggestions:", error);
     }
