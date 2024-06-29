@@ -108,7 +108,7 @@ const Compare = () => {
     const [rank] = await getIndividualUserRank(username);
     const stats = await fetchUserStats(username);
 
-    return { ...profile, ...stats, rating, rank: rank.user_rank, userJoinedDate: new Date(stats.userJoinedDate) };
+    return { ...profile, ...stats, rating, rank: rank.user_rank, userJoinedDate : stats? new Date(stats.userJoinedDate): null};
   };
 
   const handleCompare = async () => {
