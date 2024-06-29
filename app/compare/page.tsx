@@ -169,14 +169,16 @@ const Compare = () => {
   };
 
   const ComparisonTable = ({ userData1, userData2 }: { userData1: UserData; userData2: UserData }) => {
-    const compareStats = (stat1: number, stat2: number, key: string) => {
-      if (key === 'name') return '';
-      if (stat1 > stat2) return 'bg-green-200 dark:bg-green-800';
-      if (stat1 < stat2) return 'bg-red-200 dark:bg-red-500';
+    const compareStats = (stat1: number | string | Date, stat2: number | string | Date, key: keyof UserData) => {
+      if (key === 'name' || key === 'bio' || key === 'avatar_url' || key === 'login') return '';
+      if (typeof stat1 === 'number' && typeof stat2 === 'number') {
+        if (stat1 > stat2) return 'bg-green-200 dark:bg-green-800';
+        if (stat1 < stat2) return 'bg-red-200 dark:bg-red-500';
+      }
       return 'bg-gray-100 dark:bg-gray-400';
     };
-
-    const stats = [
+  
+    const stats: { label: string; key: keyof UserData }[] = [
       { label: 'Name', key: 'name' },
       { label: 'Rating', key: 'rating' },
       { label: 'Public Repos', key: 'publicRepos' },
@@ -188,7 +190,7 @@ const Compare = () => {
       { label: 'Forks', key: 'forks' },
       { label: 'Years on GitHub', key: 'yearsOnGitHub' },
     ];
-
+  
     return (
       <div className="w-full overflow-x-auto" style={{ boxShadow: '0 0 15px rgba(52, 211, 153, 0.5)' }}>
         <table className="w-full border-collapse">
@@ -196,21 +198,23 @@ const Compare = () => {
             {stats.map(({ label, key }) => (
               <tr key={key} className="border-b dark:border-gray-700">
                 <td className="p-2 font-medium">{label}</td>
-                <td className={`p-2 text-center ${compareStats(userData1[key as keyof UserData] as number, userData2[key as keyof UserData] as number, key)}`}>
-                  {key === 'name' ? (userData1[key] || userData1.login) : key === 'rating' ? userData1[key as keyof UserData].toFixed(2) : userData1[key as keyof UserData].toString()}
+                <td className={`p-2 text-center ${compareStats(userData1[key], userData2[key], key)}`}>
+                  {key === 'name' ? (userData1[key] || userData1.login) : 
+                   key === 'rating' ? (userData1[key] as number).toFixed(2) : 
+                   userData1[key]?.toString()}
                 </td>
-                <td className={`p-2 text-center ${compareStats(userData2[key as keyof UserData] as number, userData1[key as keyof UserData] as number, key)}`}>
-                  {key === 'name' ? (userData2[key] || userData2.login) : key === 'rating' ? userData2[key as keyof UserData].toFixed(2) : userData2[key as keyof UserData].toString()}
+                <td className={`p-2 text-center ${compareStats(userData2[key], userData1[key], key)}`}>
+                  {key === 'name' ? (userData2[key] || userData2.login) : 
+                   key === 'rating' ? (userData2[key] as number).toFixed(2) : 
+                   userData2[key]?.toString()}
                 </td>
               </tr>
             ))}
-
           </tbody>
         </table>
       </div>
     );
   };
-
 
   const UserCard = ({ userData, isWinner }: { userData: UserData; isWinner: boolean }) => {
     const formattedJoinedDate = isNaN(userData.userJoinedDate.getTime())
@@ -244,7 +248,7 @@ const Compare = () => {
   };
 
   const ComparisonBarChart = ({ userData1, userData2 }: { userData1: UserData; userData2: UserData }) => {
-    const stats = [
+    const stats: { label: string; key: keyof UserData }[] = [
       { label: 'Public Repos', key: 'publicRepos' },
       { label: 'Followers', key: 'followers' },
       { label: 'Total Commits', key: 'totalCommits' },
@@ -254,58 +258,44 @@ const Compare = () => {
       { label: 'Forks', key: 'forks' },
       { label: 'Years on GitHub', key: 'yearsOnGitHub' },
     ];
-
+  
     const maxValues = stats.reduce((acc, { key }) => {
-      acc[key as keyof UserData] = Math.max(userData1[key as keyof UserData], userData2[key as keyof UserData]);
+      if (typeof userData1[key] === 'number' && typeof userData2[key] === 'number') {
+        acc[key] = Math.max(userData1[key] as number, userData2[key] as number);
+      } else {
+        acc[key] = 0;
+      }
       return acc;
     }, {} as Record<keyof UserData, number>);
-
-    const renderBar = (userData: UserData, key: string, maxValue: number) => (
+  
+    const renderBar = (userData: UserData, key: keyof UserData, maxValue: number) => (
       <div className="flex items-center space-x-2 w-full">
         <span className="text-sm font-medium w-24 truncate">{userData.name || userData.login}</span>
         <div className="flex-grow h-6 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-          {maxValue > 0 ? (
+          {maxValue > 0 && typeof userData[key] === 'number' ? (
             <div
               className={`h-full ${userData === userData1 ? 'bg-blue-500' : 'bg-green-500'}`}
-              style={{ width: `${(userData[key] / maxValue) * 100}%` }}
+              style={{ width: `${((userData[key] as number) / maxValue) * 100}%` }}
             />
           ) : (
-            <div className="h-full w-0" /> // Empty bar when both values are zero
+            <div className="h-full w-0" />
           )}
         </div>
-        <span className="text-sm w-16 text-right">{userData[key]}</span>
+        <span className="text-sm w-16 text-right">{userData[key]?.toString()}</span>
       </div>
     );
-
+  
     return (
-      <div className="w-full space-y-8 mt-8">
-        <h2 className="text-xl font-semibold mb-4">Comparison Charts (Relative Comparison)</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {stats.map(({ label, key }, index) => (
-            index % 2 === 0 && (
-              <div
-                key={key}
-                className="space-y-4 border rounded-2xl p-4"
-                style={{
-                  boxShadow: '0 0 15px rgba(52, 211, 153, 0.5)'
-                }}
-              >
-                <div>
-                  <div className="text-2xl max-md:text-lg font-medium mb-2">{label}</div>
-                  {renderBar(userData1, key, maxValues[key])}
-                  <div className='h-2'></div>
-                  {renderBar(userData2, key, maxValues[key])}
-                </div>
-                {stats[index + 1] && (
-                  <div>
-                    <div className="text-2xl max-md:text-lg font-medium mb-2">{stats[index + 1].label}</div>
-                    {renderBar(userData1, stats[index + 1].key, maxValues[stats[index + 1].key])}
-                    <div className='h-2'></div>
-                    {renderBar(userData2, stats[index + 1].key, maxValues[stats[index + 1].key])}
-                  </div>
-                )}
-              </div>
-            )
+      <div className="w-full overflow-x-auto mt-10">
+        <h2 className="text-xl font-bold mb-4">Comparison Bar Chart (Relative Comparison)</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4" >
+          {stats.map(({ label, key }) => (
+            <div key={key} className="p-4 border rounded-lg border-gray-300 dark:border-gray-700" style={{ boxShadow: '0 0 15px rgba(52, 211, 153, 0.5)' }}>
+              <h3 className="text-lg font-medium mb-2">{label}</h3>
+              {renderBar(userData1, key, maxValues[key])}
+              <p className='h-2'></p>
+              {renderBar(userData2, key, maxValues[key])}
+            </div>
           ))}
         </div>
       </div>
