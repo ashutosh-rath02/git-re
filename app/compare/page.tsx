@@ -114,7 +114,6 @@ const Compare = () => {
     let rank = rankResult[0];
 
     const stats = await fetchUserStats(username);
-    console.log("Stats fetched:", stats);
 
     if ((!rating || !rank) && stats) {
       await createUser(username);
