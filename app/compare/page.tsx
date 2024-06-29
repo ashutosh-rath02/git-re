@@ -109,10 +109,10 @@ const Compare = () => {
     const stats = await fetchUserStats(username);
 
     if (stats) {
-      return { ...profile, ...stats, rating, rank: rank.user_rank, userJoinedDate: new Date(stats.userJoinedDate) };
-    } else {
-      throw new Error('User stats are not available.');
-    }
+    return { ...profile, ...stats, rating, rank: rank.user_rank, userJoinedDate: new Date(stats.userJoinedDate) };
+  } else {
+    throw new Error('User stats are not available.');
+  }
   };
 
   const handleCompare = async () => {
