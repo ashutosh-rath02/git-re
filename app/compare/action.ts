@@ -18,3 +18,17 @@ export async function fetchSuggestions() {
         throw error;
     }
 }
+
+
+export async function createUser(username: string) {
+    try {
+        const { data, error } = await supabase.from("recent_users")
+            .insert([{ username }])
+
+        if (error) throw error;
+
+        return data;
+    } catch (error) {
+        throw error;
+    }
+}

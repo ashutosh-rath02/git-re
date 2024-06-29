@@ -11,7 +11,7 @@ import { getRankSuffix } from "@/utils/format";
 import { fetchUserStats } from "@/utils/resumeUtils";
 import { useTheme } from "next-themes";
 import RadarChart from "@/components/RadarChart";
-import { fetchSuggestions } from "./action";
+import { createUser, fetchSuggestions } from "./action";
 
 interface UserData {
   yearsOnGitHub: number;
@@ -106,9 +106,24 @@ const Compare = () => {
     const profile = await fetch(
       `https://api.github.com/users/${username}`
     ).then((res) => res.json());
-    const rating = await calculateRating(username);
-    const [rank] = await getIndividualUserRank(username);
+
+    let [rating, rankResult] = await Promise.all([
+      calculateRating(username),
+      getIndividualUserRank(username),
+    ]);
+    let rank = rankResult[0];
+
     const stats = await fetchUserStats(username);
+    console.log("Stats fetched:", stats);
+
+    if ((!rating || !rank) && stats) {
+      await createUser(username);
+      [rating, rankResult] = await Promise.all([
+        calculateRating(username),
+        getIndividualUserRank(username),
+      ]);
+      rank = rankResult[0];
+    }
 
     if (stats) {
       return {
