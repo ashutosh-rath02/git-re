@@ -26,7 +26,7 @@ ChartJS.register(
 interface RadarChartData {
   login: string;
   totalCommits: number;
-  totalIssues: number;
+  totalIssuesCreated: number;
   totalPRsMerged: number;
   forks: number;
 }
@@ -37,8 +37,8 @@ interface RadarChartProps {
 }
 
 const RadarChart: React.FC<RadarChartProps> = ({ data1, data2 }) => {
-  const { theme } = useTheme();
-  const isDarkMode = theme === "dark";
+  const { theme, systemTheme } = useTheme();
+  // const isDarkMode = theme === "dark";
   const chartRef = useRef<HTMLDivElement | null>(null);
   const [chartDimensions, setChartDimensions] = useState<{
     width: number;
@@ -47,6 +47,7 @@ const RadarChart: React.FC<RadarChartProps> = ({ data1, data2 }) => {
     width: 600,
     height: 600,
   });
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -62,6 +63,14 @@ const RadarChart: React.FC<RadarChartProps> = ({ data1, data2 }) => {
     return () => window.removeEventListener("resize", handleResize);
   }, [chartRef]);
 
+  useEffect(() => {
+    if (theme === 'system') {
+      setIsDarkMode(systemTheme === 'dark');
+    } else {
+      setIsDarkMode(theme === 'dark');
+    }
+  }, [theme, systemTheme]);
+
   const data = {
     labels: ["Commits", "Issues", "Pull Requests", "Forks"],
     datasets: [
@@ -69,7 +78,7 @@ const RadarChart: React.FC<RadarChartProps> = ({ data1, data2 }) => {
         label: data1.login,
         data: [
           data1.totalCommits,
-          data1.totalIssues,
+          data1.totalIssuesCreated,
           data1.totalPRsMerged,
           data1.forks,
         ],
@@ -82,7 +91,7 @@ const RadarChart: React.FC<RadarChartProps> = ({ data1, data2 }) => {
         label: data2.login,
         data: [
           data2.totalCommits,
-          data2.totalIssues,
+          data2.totalIssuesCreated,
           data2.totalPRsMerged,
           data2.forks,
         ],
@@ -94,30 +103,48 @@ const RadarChart: React.FC<RadarChartProps> = ({ data1, data2 }) => {
     ],
   };
 
+  const maxValue = Math.max(
+    data1.totalCommits,
+    data1.totalIssuesCreated,
+    data1.totalPRsMerged,
+    data1.forks,
+    data2.totalCommits,
+    data2.totalIssuesCreated,
+    data2.totalPRsMerged,
+    data2.forks
+  );
+
+  const calculateStepSize = (max: number) => {
+    const idealSteps = 5; // You can adjust this number for more or fewer steps
+    let stepSize = Math.pow(10, Math.floor(Math.log10(max)));
+    
+    while (max / stepSize > idealSteps) {
+      stepSize *= 2;
+    }
+    
+    while (max / stepSize < idealSteps / 2) {
+      stepSize /= 2;
+    }
+    
+    return stepSize;
+  };
+
+  const dynamicStepSize = calculateStepSize(maxValue);
+
   const options: ChartOptions<"radar"> = {
     maintainAspectRatio: false,
     scales: {
       r: {
         angleLines: {
-          color: isDarkMode ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.1)",
+          color: isDarkMode ? "rgb(0, 128, 128)" : "rgb(128, 128, 128)",
         },
         grid: {
-          color: isDarkMode ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.1)",
+          color: isDarkMode ? "rgb(0, 128, 128)" : "rgb(128, 128, 128)",
         },
         suggestedMin: 0,
-        suggestedMax:
-          Math.max(
-            data1.totalCommits,
-            data1.totalIssues,
-            data1.totalPRsMerged,
-            data1.forks,
-            data2.totalCommits,
-            data2.totalIssues,
-            data2.totalPRsMerged,
-            data2.forks
-          ) + 10,
+        suggestedMax: maxValue + dynamicStepSize,
         ticks: {
-          stepSize: 10,
+          stepSize: dynamicStepSize,
           color: isDarkMode ? "rgba(255, 255, 255, 0.7)" : "rgba(0, 0, 0, 0.7)",
           backdropColor: isDarkMode
             ? "rgba(0, 0, 0, 1)"
@@ -127,20 +154,6 @@ const RadarChart: React.FC<RadarChartProps> = ({ data1, data2 }) => {
           font: {
             size: 12,
           },
-          color: isDarkMode ? "rgba(255, 255, 255, 0.7)" : "rgba(0, 0, 0, 0.7)",
-        },
-      },
-    },
-    elements: {
-      point: {
-        radius: 3,
-      },
-    },
-    plugins: {
-      legend: {
-        display: true,
-        position: "top", // Use a predefined string literal here
-        labels: {
           color: isDarkMode ? "rgba(255, 255, 255, 0.7)" : "rgba(0, 0, 0, 0.7)",
         },
       },

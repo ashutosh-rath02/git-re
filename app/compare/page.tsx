@@ -242,7 +242,7 @@ const Compare = () => {
     return (
       <div
         className="w-full overflow-x-auto"
-        style={{ boxShadow: "0 0 15px rgba(52, 211, 153, 0.5)" }}
+        
       >
         <table className="w-full border-collapse">
           <tbody>
@@ -299,9 +299,7 @@ const Compare = () => {
         className={`border p-4 rounded-lg ${
           isWinner ? "bg-green-100 dark:bg-green-800" : ""
         } border-gray-300 dark:border-gray-700`}
-        style={{
-          boxShadow: "0 0 15px rgba(52, 211, 153, 0.5)",
-        }}
+       
       >
         <Image
           src={userData.avatar_url}
@@ -401,7 +399,7 @@ const Compare = () => {
             <div
               key={key}
               className="p-4 border rounded-lg border-gray-300 dark:border-gray-700"
-              style={{ boxShadow: "0 0 15px rgba(52, 211, 153, 0.5)" }}
+              
             >
               <h3 className="text-lg font-medium mb-2">{label}</h3>
               {renderBar(userData1, key, maxValues[key])}
