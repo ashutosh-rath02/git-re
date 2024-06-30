@@ -64,10 +64,10 @@ const RadarChart: React.FC<RadarChartProps> = ({ data1, data2 }) => {
   }, [chartRef]);
 
   useEffect(() => {
-    if (theme === 'system') {
-      setIsDarkMode(systemTheme === 'dark');
+    if (theme === "system") {
+      setIsDarkMode(systemTheme === "dark");
     } else {
-      setIsDarkMode(theme === 'dark');
+      setIsDarkMode(theme === "dark");
     }
   }, [theme, systemTheme]);
 
@@ -103,34 +103,6 @@ const RadarChart: React.FC<RadarChartProps> = ({ data1, data2 }) => {
     ],
   };
 
-  const maxValue = Math.max(
-    data1.totalCommits,
-    data1.totalIssuesCreated,
-    data1.totalPRsMerged,
-    data1.forks,
-    data2.totalCommits,
-    data2.totalIssuesCreated,
-    data2.totalPRsMerged,
-    data2.forks
-  );
-
-  const calculateStepSize = (max: number) => {
-    const idealSteps = 5; // You can adjust this number for more or fewer steps
-    let stepSize = Math.pow(10, Math.floor(Math.log10(max)));
-    
-    while (max / stepSize > idealSteps) {
-      stepSize *= 2;
-    }
-    
-    while (max / stepSize < idealSteps / 2) {
-      stepSize /= 2;
-    }
-    
-    return stepSize;
-  };
-
-  const dynamicStepSize = calculateStepSize(maxValue);
-
   const options: ChartOptions<"radar"> = {
     maintainAspectRatio: false,
     scales: {
@@ -142,9 +114,11 @@ const RadarChart: React.FC<RadarChartProps> = ({ data1, data2 }) => {
           color: isDarkMode ? "rgb(0, 128, 128)" : "rgb(128, 128, 128)",
         },
         suggestedMin: 0,
-        suggestedMax: maxValue + dynamicStepSize,
+        suggestedMax: Math.max(data1.totalCommits, data2.totalCommits),
         ticks: {
-          stepSize: dynamicStepSize,
+          stepSize: Math.ceil(
+            Math.max(data1.totalCommits, data2.totalCommits) / 5
+          ),
           color: isDarkMode ? "rgba(255, 255, 255, 0.7)" : "rgba(0, 0, 0, 0.7)",
           backdropColor: isDarkMode
             ? "rgba(0, 0, 0, 1)"
