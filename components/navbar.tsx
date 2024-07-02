@@ -1,4 +1,6 @@
-import React from "react";
+"use client";  // Mark this component as a Client Component
+
+import React, { useEffect, useState } from "react";
 import { ModeToggle } from "./shared/ToggleBg";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import { IoMdGitNetwork } from "react-icons/io";
@@ -6,13 +8,23 @@ import Link from "next/link";
 import { Button } from "./ui/button";
 import AuthButton from "./AuthButton";
 import Hamburger from "./Hamburger";
-import { supabaseServer } from "@/utils/supabase/server";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { usePathname } from "next/navigation";  // Import the usePathname hook
 
-export default async function Navbar() {
+export default function Navbar() {
   const repositoryUrl = "https://github.com/ashutosh-rath02/git-re";
+  const supabase = createClientComponentClient();  // Use client-side Supabase client
+  const [user, setUser] = useState(null);
 
-  const supabase = supabaseServer();
-  const { data } = await supabase.auth.getUser();
+  useEffect(() => {
+    const getUser = async () => {
+      const { data } = await supabase.auth.getUser();
+      setUser(data.user);
+    };
+    getUser();
+  }, [supabase]);
+
+  const currentPath = usePathname();  // Use the usePathname hook to get the current path
 
   return (
     <nav className="max-w-screen-2xl mx-auto sm:px-20 px-3 m-2 p-4 w-full flex items-center justify-between">
@@ -33,13 +45,23 @@ export default async function Navbar() {
         >
           Home
         </Link>
-        <a
-          href="#userTestimonials"
-          className="text-navbarSecondary hover:text-primary font-semibold transition md:block hidden dark:text-white"
-          style={{ scrollBehavior: "smooth" }}
-        >
-          Testimonial
-        </a>
+        {currentPath === "/leaderboard" ? (
+          <Link
+            href={"/#userTestimonials"}
+            className="text-navbarSecondary hover:text-primary font-semibold transition md:block hidden dark:text-white"
+            style={{ scrollBehavior: "smooth" }}
+          >
+            Testimonial
+          </Link>
+        ) : (
+          <a
+            href="#userTestimonials"
+            className="text-navbarSecondary hover:text-primary font-semibold transition md:block hidden dark:text-white"
+            style={{ scrollBehavior: "smooth" }}
+          >
+            Testimonial
+          </a>
+        )}
         <Link
           href={"/leaderboard"}
           rel="noopener noreferrer"
@@ -48,7 +70,7 @@ export default async function Navbar() {
           Leaderboard
         </Link>
 
-        <AuthButton user={data.user} />
+        <AuthButton user={user} />
 
         <Hamburger />
       </div>
