@@ -6,7 +6,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import faqs from "@/config/content/Faqs";
+import faqs from '../config/content/faqs';
 const Faq = () => {
   return (
     <>
