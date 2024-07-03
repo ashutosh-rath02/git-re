@@ -1,12 +1,12 @@
-"useClient";
-import React, { use, useState } from 'react';
+"use client";
+import React, { use, useState } from "react";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import faqs from '../config/content/faqs';
+import faqs from "../config/content/faqs";
 const Faq = () => {
   return (
     <>
@@ -23,6 +23,6 @@ const Faq = () => {
       </div>
     </>
   );
-}
+};
 
-export default Faq
+export default Faq;
