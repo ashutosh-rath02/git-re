@@ -37,6 +37,7 @@ import { badgeVariants } from "./ui/badge";
 import { getRankSuffix } from "@/utils/format";
 import CustomisationDrawer from "./CustomisationDrawer";
 import ProfileTracking from "./ProfileTracking";
+import ShareBtn from "./ShareBtn";
 interface GitHubProfile {
   name: string;
   bio: string;
@@ -140,7 +141,13 @@ export function NewResume() {
 
         // Fetch profile data
         const profileData = await fetch(
-          `https://api.github.com/users/${username}`
+          `https://api.github.com/users/${username}`,
+          {
+            headers: {
+              Authorization: `Bearer ${process.env.NEXT_PUBLIC_GITHUB_TOKEN}`,
+              Accept: "application/vnd.github+json",
+            },
+          }
         ).then((res) => res.json());
         setProfile(profileData);
 
@@ -213,6 +220,7 @@ export function NewResume() {
             isContributionsExists={contributions.length > 0}
             isOrganisationsExists={organizations.length > 0}
           />
+          <ShareBtn username={username} />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="space-y-6">
