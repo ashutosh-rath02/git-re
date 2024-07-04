@@ -37,6 +37,7 @@ import { badgeVariants } from "./ui/badge";
 import { getRankSuffix } from "@/utils/format";
 import CustomisationDrawer from "./CustomisationDrawer";
 import ProfileTracking from "./ProfileTracking";
+import ShareBtn from "./ShareBtn";
 interface GitHubProfile {
   name: string;
   bio: string;
@@ -133,46 +134,40 @@ export function NewResume() {
   const { theme } = useTheme();
   useEffect(() => {
     const fetchData = async () => {
+      if (!username) return;
+
       try {
         setLoading(true);
 
-        // Check if profile data is cached
-        const cachedProfileData = await redis.get(`profile:${username}`);
-        if (cachedProfileData) {
-          setProfile(cachedProfileData as any);
-        } else {
-          // Fetch profile data and cache it
-          const profileData = await fetch(
-            `https://api.github.com/users/${username}`
-          ).then((res) => res.json());
+        // Fetch profile data
+        const profileData = await fetch(
+          `https://api.github.com/users/${username}`,
+          {
+            headers: {
+              Authorization: `Bearer ${process.env.NEXT_PUBLIC_GITHUB_TOKEN}`,
+              Accept: "application/vnd.github+json",
+            },
+          }
+        ).then((res) => res.json());
+        setProfile(profileData);
 
-          setProfile(profileData);
-          await redis.set(`profile:${username}`, JSON.stringify(profileData), {
-            ex: CACHE_TTL,
-          });
-        }
+        // Fetch data using resumeUtils functions
+        const [reposData, languages, stats, orgsData, contributionData] =
+          await Promise.all([
+            fetchPopularRepos(username),
+            fetchLanguageData(username),
+            fetchUserStats(username),
+            fetchOrganizations(username),
+            fetchContributions(username),
+          ]);
 
-        const reposData = await fetchPopularRepos(username);
-        setRepos(reposData as unknown as GitHubRepo[]);
-
-        const languages = await fetchLanguageData(username);
+        setRepos(reposData as any);
         setLanguageData(languages);
-
-        const stats = await fetchUserStats(username);
-        setUserStats(stats);
-
-        const rating = await calculateRating(username);
-        setRating(rating);
-
-        const orgsData = await fetchOrganizations(username);
+        setUserStats(stats as any);
         setOrganizations(orgsData);
-
-        const rank = (await getIndividualUserRank(username))[0].user_rank;
-        setRank(rank);
-
-        const contributionsData = await fetchContributions(username);
+        setContributionCount(contributionData.length);
         setContributions(
-          contributionsData.map((contribution) => ({
+          contributionData.slice(0, contributionCount).map((contribution) => ({
             organizationName: contribution.organizationName,
             repository: contribution.repository,
             url: contribution.url,
@@ -180,15 +175,22 @@ export function NewResume() {
             commitCount: contribution.commitCount,
           }))
         );
+
+        // Fetch rating and rank
+        const rating = await calculateRating(username);
+        setRating(rating);
+
+        const rank = (await getIndividualUserRank(username))[0].user_rank;
+        setRank(rank);
+      } catch (error) {
+        console.error("Error fetching data:", error);
       } finally {
         setLoading(false);
       }
     };
 
-    if (username) {
-      fetchData();
-    }
-  }, [username, startYear, endYear]);
+    fetchData();
+  }, [username]);
 
   const handleRepoCountChange = (value: number) => {
     setRepoCount(value);
@@ -218,6 +220,7 @@ export function NewResume() {
             isContributionsExists={contributions.length > 0}
             isOrganisationsExists={organizations.length > 0}
           />
+          <ShareBtn username={username} />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="space-y-6">
@@ -449,39 +452,6 @@ export function NewResume() {
               </div>
             </div>
             <div>
-              {organizations.length > 0 && (
-                <>
-                  <h2 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-50">
-                    Organizations
-                  </h2>
-
-                  <div className="mt-4 space-y-4">
-                    {organizations
-                      .slice(0, organizationCount)
-                      .map((org: any, index: any) => (
-                        <div className="flex items-center gap-4" key={index}>
-                          <div className="flex-1">
-                            <div className="text-sm font-medium text-gray-900 dark:text-gray-50">
-                              <Link
-                                className="hover:underline"
-                                href={`https://github.com/${org.name}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                              >
-                                {org.name}
-                              </Link>
-                            </div>
-                            <div className="text-sm text-gray-500 dark:text-gray-400">
-                              {org.description}
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                  </div>
-                </>
-              )}
-            </div>
-            <div>
               {contributions.length > 0 && (
                 <>
                   <h2 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-50">
@@ -521,6 +491,39 @@ export function NewResume() {
                             <IconGitCommit className="h-5 w-5 text-gray-500 dark:text-gray-400" />
                             <div className="text-sm text-gray-500 dark:text-gray-400">
                               {contri.commitCount}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                  </div>
+                </>
+              )}
+            </div>
+            <div>
+              {organizations.length > 0 && (
+                <>
+                  <h2 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-50">
+                    Organizations
+                  </h2>
+
+                  <div className="mt-4 space-y-4">
+                    {organizations
+                      .slice(0, organizationCount)
+                      .map((org: any, index: any) => (
+                        <div className="flex items-center gap-4" key={index}>
+                          <div className="flex-1">
+                            <div className="text-sm font-medium text-gray-900 dark:text-gray-50">
+                              <Link
+                                className="hover:underline"
+                                href={`https://github.com/${org.name}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                {org.name}
+                              </Link>
+                            </div>
+                            <div className="text-sm text-gray-500 dark:text-gray-400">
+                              {org.description}
                             </div>
                           </div>
                         </div>

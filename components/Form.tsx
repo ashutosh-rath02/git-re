@@ -97,7 +97,11 @@ export default function Form() {
           disabled={isLoading}
           className="h-12 px-6 flex items-center justify-center"
         >
-          {isLoading ? <div className="loader1"></div> : "Generate"}
+          {isLoading ? (
+            <div className="loader1"></div>
+          ) : (
+            <p className="text-white">{"Generate"}</p>
+          )}
         </Button>
       </form>
     </div>

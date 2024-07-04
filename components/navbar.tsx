@@ -5,7 +5,7 @@ import { ModeToggle } from "./shared/ToggleBg";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import { IoMdGitNetwork } from "react-icons/io";
 import Link from "next/link";
-import { Button } from "./ui/button";
+
 import AuthButton from "./AuthButton";
 import Hamburger from "./Hamburger";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
@@ -68,6 +68,13 @@ export default function Navbar() {
           className="text-navbarSecondary hover:text-primary font-semibold transition md:block hidden dark:text-white"
         >
           Leaderboard
+        </Link>
+        <Link
+          href={"/compare"}
+          rel="noopener noreferrer"
+          className="text-navbarSecondary hover:text-primary font-semibold transition md:block hidden dark:text-white"
+        >
+          Compare
         </Link>
 
         <AuthButton user={user} />

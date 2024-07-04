@@ -49,7 +49,14 @@ export default function Footer() {
         </h3>
         <h4 className="mt-4 text-sm font-medium text-secondaryText dark:text-gray-200">
           {" "}
-          &copy; {currentYear} Made with 🤯 by Ashutosh Rath
+          &copy; {currentYear} Made with 🤯 by{" "}
+          <Link
+            href="https://www.ashutoshrath.me/"
+            target="_blank"
+            className="hover:text-primary transition"
+          >
+            Ashutosh Rath
+          </Link>
         </h4>
         <Link
           href="https://github.com/ashutosh-rath02/git-re/tree/main"
@@ -70,14 +77,14 @@ export default function Footer() {
             </h4>
             <Link
               href="https://github.com/ashutosh-rath02/git-re/"
-              className="mt-3 text-secondaryText font-medium dark:text-white"
+              className="mt-3 text-secondaryText font-medium dark:text-white hover:text-primary dark:hover:text-primary transition"
               target="_blank"
             >
               Contribute
             </Link>
             <Link
               href="https://www.producthunt.com/products/git-re"
-              className="text-secondaryText font-medium dark:text-white"
+              className="text-secondaryText font-medium dark:text-white hover:text-primary dark:hover:text-primary transition"
               target="_blank"
             >
               Vote on Product Hunt
@@ -93,7 +100,7 @@ export default function Footer() {
                 href={href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-secondaryText hover:text-primary dark:text-white"
+                className="text-secondaryText hover:text-primary dark:text-white dark:hover:text-primary"
               >
                 {icon}
               </a>

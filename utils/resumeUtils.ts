@@ -1,7 +1,78 @@
-import axios from "axios";
-import redis from "@/lib/redis";
+import { GraphQLClient, gql } from 'graphql-request';
 import { CACHE_TTL } from "@/lib/consts";
 import { supabaseBrowser } from "./supabase/client";
+import axios from 'axios'; // Ensure axios is imported
+
+const client = new GraphQLClient('https://api.github.com/graphql', {
+  headers: {
+    authorization: `Bearer ${process.env.NEXT_PUBLIC_GITHUB_TOKEN}`,
+  },
+});
+
+const supabase = supabaseBrowser();
+
+const GITHUB_QUERY = gql`
+  query($username: String!) {
+    user(login: $username) {
+      login
+      name
+      avatarUrl
+      followers {
+        totalCount
+      }
+      following {
+        totalCount
+      }
+      repositories(first: 100, orderBy: {field: STARGAZERS, direction: DESC}) {
+        totalCount
+        nodes {
+          name
+          id
+          url
+          description
+          homepageUrl
+          stargazerCount
+          forkCount
+          createdAt
+          primaryLanguage {
+            name
+          }
+          owner {
+            login
+          }
+        }
+      }
+      organizations(first: 100) {
+        totalCount
+        nodes {
+          login
+          url
+          createdAt
+        }
+      }
+      contributionsCollection {
+        totalCommitContributions
+        restrictedContributionsCount
+      }
+      issues(first: 1) {
+        totalCount
+      }
+      pullRequests(first: 100, states: MERGED) {
+        nodes {
+          repository {
+            name
+            owner {
+              login
+            }
+            url
+          }
+        }
+        totalCount
+      }
+      createdAt
+    }
+  }
+`;
 
 const configData = {
   maxItems: 6,
@@ -10,8 +81,9 @@ const configData = {
 
 interface Repo {
   name: string;
-  id: number;
+  id: string;
   date: string;
+  html_url: string;
   language?: string;
   description?: string;
   homepage?: string;
@@ -21,7 +93,7 @@ interface Repo {
   popularity: number;
   watchersLabel: string;
   forksLabel: string;
-  htm_url: string;
+  isOwner: boolean;
 }
 
 interface Language {
@@ -31,388 +103,197 @@ interface Language {
   url: string;
 }
 
-interface RepoContribution {
-  repository: any;
-  commitCount: any;
-  name: string;
-  contributions: number;
-  url: string;
-}
-
-export interface Contribution {
-  organizationName: string;
-  repoUrl: string;
-  repository: string;
-  url: string;
-  commitCount: number;
-}
-
 export interface Organization {
   name: string;
   url: string;
   joinedYear: number;
 }
 
-const sortByPopularity = (a: Repo, b: Repo) => {
-  return b.popularity - a.popularity;
+interface GitHubUser {
+  login: string;
+  name: string;
+  avatarUrl: string;
+  followers: { totalCount: number };
+  following: { totalCount: number };
+  repositories: {
+    totalCount: number;
+    nodes: Array<{
+      name: string;
+      id: string;
+      url: string;
+      description: string | null;
+      homepageUrl: string | null;
+      stargazerCount: number;
+      forkCount: number;
+      createdAt: string;
+      primaryLanguage: { name: string } | null;
+      owner: { login: string };
+    }>;
+  };
+  organizations: {
+    totalCount: number;
+    nodes: Array<{
+      login: string;
+      url: string;
+      createdAt: string;
+    }>;
+  };
+  contributionsCollection: {
+    totalCommitContributions: number;
+    restrictedContributionsCount: number;
+  };
+  issues: { totalCount: number };
+  pullRequests: {
+    nodes: Array<{
+      repository: {
+        name: string;
+        owner: {
+          login: string;
+        };
+        url: string;
+      };
+    }>;
+    totalCount: number;
+  };
+  createdAt: string;
+}
+
+interface GitHubData {
+  user: GitHubUser;
+}
+
+interface Contribution {
+  organizationName: string;
+  repository: string;
+  url: string;
+  repoUrl: string;
+  commitCount: number;
+}
+
+const fetchGitHubData = async (username: string): Promise<GitHubData | null> => {
+  try {
+    console.log(`Fetching GitHub data for ${username}`);
+    const data = await client.request<GitHubData>(GITHUB_QUERY, { username });
+    return data;
+  } catch (error) {
+    console.error("Error fetching GitHub data:", error);
+    return null;
+  }
+};
+
+
+export const fetchOrganizations = async (username: string): Promise<Organization[]> => {
+  const data = await fetchGitHubData(username);
+  if (!data) return [];
+
+  return data.user.organizations.nodes.map((org) => ({
+    name: org.login,
+    url: org.url,
+    joinedYear: new Date(org.createdAt).getFullYear(),
+  }));
+};
+
+export const fetchPopularRepos = async (username: string): Promise<Repo[]> => {
+  const data = await fetchGitHubData(username);
+  if (!data) return [];
+
+  return data.user.repositories.nodes
+    .filter((repo) => repo.owner.login === username)
+    .map((repo) => ({
+      name: repo.name,
+      id: repo.id,
+      date: new Date(repo.createdAt).getFullYear().toString(),
+      html_url: repo.url,
+      language: repo.primaryLanguage?.name,
+      description: repo.description ?? undefined,
+      homepage: repo.homepageUrl ?? undefined,
+      username,
+      watchers: repo.stargazerCount,
+      forks: repo.forkCount,
+      popularity: repo.stargazerCount + repo.forkCount,
+      watchersLabel: repo.stargazerCount === 1 ? " star " : " stars ",
+      forksLabel: repo.forkCount === 1 ? " fork " : " forks ",
+      isOwner: true,
+    }))
+    .sort((a, b) => b.popularity - a.popularity)
+    .slice(0, configData.maxItems);
 };
 
 const sortLanguages = (
   languages: { [key: string]: number },
   username: string
 ): Language[] => {
-  let totalUsage = Object.values(languages).reduce(
-    (acc, value) => acc + value,
-    0
-  );
+  const totalUsage = Object.values(languages).reduce((acc, value) => acc + value, 0);
   return Object.entries(languages)
     .map(([name, popularity]) => ({
       name,
       popularity,
       percent: (popularity / totalUsage) * 100,
-      url: `https://github.com/search?q=user%3A${username}&l=${encodeURIComponent(
-        name
-      )}`,
+      url: `https://github.com/search?q=user%3A${username}&l=${encodeURIComponent(name)}`,
     }))
     .sort((a, b) => b.popularity - a.popularity)
     .slice(0, configData.maxLanguages);
 };
 
-const getFromCache = async <T>(key: string): Promise<T | null> => {
-  const cachedData: any = await redis.get(key);
-  if (cachedData) {
-    console.log("LOADED FROM CACHE");
-    return cachedData;
-  }
-  return null;
-};
+export const fetchLanguageData = async (username: string): Promise<Language[]> => {
+  const data = await fetchGitHubData(username);
+  if (!data) return [];
 
-const supabase = supabaseBrowser();
-
-const setInCache = async <T>(
-  key: string,
-  data: T,
-  expirationSeconds: number
-): Promise<void> => {
-  await redis.set(key, JSON.stringify(data), {
-    ex: expirationSeconds,
-  });
-};
-
-export const fetchOrganizations = async (
-  username: string
-): Promise<Organization[]> => {
-  const cacheKey = `organizations:${username}`;
-  const cachedOrganizations = await getFromCache<Organization[]>(cacheKey);
-
-  if (cachedOrganizations) {
-    console.log("LOADED FROM CACHE: ORGS");
-    console.log(cachedOrganizations);
-    return cachedOrganizations;
-  }
-
-  try {
-    const response = await axios.get(
-      `https://api.github.com/users/${username}/orgs`,
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_GITHUB_TOKEN}`,
-          Accept: "application/vnd.github+json",
-        },
-      }
-    );
-    const organizations = response.data.map((org: any) => ({
-      name: org.login,
-      url: org.html_url,
-      joinedYear: new Date(org.created_at).getFullYear(),
-    }));
-
-    await setInCache(cacheKey, organizations, CACHE_TTL);
-
-    return organizations;
-  } catch (error) {
-    console.error("Error fetching organizations:", error);
-    return [];
-  }
-};
-
-export const fetchContributions = async (
-  username: string
-): Promise<Contribution[]> => {
-  const cacheKey = `contributions:${username}`;
-  const cachedContributions = await getFromCache<Contribution[]>(cacheKey);
-
-  if (cachedContributions) {
-    return cachedContributions;
-  }
-
-  try {
-    const url = `https://api.github.com/search/issues?q=author:${username}+type:pr+is:merged&per_page=100`;
-    const response = await axios.get(url, {
-      headers: {
-        Authorization: `Bearer ${process.env.NEXT_PUBLIC_GITHUB_TOKEN}`,
-        Accept: "application/vnd.github+json",
-      },
-    });
-
-    const contributionMap = new Map<
-      string,
-      {
-        organizationName: string;
-        commitsUrl: string;
-        repoUrl: string;
-        count: number;
-      }
-    >();
-    response.data.items.forEach((item: any) => {
-      const repoName = item.repository_url.split("/").pop();
-      const repoOwner =
-        item.repository_url.split("/")[
-          item.repository_url.split("/").length - 2
-        ];
-      const organizationName = repoOwner;
-      const commitsUrl = `https://github.com/${repoOwner}/${repoName}/commits?author=${username}`;
-      const repoUrl = `https://github.com/${repoOwner}/${repoName}`;
-
-      if (contributionMap.has(repoName)) {
-        contributionMap.get(repoName)!.count++;
-      } else {
-        contributionMap.set(repoName, {
-          organizationName,
-          commitsUrl,
-          repoUrl,
-          count: 1,
-        });
-      }
-    });
-
-    const contributions = Array.from(
-      contributionMap,
-      ([repository, { organizationName, commitsUrl, repoUrl, count }]) => ({
-        organizationName,
-        repository,
-        url: commitsUrl,
-        repoUrl,
-        commitCount: count,
-      })
-    );
-
-    contributions.sort((a, b) => b.commitCount - a.commitCount);
-
-    await setInCache(cacheKey, contributions, CACHE_TTL);
-
-    return contributions;
-  } catch (error) {
-    console.error("Error fetching contributions:", error);
-    return [];
-  }
-};
-
-export const fetchPopularRepos = async (username: string): Promise<Repo[]> => {
-  const cacheKey = `popular-repos:${username}`;
-  const cachedRepos = await getFromCache<Repo[]>(cacheKey);
-
-  if (cachedRepos) {
-    return cachedRepos;
-  }
-  try {
-    const response = await axios.get(
-      `https://api.github.com/users/${username}/repos?per_page=100`,
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_GITHUB_TOKEN}`,
-          Accept: "application/vnd.github+json",
-        },
-      }
-    );
-    const repos = response.data;
-
-    const formattedRepos = repos
-      .filter((repo: any) => !repo.fork)
-      .map((repo: any) => ({
-        name: repo.name,
-        id: repo.id,
-        date: `${new Date(repo.created_at).getFullYear()}`,
-        html_url: repo.html_url,
-        language: repo.language,
-        description: repo.description,
-        homepage: repo.homepage,
-        username,
-        watchers: repo.stargazers_count,
-        forks: repo.forks_count,
-        popularity: repo.stargazers_count + repo.forks_count,
-        watchersLabel: repo.stargazers_count === 1 ? " star " : " stars ",
-        forksLabel: repo.forks_count === 1 ? " fork " : " forks ",
-        isOwner: repo.owner.login === username,
-      }))
-      .sort(
-        (a: { popularity: number }, b: { popularity: number }) =>
-          b.popularity - a.popularity
-      )
-      .slice(0, configData.maxItems);
-
-    await setInCache(cacheKey, formattedRepos, CACHE_TTL);
-
-    return formattedRepos;
-  } catch (error) {
-    console.error("Error fetching popular repos:", error);
-    return [];
-  }
-};
-
-export const fetchLanguageData = async (
-  username: string
-): Promise<Language[]> => {
-  const cacheKey = `language-data:${username}`;
-  const cachedLanguageData = await getFromCache<Language[]>(cacheKey);
-
-  if (cachedLanguageData) {
-    return cachedLanguageData;
-  }
-
-  try {
-    const response = await axios.get(
-      `https://api.github.com/users/${username}/repos`,
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_GITHUB_TOKEN}`,
-          Accept: "application/vnd.github+json",
-        },
-      }
-    );
-    const repos = response.data;
-
-    let languageData: { [key: string]: number } = {};
-    for (const repo of repos) {
-      if (repo.language) {
-        languageData[repo.language] = (languageData[repo.language] || 0) + 1;
-      }
+  const languageData: { [key: string]: number } = {};
+  data.user.repositories.nodes.forEach((repo) => {
+    if (repo.primaryLanguage) {
+      languageData[repo.primaryLanguage.name] = (languageData[repo.primaryLanguage.name] || 0) + 1;
     }
+  });
 
-    const formattedLanguageData = sortLanguages(languageData, username);
-
-    await setInCache(cacheKey, formattedLanguageData, CACHE_TTL);
-
-    return formattedLanguageData;
-  } catch (error) {
-    console.error("Error fetching language data:", error);
-    return [];
-  }
+  return sortLanguages(languageData, username);
 };
-export const fetchUserStats = async (username: string) => {
-  const cacheKey = `user-stats:${username}`;
-  const cachedUserStats = (await getFromCache(cacheKey)) as any;
 
-  if (cachedUserStats) {
-    console.log("LOADED FROM CACHE: USER STATS");
-    await supabase
-      .from("recent_users")
-      .update({
-        followers: cachedUserStats.followers,
-        public_repos: cachedUserStats.publicRepos,
-        organizations_count: cachedUserStats.organizations,
-        total_issues_created: cachedUserStats.totalIssuesCreated,
-        total_prs_merged: cachedUserStats.totalPRsMerged,
-        stars_recieved: cachedUserStats.starsReceived,
-        forks: cachedUserStats.forks,
-      })
-      .eq("username", username);
+interface UserStats {
+  followers: number;
+  publicRepos: number;
+  organizations: number;
+  totalCommits: number;
+  totalIssuesCreated: number;
+  totalPRsMerged: number;
+  userJoinedDate: Date;
+  yearsOnGitHub: number;
+  starsReceived: number;
+  forks: number;
+}
 
-    return cachedUserStats;
-  }
+export const fetchUserStats = async (username: string): Promise<UserStats | null> => {
+  const data = await fetchGitHubData(username);
+  if (!data) return null;
+
+  const userJoinedDate = new Date(data.user.createdAt);
+  const currentYear = new Date().getFullYear();
+  const yearsOnGitHub = currentYear - userJoinedDate.getFullYear();
+
+  const starsReceived = data.user.repositories.nodes.reduce(
+    (acc, repo) => acc + repo.stargazerCount,
+    0
+  );
+
+  const forks = data.user.repositories.nodes.reduce(
+    (acc, repo) => acc + repo.forkCount,
+    0
+  );
+
+  const userStats: UserStats = {
+    followers: data.user.followers.totalCount,
+    publicRepos: data.user.repositories.totalCount,
+    organizations: data.user.organizations.totalCount,
+    totalCommits: data.user.contributionsCollection.totalCommitContributions,
+    totalIssuesCreated: data.user.issues.totalCount,
+    totalPRsMerged: data.user.pullRequests.totalCount,
+    userJoinedDate,
+    yearsOnGitHub,
+    starsReceived,
+    forks,
+  };
 
   try {
-    const userRes = await axios.get(
-      `https://api.github.com/users/${username}`,
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_GITHUB_TOKEN}`,
-          Accept: "application/vnd.github+json",
-        },
-      }
-    );
-    const orgsRes = await axios.get(
-      `https://api.github.com/users/${username}/orgs`,
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_GITHUB_TOKEN}`,
-          Accept: "application/vnd.github+json",
-        },
-      }
-    );
-    const eventsRes = await axios.get(
-      `https://api.github.com/users/${username}/events/public`,
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_GITHUB_TOKEN}`,
-          Accept: "application/vnd.github+json",
-        },
-      }
-    );
-    const reposRes = await axios.get(
-      `https://api.github.com/users/${username}/repos?per_page=100`,
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_GITHUB_TOKEN}`,
-          Accept: "application/vnd.github+json",
-        },
-      }
-    );
-    const starsReceived = reposRes.data.reduce(
-      (acc: any, repo: { stargazers_count: any }) =>
-        acc + repo.stargazers_count,
-      0
-    );
-    const forks = reposRes.data.reduce(
-      (acc: any, repo: { forks_count: any }) => acc + repo.forks_count,
-      0
-    );
-    const userJoinedDate = new Date(userRes.data.created_at);
-    const currentYear = new Date().getFullYear();
-    const yearsOnGitHub = currentYear - userJoinedDate.getFullYear();
-
-    const pushEvents = eventsRes.data.filter(
-      (event: { type: string }) => event.type === "PushEvent"
-    );
-    const totalCommits = pushEvents.reduce(
-      (acc: any, event: { payload: { commits: string | any[] } }) =>
-        acc + event.payload.commits.length,
-      0
-    );
-    const issuesRes = await axios.get(
-      `https://api.github.com/search/issues?q=author:${username}+type:issue`,
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_GITHUB_TOKEN}`,
-          Accept: "application/vnd.github+json",
-        },
-      }
-    );
-    const totalIssuesCreated = issuesRes.data.total_count;
-
-    const prsRes = await axios.get(
-      `https://api.github.com/search/issues?q=author:${username}+type:pr+is:merged`,
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_GITHUB_TOKEN}`,
-          Accept: "application/vnd.github+json",
-        },
-      }
-    );
-    const totalPRsMerged = prsRes.data.total_count;
-
-    const userStats = {
-      followers: userRes.data.followers,
-      publicRepos: userRes.data.public_repos,
-      organizations: orgsRes.data.length,
-      totalCommits: totalCommits,
-      totalIssuesCreated: totalIssuesCreated,
-      totalPRsMerged: totalPRsMerged,
-      userJoinedDate: userJoinedDate,
-      yearsOnGitHub: yearsOnGitHub,
-      starsReceived: starsReceived,
-      forks: forks,
-    };
     await supabase
       .from("recent_users")
       .update({
@@ -425,11 +306,61 @@ export const fetchUserStats = async (username: string) => {
         forks: userStats.forks,
       })
       .eq("username", username);
-    await setInCache(cacheKey, userStats, CACHE_TTL);
-
-    return userStats;
   } catch (error) {
-    console.error("Error fetching user statistics:", error);
-    return {};
+    console.error("Error updating Supabase:", error);
   }
+
+  return userStats;
+};
+
+export const fetchContributions = async (
+  username: string
+): Promise<Contribution[]> => {
+  const data = await fetchGitHubData(username);
+  if (!data) return [];
+
+  const contributionMap = new Map<
+    string,
+    {
+      organizationName: string;
+      commitsUrl: string;
+      repoUrl: string;
+      count: number;
+    }
+  >();
+
+  data.user.pullRequests.nodes.forEach((pr) => {
+    const repoName = pr.repository.name;
+    const repoOwner = pr.repository.owner.login;
+    const organizationName = repoOwner;
+    const commitsUrl = `https://github.com/${repoOwner}/${repoName}/commits?author=${username}`;
+    const repoUrl = pr.repository.url;
+
+    if (contributionMap.has(repoName)) {
+      contributionMap.get(repoName)!.count++;
+    } else {
+      contributionMap.set(repoName, {
+        organizationName,
+        commitsUrl,
+        repoUrl,
+        count: 1,
+      });
+    }
+  });
+
+  const contributions = Array.from(
+    contributionMap,
+    ([repository, { organizationName, commitsUrl, repoUrl, count }]) => ({
+      organizationName,
+      repository,
+      url: commitsUrl,
+      repoUrl,
+      commitCount: count,
+    })
+  );
+
+  contributions.sort((a, b) => b.commitCount - a.commitCount);
+
+
+  return contributions;
 };
