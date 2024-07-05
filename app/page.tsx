@@ -11,6 +11,8 @@ import "./globals.css";
 import { useSearchParams } from "next/navigation";
 import { toast } from "@/components/ui/use-toast";
 import Lenis from "@studio-freight/lenis";
+import Faq from "../components/Faq";
+
 export default function Home() {
   const supabase = supabaseBrowser();
   const searchParams = useSearchParams();
@@ -110,6 +112,7 @@ export default function Home() {
       >
         <UserTestimonails />
       </div>
+        <Faq/>
     </main>
   );
 }
