@@ -1,10 +1,18 @@
-import { NextResponse, type NextRequest } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import { updateSession } from "@/utils/supabase/middleware";
 import { createMiddlewareClient } from "@supabase/auth-helpers-nextjs";
 
 export async function middleware(request: NextRequest) {
   const res = NextResponse.next();
   const req = request;
+
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    console.error('Environment variables for Supabase are missing');
+    return new NextResponse('Environment variables for Supabase are missing', { status: 500 });
+  }
+
+  await updateSession(req);
+
   const supabase = createMiddlewareClient({ req, res });
   await supabase.auth.getUser();
   return res;
@@ -12,13 +20,6 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * Feel free to modify this pattern to include more paths.
-     */
     "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
   ],
 };
