@@ -22,11 +22,13 @@ export default function CoverLetter({ user }: Props) {
   return (
     <div className="flex flex-col items-center justify-center">
       <div className="w-full p-2">
-        <div className="flex w-full items-center justify-center">
+        <div className="flex w-full my-10 items-center justify-center">
           <div className="border-[#B1B2FF] w-[10%] border-0 border-b-2" />
           <Button
             className={`${
-              !isJobDescription ? "bg-[#051129] border-gray-400 border" : ""
+              !isJobDescription
+                ? "dark:bg-[#051129] bg-blue-400 border-gray-400 border"
+                : ""
             }`}
             variant={"newDefault"}
           >
@@ -35,7 +37,9 @@ export default function CoverLetter({ user }: Props) {
           <div className="border-[#B1B2FF] w-[10%] border-0 border-b-2" />
           <Button
             className={`${
-              !isResume ? "bg-[#051129] border-gray-400 border" : ""
+              !isResume
+                ? "dark:bg-[#051129] bg-blue-400 border-gray-400 border"
+                : ""
             }`}
             variant={"newDefault"}
           >
@@ -44,7 +48,9 @@ export default function CoverLetter({ user }: Props) {
           <div className="border-[#B1B2FF] w-[10%] border-0 border-b-2" />
           <Button
             className={`${
-              !isSubmit ? "bg-[#051129] border-gray-400 border" : ""
+              !isSubmit
+                ? "dark:bg-[#051129] bg-blue-400 border-gray-400 border"
+                : ""
             }`}
             variant={"newDefault"}
           >

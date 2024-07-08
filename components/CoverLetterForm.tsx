@@ -6,23 +6,20 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { Textarea } from "./ui/textarea";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
-import { IconArrowBigRight } from "@tabler/icons-react";
 import { SetStateAction } from "react";
 
 const formSchema = z.object({
   jobDescription: z
     .string()
     .min(10, { message: "Detailed job description required!!" })
-    .max(1000),
+    .max(10000),
   project: z.string().min(10, { message: "Project required!!" }).max(1000),
   skills: z.string().min(10, { message: "Skills required!!" }).max(1000),
   experience: z
@@ -251,7 +248,7 @@ export default function CoverLetterForm({
                 </FormItem>
               )}
             />
-            <Button className="flex gap-1" type="submit">
+            <Button className="flex gap-1 text-white" type="submit">
               Submit
             </Button>
           </>
