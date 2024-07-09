@@ -55,7 +55,7 @@
     "react-scroll": "^1.9.0",
     "recharts": "^2.12.7",
     "styled-components": "^6.1.11",
-    "tailwind-merge": "^2.3.0",
+    "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",
     "twin.macro": "^3.4.1",
     "vaul": "^0.9.1",
