@@ -22,11 +22,8 @@ const ShareBtn = ({ username }: { username: string }) => {
   return (
     <Dialog>
       <DialogTrigger>
-        <Button className="flex text-foreground gap-2 items-center">
-          <span>
-            <Share1Icon />
-          </span>
-          Share
+        <Button variant={"outline"}>
+          <Share1Icon />
         </Button>
       </DialogTrigger>
       <DialogContent>
