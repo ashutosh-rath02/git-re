@@ -18,10 +18,10 @@ import {
 } from "@/components/ui/pagination";
 
 import { getLeaderboard } from "./action";
-import { Avatar, AvatarImage, AvatarFallback } from "../../components/ui/avatar";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import Link from "next/link";
-import { Skeleton } from "../../components/ui/skeleton";
-import Crown from "../../components/leaderboard/crown";
+import { Skeleton } from "@/components/ui/skeleton";
+import Crown from "@/components/leaderboard/crown";
 
 
 interface LeaderboardProp {
