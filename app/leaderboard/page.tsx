@@ -7,7 +7,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "../../components/ui/table";
+} from "@/components/ui/table";
 import {
   Pagination,
   PaginationContent,
@@ -15,7 +15,7 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "../../components/ui/pagination";
+} from "@/components/ui/pagination";
 
 import { getLeaderboard } from "./action";
 import { Avatar, AvatarImage, AvatarFallback } from "../../components/ui/avatar";
