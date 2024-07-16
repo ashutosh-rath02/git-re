@@ -16,13 +16,11 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-
 import { getLeaderboard } from "./action";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import Link from "next/link";
 import { Skeleton } from "@/components/ui/skeleton";
 import Crown from "@/components/leaderboard/crown";
-
 
 interface LeaderboardProp {
   avatar_url: string;
@@ -32,39 +30,22 @@ interface LeaderboardProp {
 
 export default function Leaderboard() {
   const [leaderboard, setLeaderboard] = useState<LeaderboardProp[]>([]);
-  const [filteredLeaderboard, setFilteredLeaderboard] = useState<
-    LeaderboardProp[]
-  >([]);
   const [page, setPage] = useState(1);
   const [maxPage, setMaxPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-    getLeaderboard({ page }).then((data) => {
+    getLeaderboard({ page, searchQuery }).then((data) => {
       setMaxPage(data.maxPages);
       setLeaderboard(data.data);
-      setFilteredLeaderboard(data.data); // Initialize filtered leaderboard with all data
     });
-  }, [page]);
+  }, [page, searchQuery]);
 
-  // Function to handle search input change
   const handleSearchInputChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setSearchQuery(event.target.value);
-    filterLeaderboard(event.target.value);
-  };
-
-  // Function to filter leaderboard based on search query
-  const filterLeaderboard = (query: string) => {
-    if (query.trim() === "") {
-      setFilteredLeaderboard(leaderboard); // Reset to show all data if query is empty
-    } else {
-      const filteredData = leaderboard.filter((user) =>
-        user.username.toLowerCase().includes(query.toLowerCase())
-      );
-      setFilteredLeaderboard(filteredData);
-    }
+    setPage(1); // Reset to the first page on search
   };
 
   const handlePrevious = () => {
@@ -125,9 +106,9 @@ export default function Leaderboard() {
               <TableHead>Rating</TableHead>
             </TableRow>
           </TableHeader>
-          {filteredLeaderboard.length > 0 ? (
+          {leaderboard.length > 0 ? (
             <TableBody>
-              {filteredLeaderboard.map((user, index) => {
+              {leaderboard.map((user, index) => {
                 const overallRank = (page - 1) * 20 + index + 1;
                 return (
                   <TableRow key={user.username}>
@@ -197,5 +178,4 @@ export default function Leaderboard() {
       </div>
     </>
   );
-
 }
