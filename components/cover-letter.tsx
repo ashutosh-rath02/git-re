@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { Button } from "./ui/button";
 import CoverLetterForm from "./CoverLetterForm";
+import CoverLetterDialog from "./CoverLetterDialog";
 
 type Props = {
   user: User | null;
@@ -76,6 +77,13 @@ export default function CoverLetter({ user }: Props) {
             setIsSubmit={setIsSubmit}
           />
         </div>
+        <CoverLetterDialog
+          setResponse={setResponse}
+          isResponseGenerated={isResponseGenerated}
+          setIsResponseGenerated={setIsResponseGenerated}
+          response={response}
+          isError={isError}
+        />
       </div>
     </div>
   );
