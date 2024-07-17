@@ -194,6 +194,7 @@ This project is licensed under the Apache 2.0 License & all rights reserved to a
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/suhanipaliwal"><img src="https://avatars.githubusercontent.com/u/161575955?v=4?s=100" width="100px;" alt="Suhani Singh Paliwal"/><br /><sub><b>Suhani Singh Paliwal</b></sub></a><br /><a href="#doc-suhanipaliwal" title="Documentation">📖</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://tenzindelekportfolio.vercel.app/"><img src="https://avatars.githubusercontent.com/u/122612557?v=4?s=100" width="100px;" alt="TenzDelek"/><br /><sub><b>TenzDelek</b></sub></a><br /><a href="#code-TenzDelek" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Swastik19Nit"><img src="https://avatars.githubusercontent.com/u/122457803?v=4?s=100" width="100px;" alt="Swastik Bhowmick"/><br /><sub><b>Swastik Bhowmick</b></sub></a><br /><a href="#code-Swastik19Nit" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Sid-80"><img src="https://avatars.githubusercontent.com/u/101277141?v=4?s=100" width="100px;" alt="Siddharth Bramhecha"/><br /><sub><b>Siddharth Bramhecha</b></sub></a><br /><a href="#code-Sid-80" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>

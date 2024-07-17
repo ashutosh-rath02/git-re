@@ -33,13 +33,13 @@ export default async function Navbar() {
         >
           Home
         </Link>
-        <a
-          href="#userTestimonials"
+        <Link
+          href="/#userTestimonials"
           className="text-navbarSecondary hover:text-primary font-semibold transition md:block hidden dark:text-white"
           style={{ scrollBehavior: "smooth" }}
         >
           Testimonial
-        </a>
+        </Link>
         <Link
           href={"/leaderboard"}
           rel="noopener noreferrer"
