@@ -14,6 +14,7 @@ import {
 import { Textarea } from "./ui/textarea";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
 import { SetStateAction } from "react";
+import { getCoverLetter } from "@/utils/Gemini";
 
 const formSchema = z.object({
   jobDescription: z
@@ -34,7 +35,10 @@ type Props = {
   isSubmit: boolean;
   setIsJobDescription: React.Dispatch<SetStateAction<boolean>>;
   setIsResumeDetails: React.Dispatch<SetStateAction<boolean>>;
+  setIsResponseGenerated: React.Dispatch<SetStateAction<boolean>>;
+  setIsError: React.Dispatch<SetStateAction<boolean>>;
   setIsSubmit: React.Dispatch<SetStateAction<boolean>>;
+  setResponse: React.Dispatch<SetStateAction<string>>;
 };
 
 export default function CoverLetterForm({
@@ -44,6 +48,9 @@ export default function CoverLetterForm({
   setIsJobDescription,
   setIsSubmit,
   setIsResumeDetails,
+  setIsResponseGenerated,
+  setIsError,
+  setResponse,
 }: Props) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -75,11 +82,25 @@ export default function CoverLetterForm({
     }
   }
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values);
-  }
+    const { jobDescription, project, skills, experience } = values;
+
+    try {
+      const res = await getCoverLetter({
+        jobDescription,
+        project,
+        skills,
+        experience,
+      });
+
+      console.log(res);
+    } catch (err) {
+      setIsError(true);
+    }
+  };
+
   return (
     <Form {...form}>
       <form
@@ -122,7 +143,7 @@ export default function CoverLetterForm({
               name="skills"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Projects</FormLabel>
+                  <FormLabel>Skills</FormLabel>
                   <FormControl>
                     <Textarea
                       className="h-[100px]"
