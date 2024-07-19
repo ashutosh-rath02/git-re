@@ -15,6 +15,10 @@ export default function CoverLetter({ user }: Props) {
   const [isResume, setIsResume] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
 
+  const [isResponseGenerated, setIsResponseGenerated] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [response, setResponse] = useState("");
+
   if (user === null) {
     router.push("/");
   }
@@ -61,11 +65,14 @@ export default function CoverLetter({ user }: Props) {
 
         <div className="flex flex-1 items-center justify-center">
           <CoverLetterForm
+            setIsError={setIsError}
+            setIsResponseGenerated={setIsResponseGenerated}
             isJobDescription={isJobDescription}
             isResumeDetails={isResume}
             isSubmit={isSubmit}
             setIsResumeDetails={setIsResume}
             setIsJobDescription={setIsJobDescription}
+            setResponse={setResponse}
             setIsSubmit={setIsSubmit}
           />
         </div>
