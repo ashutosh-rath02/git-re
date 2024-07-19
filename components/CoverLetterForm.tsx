@@ -13,7 +13,10 @@ import {
 } from "@/components/ui/form";
 import { Textarea } from "./ui/textarea";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
-import { SetStateAction } from "react";
+import { SetStateAction, useState } from "react";
+import { getCoverLetter } from "@/utils/Gemini";
+import Loader from "./Loader";
+
 
 const formSchema = z.object({
   jobDescription: z
@@ -34,7 +37,10 @@ type Props = {
   isSubmit: boolean;
   setIsJobDescription: React.Dispatch<SetStateAction<boolean>>;
   setIsResumeDetails: React.Dispatch<SetStateAction<boolean>>;
+  setIsResponseGenerated: React.Dispatch<SetStateAction<boolean>>;
+  setIsError: React.Dispatch<SetStateAction<boolean>>;
   setIsSubmit: React.Dispatch<SetStateAction<boolean>>;
+  setResponse: React.Dispatch<SetStateAction<string>>;
 };
 
 export default function CoverLetterForm({
@@ -44,7 +50,12 @@ export default function CoverLetterForm({
   setIsJobDescription,
   setIsSubmit,
   setIsResumeDetails,
+  setIsResponseGenerated,
+  setIsError,
+  setResponse,
 }: Props) {
+  const [isLoading, setIsLoading] = useState(false);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -75,11 +86,28 @@ export default function CoverLetterForm({
     }
   }
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
-  }
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    const { jobDescription, project, skills, experience } = values;
+    setIsLoading(true);
+
+    try {
+      const res = await getCoverLetter({
+        jobDescription,
+        project,
+        skills,
+        experience,
+      });
+
+      if (res) {
+        setIsResponseGenerated(true);
+        setResponse(res);
+      }
+    } catch (err) {
+      setIsError(true);
+    }
+    setIsLoading(false);
+  };
+
   return (
     <Form {...form}>
       <form
@@ -122,7 +150,7 @@ export default function CoverLetterForm({
               name="skills"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Projects</FormLabel>
+                  <FormLabel>Skills</FormLabel>
                   <FormControl>
                     <Textarea
                       className="h-[100px]"
@@ -202,7 +230,7 @@ export default function CoverLetterForm({
               name="skills"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Projects</FormLabel>
+                  <FormLabel>Skills</FormLabel>
                   <FormControl>
                     <Textarea
                       className="h-[100px]"
@@ -248,8 +276,12 @@ export default function CoverLetterForm({
                 </FormItem>
               )}
             />
-            <Button className="flex gap-1 text-white" type="submit">
-              Submit
+            <Button
+              disabled={isLoading}
+              className="flex gap-1 text-white"
+              type="submit"
+            >
+              {isLoading ? <Loader /> : "Submit"}
             </Button>
           </>
         )}
