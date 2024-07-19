@@ -17,6 +17,7 @@ import { SetStateAction, useState } from "react";
 import { getCoverLetter } from "@/utils/Gemini";
 import Loader from "./Loader";
 
+
 const formSchema = z.object({
   jobDescription: z
     .string()
@@ -88,6 +89,7 @@ export default function CoverLetterForm({
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const { jobDescription, project, skills, experience } = values;
     setIsLoading(true);
+
     try {
       const res = await getCoverLetter({
         jobDescription,
