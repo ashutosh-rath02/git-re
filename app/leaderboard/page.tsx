@@ -138,7 +138,22 @@ export default function Leaderboard() {
             </TableBody>
           ) : (
             <TableBody>
-              {/* ... (skeleton loading code remains the same) ... */}
+              {Array.from({ length: 5 }, (_, index) => (
+                <TableRow key={index}>
+                  <TableCell>
+                    <Skeleton className="h-4 w-[100px]" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-8 w-8 rounded-full" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-4 w-[250px]" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-4 w-[250px]" />
+                  </TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           )}
         </Table>
