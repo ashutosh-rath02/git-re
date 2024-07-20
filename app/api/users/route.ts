@@ -10,7 +10,7 @@ const getFromCache = async (key: string) => {
   const cachedData = await redis.get(key) as any;
   if (cachedData) {
     console.log("LOADED FROM CACHE");
-    return JSON.parse(cachedData);
+    return JSON.parse(cachedData);  
   }
   return null;
 };
