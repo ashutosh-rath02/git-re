@@ -1,6 +1,5 @@
 "use server";
 import { supabaseServer } from "@/utils/supabase/server";
-
 const supabase = supabaseServer();
 
 type LeaderboardProp = {
@@ -29,12 +28,19 @@ export const getLeaderboard = async ({
     }
 
     const { data, error, count } = await query;
-
     const maxPages = count ? Math.ceil(count / itemsPerPage) : 0;
 
     if (error) throw error;
 
-    return { data, maxPages };
+    // Fetch individual ranks for each user
+    const usersWithRanks = await Promise.all(
+      data.map(async (user) => ({
+        ...user,
+        rank: await getIndividualUserRank(user.username),
+      }))
+    );
+
+    return { data: usersWithRanks, maxPages };
   } catch (error) {
     throw error;
   }
@@ -45,7 +51,6 @@ export const getIndividualUserRank = async (username: string) => {
     const { data, error } = await supabase.rpc("get_user_rank", {
       user_username: username,
     });
-
     if (error) {
       throw error;
     }
