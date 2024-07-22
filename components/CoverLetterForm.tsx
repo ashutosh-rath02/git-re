@@ -16,18 +16,19 @@ import { ArrowRightIcon } from "@radix-ui/react-icons";
 import { SetStateAction, useState } from "react";
 import { getCoverLetter } from "@/utils/Gemini";
 import Loader from "./Loader";
+import { supabase } from "@/utils/supabase/client";
 
 const formSchema = z.object({
   jobDescription: z
     .string()
     .min(10, { message: "Detailed job description required!!" })
     .max(10000),
-  project: z.string().min(10, { message: "Project required!!" }).max(1000),
+  project: z.string().min(10, { message: "Project required!!" }).max(4000),
   skills: z.string().min(10, { message: "Skills required!!" }).max(1000),
   experience: z
     .string()
     .min(10, { message: "Experinece required!!" })
-    .max(1000),
+    .max(4000),
 });
 
 type Props = {
@@ -39,6 +40,7 @@ type Props = {
   setIsResponseGenerated: React.Dispatch<SetStateAction<boolean>>;
   setIsError: React.Dispatch<SetStateAction<boolean>>;
   setIsSubmit: React.Dispatch<SetStateAction<boolean>>;
+  user: any;
   setResponse: React.Dispatch<SetStateAction<string>>;
 };
 
@@ -52,6 +54,7 @@ export default function CoverLetterForm({
   setIsResponseGenerated,
   setIsError,
   setResponse,
+  user,
 }: Props) {
   const [isLoading, setIsLoading] = useState(false);
 
@@ -89,6 +92,22 @@ export default function CoverLetterForm({
     const { jobDescription, project, skills, experience } = values;
     setIsLoading(true);
     try {
+      const today = new Date().toISOString().split("T")[0];
+      const { data: existingUsageData, error: fetchError } = await supabase
+        .from("usage_tracking")
+        .select("usage_count")
+        .eq("github_username", user!.user_metadata.preferred_username)
+        .eq("date", today);
+
+      if (existingUsageData && existingUsageData[0].usage_count >= 2) {
+        setIsResponseGenerated(true);
+        setIsError(true);
+        setResponse("You have reached your usage limit for today.");
+        setIsLoading(false);
+        return;
+      }
+
+      // Add your existing cover letter generation logic here
       const res = await getCoverLetter({
         jobDescription,
         project,
@@ -97,8 +116,43 @@ export default function CoverLetterForm({
       });
 
       if (res) {
+        setIsError(false);
         setIsResponseGenerated(true);
         setResponse(res);
+      }
+
+      // After generating the cover letter, update the usage count
+      if (fetchError) {
+        setIsError(true);
+        setResponse("There was an error fetching your usage data.");
+        return;
+      }
+
+      if (existingUsageData && existingUsageData.length > 0) {
+        const newUsageCount = existingUsageData[0].usage_count + 1;
+        const { error: updateError } = await supabase
+          .from("usage_tracking")
+          .update({ usage_count: newUsageCount })
+          .eq("github_username", user!.user_metadata.preferred_username)
+          .eq("date", today);
+
+        if (updateError) {
+          setIsError(true);
+          setResponse("There was an error updating your usage count.");
+        }
+      } else {
+        const { error: insertError } = await supabase
+          .from("usage_tracking")
+          .insert({
+            github_username: user!.user_metadata.preferred_username,
+            date: today,
+            usage_count: 1,
+          });
+
+        if (insertError) {
+          setIsError(true);
+          setResponse("There was an error inserting your usage data.");
+        }
       }
     } catch (err) {
       setIsError(true);
