@@ -43,7 +43,7 @@
     "framer-motion": "^11.3.2",
     "graphql-request": "^7.1.0",
     "html2canvas": "^1.4.1",
-    "html2pdf.js": "^0.10.1",
+    "html2pdf.js": "^0.10.2",
     "jspdf": "^2.5.1",
     "mini-svg-data-uri": "^1.4.4",
     "next": "^14.2.3",
