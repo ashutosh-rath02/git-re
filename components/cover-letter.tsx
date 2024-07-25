@@ -1,13 +1,14 @@
 "use client";
-import { User } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import CoverLetterForm from "./CoverLetterForm";
 import CoverLetterDialog from "./CoverLetterDialog";
+import { supabase } from "@/utils/supabase/client";
+import { UserData } from "@/types";
 
 type Props = {
-  user: User | null;
+  user: any;
 };
 
 export default function CoverLetter({ user }: Props) {
@@ -20,9 +21,29 @@ export default function CoverLetter({ user }: Props) {
   const [isError, setIsError] = useState(false);
   const [response, setResponse] = useState("");
 
-  if (user === null) {
-    router.push("/");
-  }
+  useEffect(() => {
+    if (user) {
+      checkUsageLimit();
+    } else {
+      router.push("/");
+    }
+  }, [user]);
+
+  const checkUsageLimit = async () => {
+    const { data, error } = await supabase
+      .from("usage_tracking")
+      .select("usage_count")
+      .eq("github_username", user!.user_metadata.preferred_username)
+      .eq("date", new Date().toISOString().split("T")[0]);
+
+    if (data && data[0] && data[0].usage_count >= 2) {
+      setIsResponseGenerated(true);
+      setIsError(true);
+      setResponse(
+        "You have reached your daily limit!! Please try again tomorrow!!"
+      );
+    }
+  };
 
   return (
     <div className="flex flex-col items-center justify-center">
@@ -75,6 +96,7 @@ export default function CoverLetter({ user }: Props) {
             setIsJobDescription={setIsJobDescription}
             setResponse={setResponse}
             setIsSubmit={setIsSubmit}
+            user={user!}
           />
         </div>
         <CoverLetterDialog

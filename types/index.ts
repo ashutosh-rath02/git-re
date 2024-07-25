@@ -19,3 +19,9 @@ export interface UserData {
   bio: string;
   username: string;
 }
+
+export type UsageData = {
+  user_id: string;
+  date: string;
+  usage_count: number;
+};
