@@ -11,7 +11,7 @@ const Faq = () => {
   return (
     <>
       <h1 className="text-center text-3xl font-bold md:text-4xl mb-10 ">FAQs</h1>
-      <div style={{ width: "600px" }}>
+      <div style={{maxWidth:"600px", margin:"20px"}}>
         <Accordion type="single" collapsible className="w-full">
           {faqs.map((faq, index) => (
             <AccordionItem key={index} value={`item-${index}`}>
