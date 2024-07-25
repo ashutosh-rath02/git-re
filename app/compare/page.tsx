@@ -240,10 +240,7 @@ const Compare = () => {
     ];
 
     return (
-      <div
-        className="w-full overflow-x-auto"
-        
-      >
+      <div className="w-full overflow-x-auto">
         <table className="w-full border-collapse">
           <tbody>
             {stats.map(({ label, key }) => (
@@ -295,38 +292,41 @@ const Compare = () => {
       : userData.userJoinedDate.toDateString();
 
     return (
-      <div
-        className={`border p-4 rounded-lg ${
-          isWinner ? "bg-green-100 dark:bg-green-800" : ""
-        } border-gray-300 dark:border-gray-700`}
-       
-      >
-        <Image
-          src={userData.avatar_url}
-          alt={userData.name}
-          width={100}
-          height={100}
-          className="rounded-full mb-4"
-        />
-        <h2 className="text-xl font-bold">{userData.name || userData.login}</h2>
-        <p className="text-gray-600 dark:text-gray-300">{userData.bio}</p>
-        <div className="mt-2">
-          <Link
-            className={badgeVariants({ variant: "outline" })}
-            href="/FAQs/rating.md"
-          >
-            {userData.rating.toFixed(2)} / 5
-          </Link>
-          <Link
-            className={badgeVariants({ variant: "outline" })}
-            href="/leaderboard"
-          >
-            {userData.rank}
-            {getRankSuffix(userData.rank)} on Leaderboard
-          </Link>
+      <Link href={`/resume/${userData.login}`}>
+        <div
+          className={`border p-4 rounded-lg ${
+            isWinner ? "bg-green-100 dark:bg-green-800" : ""
+          } border-gray-300 dark:border-gray-700`}
+        >
+          <Image
+            src={userData.avatar_url}
+            alt={userData.name}
+            width={100}
+            height={100}
+            className="rounded-full mb-4"
+          />
+          <h2 className="text-xl font-bold">
+            {userData.name || userData.login}
+          </h2>
+          <p className="text-gray-600 dark:text-gray-300">{userData.bio}</p>
+          <div className="mt-2">
+            <Link
+              className={badgeVariants({ variant: "outline" })}
+              href="/FAQs/rating.md"
+            >
+              {userData.rating.toFixed(2)} / 5
+            </Link>
+            <Link
+              className={badgeVariants({ variant: "outline" })}
+              href="/leaderboard"
+            >
+              {userData.rank}
+              {getRankSuffix(userData.rank)} on Leaderboard
+            </Link>
+          </div>
+          <p>Joined GitHub: {formattedJoinedDate}</p>
         </div>
-        <p>Joined GitHub: {formattedJoinedDate}</p>
-      </div>
+      </Link>
     );
   };
 
@@ -399,7 +399,6 @@ const Compare = () => {
             <div
               key={key}
               className="p-4 border rounded-lg border-gray-300 dark:border-gray-700"
-              
             >
               <h3 className="text-lg font-medium mb-2">{label}</h3>
               {renderBar(userData1, key, maxValues[key])}
