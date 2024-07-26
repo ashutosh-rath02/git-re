@@ -73,8 +73,8 @@ export default function AuthButton({
       disabled={isLoading}
       onClick={handleLoginWithGithub}
     >
-      <IconCubeUnfolded stroke={1} className="mr-2" />
-      {isLoading ? <div className="loader1"></div> : "Build Resume"}
+      <IconCubeUnfolded stroke={1} className="mr-1" />
+      {isLoading ? <div className="loader1  "></div> : "Build Resume"}
     </Button>
   );
 }

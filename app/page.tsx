@@ -53,7 +53,7 @@ export default function Home() {
               git-re
             </span>
           </h1>
-          <p className="text-xl md:text-2xl lg:text-4xl font-semibold">
+          <p className="text-xs sm:text-2xl md:text-2xl lg:text-4xl font-semibold">
             Elevate your&nbsp;
             <span className="text-transparent bg-clip-text bg-gradient-to-br from-blue-500 to-blue-700">
               GitHub
@@ -112,7 +112,7 @@ export default function Home() {
       >
         <UserTestimonails />
       </div>
-        <Faq/>
+      <Faq />
     </main>
   );
 }

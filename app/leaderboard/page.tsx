@@ -69,19 +69,19 @@ export default function Leaderboard() {
 
   return (
     <>
-      <div className="max-w-screen-lg mx-auto px-4 lg:px-0">
-        <div className="flex justify-between items-center mb-4 mt-4">
+      <div className="max-w-screen-lg mx-auto px-4 lg:px-8">
+        <div className="justify-between items-center mb-20 mt-10 grid grid-cols-1 sm:grid-cols-2 gap-4">
           <h1 className="text-2xl font-semibold">Leaderboard</h1>
           {/* Search Input */}
-          <div className="relative">
+          <div className="flex">
             <input
               type="text"
               placeholder="Search by username..."
               value={searchQuery}
               onChange={handleSearchInputChange}
-              className="border border-gray-300 rounded-md py-2 px-4 w-64 max-w-xs bg-gray-300 dark:bg-slate-800"
+              className="border border-gray-300 rounded-md py-2 px-4 align-items justify-end w-25 xs:w-50 sm:w-60 bg-gray-300 dark:bg-slate-800"
             />
-            <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+            {/* <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
               <svg
                 width="15"
                 height="15"
@@ -98,7 +98,7 @@ export default function Leaderboard() {
                   clip-rule="evenodd"
                 />
               </svg>
-            </div>
+            </div> */}
           </div>
         </div>
 
