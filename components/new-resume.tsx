@@ -38,6 +38,7 @@ import { getRankSuffix } from "@/utils/format";
 import CustomisationDrawer from "./CustomisationDrawer";
 import ProfileTracking from "./ProfileTracking";
 import ShareBtn from "./ShareBtn";
+import { Skeleton } from "./ui/skeleton";
 interface GitHubProfile {
   name: string;
   bio: string;
@@ -197,13 +198,23 @@ export function NewResume() {
   };
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center h-screen space-y-6">
-        <div className="loader-container flex items-center justify-center">
-          <div className="ball ball1"></div>
-          <div className="ball ball2"></div>
-          <div className="ball ball3"></div>
+      <div className="loaderbody flex justify-center items-center mt-20 mb-20">
+        <div>
+          <div className="flex items-center space-x-4 mb-5">
+            <Skeleton className="h-12 w-12 rounded-full" />
+            <div className="space-y-2">
+              <Skeleton className="h-4 w-[150px]" />
+              <Skeleton className="h-4 w-[185px]" />
+            </div>
+          </div>
+          <div className="flex flex-col space-y-3 mb-4">
+            <Skeleton className="h-[125px] w-[250px] rounded-xl" />
+            <div className="space-y-2">
+              <Skeleton className="h-4 w-[250px]" />
+              <Skeleton className="h-4 w-[200px]" />
+            </div>
+          </div>
         </div>
-        <p>We are fetching your data...</p>
       </div>
     );
   }
