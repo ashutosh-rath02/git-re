@@ -59,9 +59,7 @@ export default function CoverLetterDialog({
             <DialogHeader className="flex flex-row w-full items-center justify-between">
               <DialogTitle>Error</DialogTitle>
             </DialogHeader>
-            <DialogDescription>
-              Error Occured!! Please try again later.
-            </DialogDescription>
+            <DialogDescription>{response}</DialogDescription>
           </>
         )}
       </DialogContent>
