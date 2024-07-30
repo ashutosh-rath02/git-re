@@ -55,7 +55,7 @@ export default async function Navbar() {
           Compare
         </Link>
 
-        <AuthButton user={data.user} />
+        <AuthButton user={data.user} className="hidden sm:flex" />
 
         <Hamburger />
       </div>
