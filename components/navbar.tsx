@@ -1,21 +1,45 @@
-import React from "react";
+"use client"
+import React, { useState, useEffect } from "react";
 import { ModeToggle } from "./shared/ToggleBg";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import { IoMdGitNetwork } from "react-icons/io";
 import Link from "next/link";
-
 import AuthButton from "./AuthButton";
 import Hamburger from "./Hamburger";
-import { supabaseServer } from "@/utils/supabase/server";
+import { createClientComponentClient, User } from "@supabase/auth-helpers-nextjs"; // Import User type
 
-export default async function Navbar() {
+const Navbar: React.FC = () => {
   const repositoryUrl = "https://github.com/ashutosh-rath02/git-re";
+  const [isVisible, setIsVisible] = useState(true);
+  const [prevScrollPos, setPrevScrollPos] = useState(0);
+  const [user, setUser] = useState<User | null>(null); // Set the state type to User or null
 
-  const supabase = supabaseServer();
-  const { data } = await supabase.auth.getUser();
+  useEffect(() => {
+    const fetchUser = async () => {
+      const supabase = createClientComponentClient();
+      const { data } = await supabase.auth.getUser();
+      setUser(data.user);
+    };
+    fetchUser();
+  }, []);
+
+  const handleScroll = () => {
+    const currentScrollPos = window.pageYOffset;
+    const isScrollingUp = prevScrollPos > currentScrollPos;
+
+    setIsVisible(isScrollingUp || currentScrollPos < 10);
+    setPrevScrollPos(currentScrollPos);
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [prevScrollPos]);
 
   return (
-    <nav className="max-w-screen-2xl mx-auto sm:px-20 px-3 m-2 p-4 w-full flex items-center justify-between">
+    <nav className={`max-w-screen-2xl bg-black z-50 fixed top-0 mx-auto sm:px-20 px-3 p-4 w-full flex items-center justify-between transition-transform duration-300 ${isVisible ? "transform translate-y-0" : "transform -translate-y-full"}`}>
       <div className="flex items-center gap-x-2">
         <Link
           href={"/"}
@@ -55,10 +79,12 @@ export default async function Navbar() {
           Compare
         </Link>
 
-        <AuthButton user={data.user} className="hidden sm:flex" />
+        <AuthButton user={user} className="hidden sm:flex" />
 
         <Hamburger />
       </div>
     </nav>
   );
-}
+};
+
+export default Navbar;
