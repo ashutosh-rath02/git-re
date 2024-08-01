@@ -15,7 +15,7 @@ export default async function Navbar() {
   const { data } = await supabase.auth.getUser();
 
   return (
-    <nav className="max-w-screen-2xl mx-auto sm:px-20 px-3 m-2 p-4 w-full flex items-center justify-between">
+    <nav className="max-w-screen-2xl mx-auto sm:px-20 md:px-8 lg:px-20 px-8 m-2 p-4 w-full flex items-center justify-between">
       <div className="flex items-center gap-x-2">
         <Link
           href={"/"}
@@ -25,7 +25,7 @@ export default async function Navbar() {
           git-re
         </Link>
       </div>
-      <div className="flex flex-row items-center space-x-8">
+      <div className="flex flex-row items-center space-x-8 md:space-x-4 lg:space-x-8">
         <Link
           href={"/"}
           rel="noopener noreferrer"
