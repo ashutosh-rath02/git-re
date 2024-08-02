@@ -37,11 +37,15 @@ export default function Footer() {
       <div className="flex flex-col max-w-96">
         <div className="flex items-center gap-x-2">
           <Link
-            href={"/"}
+            href="/"
             className="text-lg font-black flex flex-row items-center justify-center gap-2 cursor-pointer"
           >
-            <GitHubLogoIcon width="22" height="22" />
-            git-re
+            <img
+              src="/images/logoGitRE.png"
+              alt="Logo"
+              width="100"
+              height="100"
+            />
           </Link>
         </div>
         <h3 className="text-lg font-medium text-secondaryText mt-4 tracking-wide dark:text-white">

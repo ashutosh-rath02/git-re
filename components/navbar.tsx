@@ -18,11 +18,15 @@ export default async function Navbar() {
     <nav className="max-w-screen-2xl mx-auto sm:px-20 px-3 m-2 p-4 w-full flex items-center justify-between">
       <div className="flex items-center gap-x-2">
         <Link
-          href={"/"}
+          href="/"
           className="text-lg font-black flex flex-row items-center justify-center gap-2 cursor-pointer"
         >
-          <GitHubLogoIcon width="22" height="22" />
-          git-re
+          <img
+            src="/images/logoGitRE.png"
+            alt="Logo"
+            width="200"
+            height="200"
+          />
         </Link>
       </div>
       <div className="flex flex-row items-center space-x-8">
