@@ -40,6 +40,7 @@ const Navbar: React.FC = () => {
 
   return (
     <nav className={`max-w-screen-2xl bg-black z-50 fixed top-0 mx-auto sm:px-20 px-3 p-4 w-full flex items-center justify-between transition-transform duration-300 ${isVisible ? "transform translate-y-0" : "transform -translate-y-full"}`}>
+
       <div className="flex items-center gap-x-2">
         <Link
           href={"/"}
@@ -49,7 +50,7 @@ const Navbar: React.FC = () => {
           git-re
         </Link>
       </div>
-      <div className="flex flex-row items-center space-x-8">
+      <div className="flex flex-row items-center space-x-8 md:space-x-4 lg:space-x-8">
         <Link
           href={"/"}
           rel="noopener noreferrer"
