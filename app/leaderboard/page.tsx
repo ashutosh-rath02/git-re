@@ -34,8 +34,10 @@ export default function Leaderboard() {
   const [page, setPage] = useState(1);
   const [maxPage, setMaxPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    setIsLoading(true);
     getLeaderboard({ page, searchQuery }).then((data) => {
       setMaxPage(data.maxPages);
       const usersWithRanks = data.data.map((user: any) => ({
@@ -43,6 +45,7 @@ export default function Leaderboard() {
         rank: user.rank[0].user_rank,
       }));
       setLeaderboard(usersWithRanks);
+      setIsLoading(false);
     });
   }, [page, searchQuery]);
 
@@ -56,14 +59,14 @@ export default function Leaderboard() {
   const handlePrevious = () => {
     if (page > 1) {
       setPage(page - 1);
-      setLeaderboard([]);
+      setIsLoading(true);
     }
   };
 
   const handleNext = () => {
     if (page < maxPage) {
       setPage(page + 1);
-      setLeaderboard([]);
+      setIsLoading(true);
     }
   };
 
@@ -72,7 +75,6 @@ export default function Leaderboard() {
       <div className="max-w-screen-lg mx-auto px-4 lg:px-8">
         <div className="justify-between items-center mb-20 mt-10 grid grid-cols-1 sm:grid-cols-2 gap-4">
           <h1 className="text-2xl font-semibold">Leaderboard</h1>
-          {/* Search Input */}
           <div className="flex">
             <input
               type="text"
@@ -81,24 +83,6 @@ export default function Leaderboard() {
               onChange={handleSearchInputChange}
               className="border border-gray-300 rounded-md py-2 px-4 align-items justify-end w-25 xs:w-50 sm:w-60 bg-gray-300 dark:bg-slate-800"
             />
-            {/* <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-              <svg
-                width="15"
-                height="15"
-                viewBox="0 0 15 15"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5 text-gray-400 cursor-pointer"
-                aria-hidden="true"
-              >
-                <path
-                  d="M10 6.5C10 8.433 8.433 10 6.5 10C4.567 10 3 8.433 3 6.5C3 4.567 4.567 3 6.5 3C8.433 3 10 4.567 10 6.5ZM9.30884 10.0159C8.53901 10.6318 7.56251 11 6.5 11C4.01472 11 2 8.98528 2 6.5C2 4.01472 4.01472 2 6.5 2C8.98528 2 11 4.01472 11 6.5C11 7.56251 10.6318 8.53901 10.0159 9.30884L12.8536 12.1464C13.0488 12.3417 13.0488 12.6583 12.8536 12.8536C12.6583 13.0488 12.3417 13.0488 12.1464 12.8536L9.30884 10.0159Z"
-                  fill="currentColor"
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                />
-              </svg>
-            </div> */}
           </div>
         </div>
 
@@ -111,7 +95,26 @@ export default function Leaderboard() {
               <TableHead>Rating</TableHead>
             </TableRow>
           </TableHeader>
-          {leaderboard.length > 0 ? (
+          {isLoading ? (
+            <TableBody>
+              {Array.from({ length: 5 }, (_, index) => (
+                <TableRow key={index}>
+                  <TableCell>
+                    <Skeleton className="h-4 w-[100px]" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-8 w-8 rounded-full" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-4 w-[250px]" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-4 w-[250px]" />
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          ) : leaderboard.length > 0 ? (
             <TableBody>
               {leaderboard.map((user) => (
                 <TableRow key={user.username}>
@@ -138,22 +141,11 @@ export default function Leaderboard() {
             </TableBody>
           ) : (
             <TableBody>
-              {Array.from({ length: 5 }, (_, index) => (
-                <TableRow key={index}>
-                  <TableCell>
-                    <Skeleton className="h-4 w-[100px]" />
-                  </TableCell>
-                  <TableCell>
-                    <Skeleton className="h-8 w-8 rounded-full" />
-                  </TableCell>
-                  <TableCell>
-                    <Skeleton className="h-4 w-[250px]" />
-                  </TableCell>
-                  <TableCell>
-                    <Skeleton className="h-4 w-[250px]" />
-                  </TableCell>
-                </TableRow>
-              ))}
+              <TableRow>
+                <TableCell colSpan={4} className="text-center py-4">
+                  No results found
+                </TableCell>
+              </TableRow>
             </TableBody>
           )}
         </Table>
@@ -169,7 +161,6 @@ export default function Leaderboard() {
               <PaginationLink>{page}</PaginationLink>
             </PaginationItem>
           </PaginationContent>
-
           <PaginationNext
             onClick={handleNext}
             className="cursor-pointer select-none"
