@@ -13,11 +13,19 @@ import { toast } from "@/components/ui/use-toast";
 import Lenis from "@studio-freight/lenis";
 import Faq from "../components/Faq";
 
+declare global {
+  interface Window {
+    Tawk_API?: any;
+    Tawk_LoadStart?: Date;
+  }
+}
+
 export default function Home() {
   const supabase = supabaseBrowser();
   const searchParams = useSearchParams();
   const error = searchParams.get("error");
   const [data, setData] = useState<any>({ user: null });
+
   if (error) {
     toast({
       title: "Error",
@@ -25,6 +33,7 @@ export default function Home() {
       variant: "destructive",
     });
   }
+
   useEffect(() => {
     const fetchUser = async () => {
       const { data: user } = await supabase.auth.getUser();
@@ -32,6 +41,7 @@ export default function Home() {
     };
     fetchUser();
   }, []);
+
   useEffect(() => {
     const lenis = new Lenis();
     function raf(time: any) {
@@ -40,6 +50,23 @@ export default function Home() {
     }
     requestAnimationFrame(raf);
   }, []);
+
+  useEffect(() => {
+    window.Tawk_API = window.Tawk_API || {};
+    window.Tawk_LoadStart = new Date();
+    (function () {
+      const s1 = document.createElement("script");
+      const s0 = document.getElementsByTagName("script")[0];
+      s1.async = true;
+      s1.src = 'https://embed.tawk.to/66891af8eaf3bd8d4d18ca2d/1i24gr9s5';
+      s1.charset = 'UTF-8';
+      s1.setAttribute('crossorigin', '*');
+      if (s0 && s0.parentNode) {
+        s0.parentNode.insertBefore(s1, s0);
+      }
+    })();
+  }, []);
+
   return (
     <main className="flex flex-col my-[8%] items-center justify-center p-4 lg:px-24">
       <div className="relative mb-[6%] h-full flex flex-col max-w-4xl gap-8 place-items-center">
