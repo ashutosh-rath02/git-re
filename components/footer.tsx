@@ -10,6 +10,7 @@ import {
 import { Button } from "./ui/button";
 import { ModeToggle } from "./shared/ToggleBg";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
+import GitHubStarCount from './GitHubStarCount'; 
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -64,8 +65,9 @@ export default function Footer() {
           rel="noopener noreferrer"
           className="w-48 mt-8 rounded-sm py-4 text-base font-semibold dark:text-white flex flex-row items-center bg-primary text-white justify-center"
         >
-          <IconStarFilled className="mr-2" />
-          Star on GitHub
+         
+          <GitHubStarCount repoUrl="https://github.com/ashutosh-rath02/git-re" /> 
+          <p className="pl-2 pr-2">  Stars on </p> <GitHubLogoIcon width="22" height="22" />
         </Link>
       </div>
       {/* LINKS */}
