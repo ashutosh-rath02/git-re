@@ -1,4 +1,3 @@
-// components/GitHubStarCount.tsx
 "use client";
 
 import React, { useEffect, useState } from 'react';
@@ -14,11 +13,10 @@ const GitHubStarCount: React.FC<GitHubStarCountProps> = ({ repoUrl }) => {
   useEffect(() => {
     const fetchStarCount = async () => {
       try {
-        // Ensure the repo URL is in the format /owner/repo
         const repoPath = repoUrl.replace('https://github.com', '');
         const response = await fetch(`https://api.github.com/repos${repoPath}`, {
             headers: {
-              'Authorization': `token ${process.env.NEXT_PUBLIC_GITHUB_TOKEN}` // Replace YOUR_GITHUB_TOKEN with a GitHub Personal Access Token
+              'Authorization': `token ${process.env.NEXT_PUBLIC_GITHUB_TOKEN}` 
             }
           });
           
