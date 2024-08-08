@@ -81,7 +81,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <NextTopLoader showSpinner={false} color="#3b82f6" />
-          <div className="flex flex-col min-h-[100vh] overflow-x-hidden pt-20">
+          <div className="flex flex-col min-h-[100vh] overflow-x-hidden">
             <Navbar />
             <div className="grow">{children}</div>
             <Footer />
