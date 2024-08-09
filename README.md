@@ -200,6 +200,8 @@ This project is licensed under the Apache 2.0 License & all rights reserved to a
   </tbody>
 </table>
 
+<p align="right"><a href="#top">Back to TOP🔝</a></p>
+
 <!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
 
