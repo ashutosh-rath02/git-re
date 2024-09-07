@@ -72,7 +72,7 @@ export default function Leaderboard() {
 
   return (
     <>
-      <div className="max-w-screen-lg mx-auto px-4 lg:px-8">
+      <div className="max-w-screen-lg mx-auto px-4 lg:px-8 pt-12">
         <div className="justify-between items-center mb-20 mt-10 grid grid-cols-1 sm:grid-cols-2 gap-4">
           <h1 className="text-2xl font-semibold">Leaderboard</h1>
           <div className="flex">
