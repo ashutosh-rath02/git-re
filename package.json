@@ -38,7 +38,7 @@
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
     "embla-carousel-autoplay": "^8.1.6",
-    "embla-carousel-react": "^8.1.6",
+    "embla-carousel-react": "^8.3.0",
     "file-saver": "^2.0.5",
     "framer-motion": "^11.3.21",
     "graphql-request": "^7.1.0",
