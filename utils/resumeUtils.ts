@@ -1,18 +1,19 @@
-import { GraphQLClient, gql } from 'graphql-request';
-import { CACHE_TTL } from "@/lib/consts";
+import { GraphQLClient, gql } from "graphql-request";
 import { supabaseBrowser } from "./supabase/client";
-import axios from 'axios'; // Ensure axios is imported
 
-const client = new GraphQLClient('https://api.github.com/graphql', {
+// Initialize GraphQL client for GitHub API
+const client = new GraphQLClient("https://api.github.com/graphql", {
   headers: {
-    authorization: `Bearer ${process.env.NEXT_PUBLIC_GITHUB_TOKEN}`,
+    authorization: `Bearer ${process.env.NEXT_PUBLIC_GITHUB_TOKEN}`, // Authorization header with GitHub token
   },
 });
 
+// Initialize Supabase client for database interactions
 const supabase = supabaseBrowser();
 
+// GraphQL query to fetch user data from GitHub
 const GITHUB_QUERY = gql`
-  query($username: String!) {
+  query ($username: String!) {
     user(login: $username) {
       login
       name
@@ -23,7 +24,10 @@ const GITHUB_QUERY = gql`
       following {
         totalCount
       }
-      repositories(first: 100, orderBy: {field: STARGAZERS, direction: DESC}) {
+      repositories(
+        first: 100
+        orderBy: { field: STARGAZERS, direction: DESC }
+      ) {
         totalCount
         nodes {
           name
@@ -74,6 +78,7 @@ const GITHUB_QUERY = gql`
   }
 `;
 
+// Configuration for fetching data limits
 const configData = {
   maxItems: 6,
   maxLanguages: 5,
@@ -170,7 +175,10 @@ interface Contribution {
   commitCount: number;
 }
 
-const fetchGitHubData = async (username: string): Promise<GitHubData | null> => {
+// Function to fetch GitHub user data
+const fetchGitHubData = async (
+  username: string
+): Promise<GitHubData | null> => {
   try {
     console.log(`Fetching GitHub data for ${username}`);
     const data = await client.request<GitHubData>(GITHUB_QUERY, { username });
@@ -181,8 +189,9 @@ const fetchGitHubData = async (username: string): Promise<GitHubData | null> => 
   }
 };
 
-
-export const fetchOrganizations = async (username: string): Promise<Organization[]> => {
+export const fetchOrganizations = async (
+  username: string
+): Promise<Organization[]> => {
   const data = await fetchGitHubData(username);
   if (!data) return [];
 
@@ -223,26 +232,34 @@ const sortLanguages = (
   languages: { [key: string]: number },
   username: string
 ): Language[] => {
-  const totalUsage = Object.values(languages).reduce((acc, value) => acc + value, 0);
+  const totalUsage = Object.values(languages).reduce(
+    (acc, value) => acc + value,
+    0
+  );
   return Object.entries(languages)
     .map(([name, popularity]) => ({
       name,
       popularity,
       percent: (popularity / totalUsage) * 100,
-      url: `https://github.com/search?q=user%3A${username}&l=${encodeURIComponent(name)}`,
+      url: `https://github.com/search?q=user%3A${username}&l=${encodeURIComponent(
+        name
+      )}`,
     }))
     .sort((a, b) => b.popularity - a.popularity)
     .slice(0, configData.maxLanguages);
 };
 
-export const fetchLanguageData = async (username: string): Promise<Language[]> => {
+export const fetchLanguageData = async (
+  username: string
+): Promise<Language[]> => {
   const data = await fetchGitHubData(username);
   if (!data) return [];
 
   const languageData: { [key: string]: number } = {};
   data.user.repositories.nodes.forEach((repo) => {
     if (repo.primaryLanguage) {
-      languageData[repo.primaryLanguage.name] = (languageData[repo.primaryLanguage.name] || 0) + 1;
+      languageData[repo.primaryLanguage.name] =
+        (languageData[repo.primaryLanguage.name] || 0) + 1;
     }
   });
 
@@ -262,7 +279,10 @@ interface UserStats {
   forks: number;
 }
 
-export const fetchUserStats = async (username: string): Promise<UserStats | null> => {
+// Function to fetch user statistics from GitHub
+export const fetchUserStats = async (
+  username: string
+): Promise<UserStats | null> => {
   const data = await fetchGitHubData(username);
   if (!data) return null;
 
@@ -270,16 +290,19 @@ export const fetchUserStats = async (username: string): Promise<UserStats | null
   const currentYear = new Date().getFullYear();
   const yearsOnGitHub = currentYear - userJoinedDate.getFullYear();
 
+  // Calculate total stars received from all repositories
   const starsReceived = data.user.repositories.nodes.reduce(
     (acc, repo) => acc + repo.stargazerCount,
     0
   );
 
+  // Calculate total forks from all repositories
   const forks = data.user.repositories.nodes.reduce(
     (acc, repo) => acc + repo.forkCount,
     0
   );
 
+  // Construct user statistics object
   const userStats: UserStats = {
     followers: data.user.followers.totalCount,
     publicRepos: data.user.repositories.totalCount,
@@ -293,6 +316,7 @@ export const fetchUserStats = async (username: string): Promise<UserStats | null
     forks,
   };
 
+  // Update user statistics in Supabase database
   try {
     await supabase
       .from("recent_users")
@@ -319,35 +343,41 @@ export const fetchContributions = async (
   const data = await fetchGitHubData(username);
   if (!data) return [];
 
+  // Create a map to store contributions by repository name
   const contributionMap = new Map<
     string,
     {
       organizationName: string;
-      commitsUrl: string;
+      commitsUrl: string; // URL to the commits made by the user
       repoUrl: string;
-      count: number;
+      count: number; // Number of commits made by the user
     }
   >();
 
+  // Iterating over PR to gather contribution data
   data.user.pullRequests.nodes.forEach((pr) => {
     const repoName = pr.repository.name;
     const repoOwner = pr.repository.owner.login;
     const organizationName = repoOwner;
-    const commitsUrl = `https://github.com/${repoOwner}/${repoName}/commits?author=${username}`;
+    const commitsUrl = `https://github.com/${repoOwner}/${repoName}/commits?author=${username}`; // Commits URL
     const repoUrl = pr.repository.url;
 
+    // Check if the repository is already in the map
     if (contributionMap.has(repoName)) {
+      // If exists, increment contribution count
       contributionMap.get(repoName)!.count++;
     } else {
+      // New entry
       contributionMap.set(repoName, {
         organizationName,
         commitsUrl,
         repoUrl,
-        count: 1,
+        count: 1, // First contribution
       });
     }
   });
 
+  // Convert the map to an array of contributions
   const contributions = Array.from(
     contributionMap,
     ([repository, { organizationName, commitsUrl, repoUrl, count }]) => ({
@@ -360,7 +390,6 @@ export const fetchContributions = async (
   );
 
   contributions.sort((a, b) => b.commitCount - a.commitCount);
-
 
   return contributions;
 };

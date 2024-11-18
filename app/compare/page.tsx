@@ -413,7 +413,9 @@ const Compare = () => {
 
   return (
     <div className="max-w-screen-lg mx-auto px-4 py-2 lg:px-4 max-md:rounded-none rounded-2xl bg-white dark:bg-inherit text-black dark:text-white">
-      <h1 className="text-2xl font-semibold mb-6 mt-4">Compare GitHub Users</h1>
+      <h1 className="text-2xl font-semibold mb-6 mt-4 md:mt-24">
+        Compare Github Users
+      </h1>
 
       <div className="flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4 mb-6">
         <div className="flex-grow relative">

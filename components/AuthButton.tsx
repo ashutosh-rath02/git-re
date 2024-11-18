@@ -1,7 +1,6 @@
 "use client";
 import React, { useState } from "react";
 import { Button } from "./ui/button";
-import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import { supabaseBrowser } from "@/utils/supabase/client";
 import { User } from "@supabase/supabase-js";
 import { usePathname, useRouter } from "next/navigation";
@@ -10,6 +9,7 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 
 type AuthButtonProps = {
+  // Null if not authenticated
   user: User | null;
   height?: number;
   width?: number;
@@ -41,6 +41,7 @@ export default function AuthButton({
     setLoading(true);
     const supabase = supabaseBrowser();
     await supabase.auth.signOut();
+    // Refresh the router to update the UI
     router.refresh();
     setLoading(false);
   };
@@ -63,7 +64,8 @@ export default function AuthButton({
         onClick={handleLogout}
       >
         <IconLogout stroke={2} className="mr-2" />
-        {isLoading ? <div className="loader1"></div> : "Logout"}
+        {isLoading ? <div className="loader1"></div> : "Logout"} // Show loader
+        or text
       </Button>
     </>
   ) : (
@@ -74,7 +76,8 @@ export default function AuthButton({
       onClick={handleLoginWithGithub}
     >
       <IconCubeUnfolded stroke={1} className="mr-1" />
-      {isLoading ? <div className="loader1  "></div> : "Build Resume"}
+      {isLoading ? <div className="loader1  "></div> : "Build Resume"} // Show
+      loader or text
     </Button>
   );
 }
