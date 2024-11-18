@@ -7,7 +7,7 @@ export default async function Page() {
   const { data } = await supabase.auth.getUser();
 
   return (
-    <div>
+    <div className="mt-12">
       <CoverLetter user={data.user} />
     </div>
   );

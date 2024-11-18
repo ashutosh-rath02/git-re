@@ -92,7 +92,7 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div className="h-[30rem] w-full flex flex-col items-center justify-center">
+      {/* <div className="h-[30rem] w-full flex flex-col items-center justify-center">
         <div className="py-4">
           <p
             className="text-4xl font-bold text-center mt-4"
@@ -105,7 +105,7 @@ export default function Home() {
           </p>
         </div>
         <RecentGenerations />
-      </div>
+      </div> */}
       <div
         className="flex justify-center items-center h-[30rem]"
         id="userTestiminials"

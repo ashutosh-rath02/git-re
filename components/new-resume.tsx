@@ -1,22 +1,16 @@
 "use client";
-import { BarChart, Bar, ResponsiveContainer } from "recharts";
-import { IconTrendingUp } from "@tabler/icons-react";
 import {
   IconBrandGithub,
-  IconBrandLinkedin,
   IconCode,
   IconFolder,
   IconGitCommit,
   IconGitFork,
   IconWorld,
-  IconMail,
   IconStar,
   IconUsers,
   IconTimeline,
 } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
-import redis from "@/lib/redis";
-import { CACHE_TTL } from "@/lib/consts";
 import {
   fetchLanguageData,
   fetchPopularRepos,
@@ -28,8 +22,6 @@ import { calculateRating } from "@/utils/rating/action";
 import { getIndividualUserRank } from "@/app/leaderboard/action";
 import { useParams } from "next/navigation";
 import GitHubCalendar from "react-github-calendar";
-import { Avatar } from "./ui/avatar";
-import { AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import Image from "next/image";
 import { useTheme } from "next-themes";
 import Link from "next/link";
@@ -39,6 +31,7 @@ import CustomisationDrawer from "./CustomisationDrawer";
 import ProfileTracking from "./ProfileTracking";
 import ShareBtn from "./ShareBtn";
 import { Skeleton } from "./ui/skeleton";
+
 interface GitHubProfile {
   name: string;
   bio: string;
@@ -82,10 +75,6 @@ interface Language {
   url: string;
   percent: number;
 }
-interface OrganizationsProps {
-  username: string;
-  count: number;
-}
 
 interface ContributionsProps {
   organizationName: string;
@@ -100,20 +89,7 @@ export function NewResume() {
   const [profile, setProfile] = useState<GitHubProfile | null>(null);
   const [repos, setRepos] = useState<GitHubRepo[]>([]);
   const [languageData, setLanguageData] = useState({});
-
-  const [showName, setShowName] = useState(true);
-  const [showBio, setShowBio] = useState(true);
-  const [showBlog, setShowBlog] = useState(true);
-  const [showRepos, setShowRepos] = useState(true);
-  const [showRepoOptions, setShowRepoOptions] = useState(false);
   const [repoCount, setRepoCount] = useState(5);
-  const [showLanguageChart, setShowLanguageChart] = useState(true);
-  const [showOtherBox, setShowOtherBox] = useState(true);
-  const [startYear, setStartYear] = useState<number>(new Date().getFullYear());
-  const [endYear, setEndYear] = useState<number>(new Date().getFullYear());
-  const [showContributionGraph, setShowContributionGraph] = useState(true);
-  const [showContributions, setShowContributions] = useState(true);
-  const [showOrganizations, setShowOrganizations] = useState(true);
   const [contributionCount, setContributionCount] = useState(3);
   const [organizationCount, setOrganizationCount] = useState(5);
   const [rating, setRating] = useState<number>();
@@ -152,7 +128,7 @@ export function NewResume() {
         ).then((res) => res.json());
         setProfile(profileData);
 
-        // Fetch data using resumeUtils functions
+        // Fetch data using resumeUtils functions, parallelly
         const [reposData, languages, stats, orgsData, contributionData] =
           await Promise.all([
             fetchPopularRepos(username),
