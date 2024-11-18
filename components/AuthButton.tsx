@@ -64,8 +64,7 @@ export default function AuthButton({
         onClick={handleLogout}
       >
         <IconLogout stroke={2} className="mr-2" />
-        {isLoading ? <div className="loader1"></div> : "Logout"} // Show loader
-        or text
+        {isLoading ? <div className="loader1"></div> : "Logout"}
       </Button>
     </>
   ) : (
@@ -76,8 +75,7 @@ export default function AuthButton({
       onClick={handleLoginWithGithub}
     >
       <IconCubeUnfolded stroke={1} className="mr-1" />
-      {isLoading ? <div className="loader1  "></div> : "Build Resume"} // Show
-      loader or text
+      {isLoading ? <div className="loader1  "></div> : "Build Resume"}
     </Button>
   );
 }

@@ -1,4 +1,3 @@
-// import Resume from "@/components/Resume";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import React from "react";
 import { cookies } from "next/headers";
@@ -55,8 +54,7 @@ export default async function Home({
     redirect("/");
   }
   return (
-    <div>
-      {/* <Resume /> */}
+    <div className="mt-16">
       <NewResume />
     </div>
   );
