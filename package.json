@@ -41,7 +41,7 @@
     "embla-carousel-react": "^8.1.6",
     "file-saver": "^2.0.5",
     "framer-motion": "^12.23.5",
-    "graphql": "^16.9.0",
+    "graphql": "^16.11.0",
     "graphql-request": "^7.1.2",
     "html2canvas": "^1.4.1",
     "html2pdf.js": "^0.10.2",
