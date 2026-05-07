@@ -89,3 +89,4 @@ Total weighted score = 1.00 + 0.45 + 0.60 + 0.30 + 0.90 = 3.25
 Normalized rating (out of 5) = (3.25 / 5) \* 5 = 3.25
 
 Thus, the user's rating is **3.25 out of 5**.
+Thank you
