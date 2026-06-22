@@ -35,7 +35,7 @@
     "@vercel/og": "^0.6.2",
     "@vercel/speed-insights": "^1.0.11",
     "axios": "^1.7.7",
-    "chart.js": "^4.4.6",
+    "chart.js": "^4.5.1",
     "chartjs-plugin-datalabels": "^2.2.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
@@ -71,7 +71,7 @@
     "zustand": "^4.5.4"
   },
   "devDependencies": {
-    "@types/chart.js": "^2.9.41",
+    "@types/chart.js": "^4.0.1",
     "@types/file-saver": "^2.0.7",
     "@types/node": "^22.9.0",
     "@types/react": "^18",
